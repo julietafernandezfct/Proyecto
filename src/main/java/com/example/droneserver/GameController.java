@@ -14,33 +14,36 @@ public class GameController {
 
     // Crear partida
     @GetMapping("/create")
-    public String crearSala(HttpSession session) {
+    public JoinResponse crearSala(HttpSession session) {
         Sala sala = new Sala();
         sala.agregarJugador(session.getId());
 
         salas.put(sala.getCodigo(), sala);
 
-        return "Sala creada. Código: " + sala.getCodigo();
+        return new JoinResponse(
+                sala.getCodigo(),
+                session.getId(),
+                sala.getJugadores().size()
+        );
     }
+
 
     // Unirse a partida existente
     @GetMapping("/join/{codigo}")
-    public String unirseSala(@PathVariable("codigo") String codigo, HttpSession session) {
-
+    public JoinResponse unirseSala(@PathVariable("codigo") String codigo,
+                                   HttpSession session) {
         Sala sala = salas.get(codigo);
-
         if (sala == null) {
-            return "Sala no existe.";
+            return new JoinResponse(codigo, session.getId(), 0);
         }
-
         sala.agregarJugador(session.getId());
-
-        if (sala.estaLlena()) {
-            return "Sala lista. Jugadores: " + sala.getJugadores();
-        } else {
-            return "Unido a sala. Esperando segundo jugador...";
-        }
+        return new JoinResponse(
+                codigo,
+                session.getId(),
+                sala.getJugadores().size()
+        );
     }
+
     
     @PostMapping("/move/{codigo}")
     public String mover(@PathVariable("codigo") String codigo,
@@ -63,6 +66,7 @@ public class GameController {
 
         return sala.getPosiciones();
     }
+    
 
 
 }
