@@ -25,7 +25,7 @@ public class GameController {
 
     // Unirse a partida existente
     @GetMapping("/join/{codigo}")
-    public String unirseSala(@PathVariable String codigo, HttpSession session) {
+    public String unirseSala(@PathVariable("codigo") String codigo, HttpSession session) {
 
         Sala sala = salas.get(codigo);
 
@@ -41,4 +41,28 @@ public class GameController {
             return "Unido a sala. Esperando segundo jugador...";
         }
     }
+    
+    @PostMapping("/move/{codigo}")
+    public String mover(@PathVariable("codigo") String codigo,
+                        @RequestBody Position pos,
+                        HttpSession session) {
+
+        Sala sala = salas.get(codigo);
+        if (sala == null) return "Sala no existe.";
+
+        sala.actualizarPosicion(session.getId(), pos);
+
+        return "OK";
+    }
+    
+    @GetMapping("/state/{codigo}")
+    public Object state(@PathVariable("codigo") String codigo) {
+
+        Sala sala = salas.get(codigo);
+        if (sala == null) return "Sala no existe.";
+
+        return sala.getPosiciones();
+    }
+
+
 }

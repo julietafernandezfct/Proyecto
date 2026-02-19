@@ -1,13 +1,14 @@
 package com.example.droneserver;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Sala {
 
     private String codigo = UUID.randomUUID().toString().substring(0, 6);
     private List<String> jugadores = new ArrayList<>();
+
+    //guarda la última posición de cada jugador (sessionId -> Position)
+    private Map<String, Position> posiciones = new HashMap<>();
 
     public String getCodigo() {
         return codigo;
@@ -25,5 +26,15 @@ public class Sala {
 
     public List<String> getJugadores() {
         return jugadores;
+    }
+
+    //guardar posición del jugador
+    public void actualizarPosicion(String sessionId, Position pos) {
+        posiciones.put(sessionId, pos);
+    }
+
+    //devolver todas las posiciones
+    public Map<String, Position> getPosiciones() {
+        return posiciones;
     }
 }
