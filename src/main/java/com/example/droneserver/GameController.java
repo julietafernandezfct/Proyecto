@@ -14,57 +14,57 @@ public class GameController {
 
     // Crear partida
     @GetMapping("/create")
-    public JoinResponse crearSala(HttpSession session) {
+    public JoinResponse CrearSala(HttpSession session) {
         Sala sala = new Sala();
-        sala.agregarJugador(session.getId());
+        sala.AgregarJugador(session.getId());
 
-        salas.put(sala.getCodigo(), sala);
+        salas.put(sala.GetCodigo(), sala);
 
         return new JoinResponse(
-                sala.getCodigo(),
+                sala.GetCodigo(),
                 session.getId(),
-                sala.getJugadores().size()
+                sala.GetJugadores().size()
         );
     }
 
 
     // Unirse a partida existente
     @GetMapping("/join/{codigo}")
-    public JoinResponse unirseSala(@PathVariable("codigo") String codigo,
+    public JoinResponse UnirseSala(@PathVariable("codigo") String codigo,
                                    HttpSession session) {
         Sala sala = salas.get(codigo);
         if (sala == null) {
             return new JoinResponse(codigo, session.getId(), 0);
         }
-        sala.agregarJugador(session.getId());
+        sala.AgregarJugador(session.getId());
         return new JoinResponse(
                 codigo,
                 session.getId(),
-                sala.getJugadores().size()
+                sala.GetJugadores().size()
         );
     }
 
     
     @PostMapping("/move/{codigo}")
-    public String mover(@PathVariable("codigo") String codigo,
+    public String Mover(@PathVariable("codigo") String codigo,
                         @RequestBody Position pos,
                         HttpSession session) {
 
         Sala sala = salas.get(codigo);
         if (sala == null) return "Sala no existe.";
 
-        sala.actualizarPosicion(session.getId(), pos);
+        sala.ActualizarPosicion(session.getId(), pos);
 
         return "OK";
     }
     
     @GetMapping("/state/{codigo}")
-    public Object state(@PathVariable("codigo") String codigo) {
+    public Object State(@PathVariable("codigo") String codigo) {
 
         Sala sala = salas.get(codigo);
         if (sala == null) return "Sala no existe.";
 
-        return sala.getPosiciones();
+        return sala.GetPosiciones();
     }
     
 }

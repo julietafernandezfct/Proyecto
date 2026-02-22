@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 public class MoveController {
 
     @PostMapping("/move")
-    public void move(@RequestBody Position pos) {
+    public void Move(@RequestBody Position pos) {
         System.out.println("Movimiento recibido: " + pos);
     }
 }
