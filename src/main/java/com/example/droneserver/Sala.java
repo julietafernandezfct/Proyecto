@@ -10,31 +10,31 @@ public class Sala {
     //guarda la última posición de cada jugador (sessionId -> Position)
     private Map<String, Position> posiciones = new HashMap<>();
 
-    public String getCodigo() {
+    public String GetCodigo() {
         return codigo;
     }
 
-    public void agregarJugador(String sessionId) {
+    public void AgregarJugador(String sessionId) {
         if (jugadores.size() < 2 && !jugadores.contains(sessionId)) {
             jugadores.add(sessionId);
         }
     }
 
-    public boolean estaLlena() {
+    public boolean EstaLlena() {
         return jugadores.size() == 2;
     }
 
-    public List<String> getJugadores() {
+    public List<String> GetJugadores() {
         return jugadores;
     }
 
     //guardar posición del jugador
-    public void actualizarPosicion(String sessionId, Position pos) {
+    public void ActualizarPosicion(String sessionId, Position pos) {
         posiciones.put(sessionId, pos);
     }
 
     //devolver todas las posiciones
-    public Map<String, Position> getPosiciones() {
+    public Map<String, Position> GetPosiciones() {
         return posiciones;
     }
 }
