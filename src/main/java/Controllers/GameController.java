@@ -1,6 +1,10 @@
-package com.example.droneserver;
+package Controllers;
 
 import org.springframework.web.bind.annotation.*;
+
+import com.example.droneserver.JoinResponse;
+import com.example.droneserver.Position;
+import com.example.droneserver.Sala;
 
 import jakarta.servlet.http.HttpSession;
 import java.util.HashMap;

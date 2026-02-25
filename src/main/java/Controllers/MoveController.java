@@ -1,6 +1,8 @@
-package com.example.droneserver;
+package Controllers;
 
 import org.springframework.web.bind.annotation.*;
+
+import com.example.droneserver.Position;
 
 
 @RestController
