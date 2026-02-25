@@ -2,6 +2,7 @@ package com.example.droneserver;
 
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 public class MoveController {
 

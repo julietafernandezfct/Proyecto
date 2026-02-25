@@ -5,24 +5,28 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/game")
+
 public class GameController {
 
     private Map<String, Sala> salas = new HashMap<>();
 
     // Crear partida
     @GetMapping("/create")
-    public JoinResponse CrearSala(HttpSession session) {
+    public JoinResponse CrearSala() {
+    	//se asigna un sessionId creado por nosotros
+    	String sessionId = UUID.randomUUID().toString();
         Sala sala = new Sala();
-        sala.AgregarJugador(session.getId());
+        sala.AgregarJugador(sessionId);
 
         salas.put(sala.GetCodigo(), sala);
 
         return new JoinResponse(
                 sala.GetCodigo(),
-                session.getId(),
+                sessionId,
                 sala.GetJugadores().size()
         );
     }
@@ -30,16 +34,16 @@ public class GameController {
 
     // Unirse a partida existente
     @GetMapping("/join/{codigo}")
-    public JoinResponse UnirseSala(@PathVariable("codigo") String codigo,
-                                   HttpSession session) {
+    public JoinResponse UnirseSala(@PathVariable String codigo) {
+    	String sessionId = UUID.randomUUID().toString();
         Sala sala = salas.get(codigo);
         if (sala == null) {
-            return new JoinResponse(codigo, session.getId(), 0);
+            return new JoinResponse(codigo, sessionId, 0);
         }
-        sala.AgregarJugador(session.getId());
+        sala.AgregarJugador(sessionId);
         return new JoinResponse(
                 codigo,
-                session.getId(),
+                sessionId,
                 sala.GetJugadores().size()
         );
     }
@@ -47,13 +51,12 @@ public class GameController {
     
     @PostMapping("/move/{codigo}")
     public String Mover(@PathVariable("codigo") String codigo,
-                        @RequestBody Position pos,
-                        HttpSession session) {
+                        @RequestBody Position pos) {
 
         Sala sala = salas.get(codigo);
         if (sala == null) return "Sala no existe.";
 
-        sala.ActualizarPosicion(session.getId(), pos);
+        sala.ActualizarPosicion(pos.sessionId, pos);
 
         return "OK";
     }
