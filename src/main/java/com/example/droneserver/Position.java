@@ -17,4 +17,14 @@ public class Position {
     }
     
     public Position() {}
+    
+    public Position(float posx, float posy, float posz) {
+    	x = posx;
+    	y = posy;
+    	z = posz;
+    	qx = 0;
+        qy = 0;
+        qz = 0;
+        qw = 1; //hace que inicie sin rotacion paralelo al suelo
+    }
 }
