@@ -1,77 +1,109 @@
 package Controllers;
 
 import org.springframework.web.bind.annotation.*;
+import com.example.droneserver.*;
 
-import com.example.droneserver.JoinResponse;
-import com.example.droneserver.Position;
-import com.example.droneserver.Sala;
-
-import jakarta.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/game")
-
 public class GameController {
 
-    private Map<String, Sala> salas = new HashMap<>();
+    private final Map<String, Sala> salas = new HashMap<>();
 
-    // Crear partida
     @GetMapping("/create")
-    public JoinResponse CrearSala() {
-    	//se asigna un sessionId creado por nosotros
-    	String sessionId = UUID.randomUUID().toString();
-        Sala sala = new Sala();
-        sala.AgregarJugador(sessionId);
+    public JoinResponse crearSala() {
 
-        salas.put(sala.GetCodigo(), sala);
+        String sessionId = UUID.randomUUID().toString();
+
+        Sala sala = new Sala();
+        sala.agregarJugador(sessionId, true);
+
+        salas.put(sala.obtenerCodigo(), sala);
 
         return new JoinResponse(
-                sala.GetCodigo(),
+                sala.obtenerCodigo(),
                 sessionId,
-                sala.GetJugadores().size()
+                sala.obtenerJugadores().size()
         );
     }
 
-
-    // Unirse a partida existente
     @GetMapping("/join/{codigo}")
-    public JoinResponse UnirseSala(@PathVariable String codigo) {
-    	String sessionId = UUID.randomUUID().toString();
+    public JoinResponse unirseSala(@PathVariable String codigo) {
+
+        String sessionId = UUID.randomUUID().toString();
+
         Sala sala = salas.get(codigo);
         if (sala == null) {
             return new JoinResponse(codigo, sessionId, 0);
         }
-        sala.AgregarJugador(sessionId);
+
+        sala.agregarJugador(sessionId, false);
+
         return new JoinResponse(
                 codigo,
                 sessionId,
-                sala.GetJugadores().size()
+                sala.obtenerJugadores().size()
         );
     }
 
-    
-    @PostMapping("/move/{codigo}")
-    public String Mover(@PathVariable("codigo") String codigo,
-                        @RequestBody Position pos) {
+    @PostMapping("/placePorta/{codigo}")
+    public String colocarPorta(@PathVariable String codigo,
+                               @RequestBody Position posicion) {
 
         Sala sala = salas.get(codigo);
-        if (sala == null) return "Sala no existe.";
+        if (sala == null) return "Sala no existe";
 
-        sala.ActualizarPosicion(pos.sessionId, pos);
+        return sala.colocarPorta(posicion) ? "OK" : "NO";
+    }
+
+    @PostMapping("/moveBatch/{codigo}")
+    public String moverBatch(@PathVariable String codigo,
+                             @RequestBody SolicitudMovimientoBatch solicitud) {
+
+        Sala sala = salas.get(codigo);
+        if (sala == null) return "Sala no existe";
+
+        if (solicitud == null || solicitud.items == null) return "Sin datos";
+
+        for (Position p : solicitud.items) {
+            sala.actualizarPosicion(p);
+        }
 
         return "OK";
     }
-    
+
     @GetMapping("/state/{codigo}")
-    public Object State(@PathVariable("codigo") String codigo) {
+    public Object obtenerEstado(@PathVariable String codigo) {
 
         Sala sala = salas.get(codigo);
-        if (sala == null) return "Sala no existe.";
+        if (sala == null) return "Sala no existe";
 
-        return sala.GetPosiciones();
+        List<Position> listaPosiciones = new ArrayList<>();
+        for (var mapa : sala.obtenerPosiciones().values()) {
+            listaPosiciones.addAll(mapa.values());
+        }
+
+        List<DatoVida> listaVidas = new ArrayList<>();
+        for (var entry : sala.obtenerVidas().entrySet()) {
+            for (var e : entry.getValue().entrySet()) {
+                listaVidas.add(new DatoVida(entry.getKey(), e.getKey(), e.getValue()));
+            }
+        }
+
+        List<DatoMunicion> listaMunicion = new ArrayList<>();
+        for (var entry : sala.obtenerMuniciones().entrySet()) {
+            for (var e : entry.getValue().entrySet()) {
+                listaMunicion.add(new DatoMunicion(entry.getKey(), e.getKey(), e.getValue()));
+            }
+        }
+
+        RespuestaEstado respuesta = new RespuestaEstado();
+        respuesta.posiciones = listaPosiciones.toArray(new Position[0]);
+        respuesta.vidas = listaVidas.toArray(new DatoVida[0]);
+        respuesta.municion = listaMunicion.toArray(new DatoMunicion[0]);
+        respuesta.proyectiles = new DatoProyectil[0];
+
+        return respuesta;
     }
-    
 }
