@@ -6,6 +6,8 @@ public class Position {
 
     //identifica el objeto ("PORTA", "DRON_1", etc.)
     public String objId;
+    
+    public String tipo;
 
     public float x;
     public float y;
