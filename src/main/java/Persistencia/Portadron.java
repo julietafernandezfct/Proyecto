@@ -1,5 +1,9 @@
 package Persistencia;
 
+import java.util.List;
+
+import Persistencia.daos.DAODron;
+
 public class Portadron {
 	
 	private String idPartida;
@@ -8,6 +12,7 @@ public class Portadron {
 	private float posz;
 	private int vida;
 	private String tipo;
+	private List<Dron> drones; //queda mejor para enviar el json
 
 	
 	public Portadron(String partida, float x, float y, float z, int vid, String tip) {
@@ -41,5 +46,13 @@ public class Portadron {
 	
 	public String getTipo() {
 		return tipo;
+	}
+	
+	public List<Dron> getDrones(){
+		return drones;
+	}
+	
+	public void setDrones(List<Dron> drons ) {
+		drones = drons;
 	}
 }

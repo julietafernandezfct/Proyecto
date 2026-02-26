@@ -7,9 +7,12 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import Persistencia.Portadron;
 import Persistencia.consultas.Consultas;
 
+@Repository
 public class DAOPortadron { //hash?
 	
 	//por ahora lo dejo sin una lista de drones porque no tengo claro como se va a enviar al unity
@@ -60,13 +63,14 @@ public class DAOPortadron { //hash?
 		return esta;
 	}
 	
-	public List<Portadron> ListarPortadrones(String id) {
+	public Portadron find(String id, String tipo) {
 		Consultas cons = new Consultas();
-		List<Portadron> lista = new LinkedList<Portadron>();
+		Portadron p = null;
 		
 		try {
 			PreparedStatement find = con.prepareStatement(cons.member());
 			find.setString(1, id);
+			find.setString(2, tipo);
 			ResultSet rs = find.executeQuery();
 			
 			while(rs.next()) {
@@ -75,10 +79,8 @@ public class DAOPortadron { //hash?
 				float y = rs.getFloat("posY");
 				float z = rs.getFloat("posZ");
 				int vida = rs.getInt("vida");
-				String tipo = rs.getString("tipo");
 				
-				Portadron p = new Portadron(idPar, x, y, z, vida, tipo);
-				lista.add(p);
+				p = new Portadron(idPar, x, y, z, vida, tipo);
 			}
 			
 			rs.close();
@@ -88,8 +90,7 @@ public class DAOPortadron { //hash?
 			e.printStackTrace();
 		}
 		
-		return lista;
+		return p;
 	}
-	
 	
 }

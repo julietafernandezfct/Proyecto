@@ -4,6 +4,7 @@ public class Dron {
 
 	private int codigo;
 	private String codPort;
+	private String tipo;
 	private int municion;
 	private float x;
 	private float y;
@@ -11,10 +12,11 @@ public class Dron {
 	private boolean vivo;
 	
 	
-	public Dron(int cod, String codP, int mun, float posx, float posy, float posz, boolean viv) {
+	public Dron(int cod, String codP, String tip, int mun, float posx, float posy, float posz, boolean viv) {
 		codigo = cod;
 		codPort = codP;
 		municion = mun;
+		tipo = tip;
 		x = posx;
 		y = posy;
 		z = posz;
@@ -31,6 +33,10 @@ public class Dron {
 	
 	public int getMunicion() {
 		return municion;
+	}
+	
+	public String getTipo() {
+		return tipo;
 	}
 	
 	public float getPosX() {

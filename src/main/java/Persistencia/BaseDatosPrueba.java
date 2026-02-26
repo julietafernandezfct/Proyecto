@@ -50,18 +50,21 @@ public class BaseDatosPrueba {
 		port.close();
 
 		
-		String dron = "CREATE TABLE Proyecto.Dron (codigo int(10) PRIMARY KEY, codPort varchar(45), municion int(10), posX float, posY float, posZ float, vivo bit, FOREIGN KEY (codPort) references Portadron(codigo))";
+		String dron = "CREATE TABLE Proyecto.Dron (codigo int(10) PRIMARY KEY, codPort varchar(45), tipoPort varchar(45), municion int(10), posX float, posY float, posZ float, vivo bit, FOREIGN KEY (codPort, tipoPort) references Portadron(codigo, tipo))";
 		PreparedStatement dr = con.prepareStatement(dron);
 		dr.executeUpdate(dron);
 		dr.close();*/
 		
+		
+		
 		//TESTEOOO
+		/*
 		DAOPortadron portadrones = new DAOPortadron(con);
 		DAODron drones = new DAODron(con);
 		System.out.println("cree los daos");
-		Dron d1 = new Dron(1, "dskd", 1, 1, 2, 3, true);
-		Dron d2 = new Dron(2, "dskd", 1, 7, 2, 3, false);
-		Dron d3 = new Dron(3, "dskd", 1, 7, 2, 3, false);
+		Dron d1 = new Dron(1, "dskd", "naval", 1, 1, 2, 3, true);
+		Dron d2 = new Dron(2, "dskd", "naval", 1, 7, 2, 3, false);
+		Dron d3 = new Dron(3, "dskd", "aereo", 1, 7, 2, 3, false);
 		
 		System.out.println("cree los objetos");
 
@@ -69,16 +72,16 @@ public class BaseDatosPrueba {
 		
 
 		
-		//portadrones.insert(p1);
-		//System.out.println("ingrese el portadron");
+		portadrones.insert(p1);
+		System.out.println("ingrese el portadron");
 		
-		//drones.insback(d1);
-		//drones.insback(d2);
-		//drones.insback(d3);
+		drones.insback(d1);
+		drones.insback(d2);
+		drones.insback(d3);
 		
 		System.out.println("info Dron");
 		
-		List<Dron> listaDrones = drones.ListarDrones("dskd");
+		List<Dron> listaDrones = drones.ListarDrones("dskd", "naval");
 		
 		for (Dron d : listaDrones) {
 			System.out.println("\n");
@@ -87,14 +90,13 @@ public class BaseDatosPrueba {
 		    System.out.println("PosX: " + d.getPosX());
 		}
 		
-		List<Portadron> listaPorta = portadrones.ListarPortadrones("dskd");
+		Portadron por = portadrones.find("dskd", "naval");
+
+		System.out.println("\n");
+	    System.out.println("IdPartida: " + por.getIdPartida());
+	    System.out.println("Vida: " + por.getVida());
+	    System.out.println("Tipo: " + por.getTipo());*/
 		
-		for(Portadron por : listaPorta) {
-			System.out.println("\n");
-		    System.out.println("IdPartida: " + por.getIdPartida());
-		    System.out.println("Vida: " + por.getVida());
-		    System.out.println("Tipo: " + por.getTipo());
-		}
 		
 		con.close();
 	}
