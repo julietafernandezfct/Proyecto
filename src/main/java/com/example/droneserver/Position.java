@@ -1,13 +1,12 @@
 package com.example.droneserver;
 
 public class Position {
-    public String sessionId;   // quién manda / dueño
-    public int slot;           // 1 host, 2 join
 
-    // identifica el objeto ("PORTA", "DRON_1", etc.)
-    public String objId;
+    public String sessionId;
+    public int slot;
 
-    // tipo del jugador/objeto ("AEREO", "NAVAL", "PORTA")
+    public int objId;
+
     public String tipo;
 
     public float x;
@@ -21,16 +20,16 @@ public class Position {
 
     public Position() {}
 
-    public Position(String sessionId, int slot, String objId, String tipo, float x, float y, float z, float qx, float qy, float qz, float qw) {
+    public Position(String sessionId, int slot, int objId, String tipo, float x, float y, float z, float qx, float qy, float qz, float qw) {
+
         this.sessionId = sessionId;
         this.slot = slot;
         this.objId = objId;
         this.tipo = tipo;
+
         this.x = x; this.y = y; this.z = z;
         this.qx = qx; this.qy = qy; this.qz = qz; this.qw = qw;
     }
-    
-    //hacer un contructor q acepte solo x,y,z
 
     @Override
     public String toString() {

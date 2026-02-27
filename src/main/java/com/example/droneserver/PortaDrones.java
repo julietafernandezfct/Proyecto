@@ -2,18 +2,20 @@ package com.example.droneserver;
 
 import java.util.List;
 
-import Persistencia.Dron;
-
-//SACAR Y PASAR LO QUE FALTA A LA CLASE EN EL PACKAGE PERSISTENCIA
 public class PortaDrones {
     private int vida;
-    private EstadoPosicion posicion; // null hasta que se coloque
+    private Position posicion; 
     private boolean bloqueado;
-    /*private String tipo;
+    private String tipo;
 	private List<Dron> drones;
-	private String idPartida;*/
+	private String idPartida;
     
-    //agregar mi constructor
+	public PortaDrones(String partida, Position pos, int vid, String tip) {
+		idPartida = partida;
+		posicion = pos;
+		vida = vid;
+		tipo = tip;
+	}
 
     public PortaDrones(int vidaInicial) {
         this.vida = vidaInicial;
@@ -24,16 +26,28 @@ public class PortaDrones {
     	return vida; 
     }
     
-    public EstadoPosicion getPosicion() { 
+    public Position getPosicion() { 
     	return posicion; 
     }
     
     public boolean estaBloqueado() { 
     	return bloqueado; 
     }
+    
+    public String getIdPartida() {
+		return idPartida;
+	}
+    
+    public String getTipo() {
+		return tipo;
+	}
+	
+	public List<Dron> getDrones(){
+		return drones;
+	}
 
     // se llama una sola vez (fase colocación)
-    public boolean colocar(EstadoPosicion p) {
+    public boolean colocar(Position p) {
         if (bloqueado) 
         	return false;
         if (p == null) 
@@ -42,6 +56,10 @@ public class PortaDrones {
         this.bloqueado = true;
         return true;
     }
+    
+    public void setDrones(List<Dron> drons ) {
+		drones = drons;
+	}
 
     public void aplicarDanio(int d) {
         if (d <= 0) return;
@@ -52,5 +70,4 @@ public class PortaDrones {
     	return vida <= 0; 
     }
     
-    //setdrones
 }

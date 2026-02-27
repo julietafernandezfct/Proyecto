@@ -2,7 +2,7 @@ package com.example.droneserver.solicitudes;
 
 public class SolicitudDisparo {
     public String sessionId;
-    public String objIdDisparador;
+    public int objIdDisparador;
 
     public float x, y, z;     // posición inicial
     public float dx, dy, dz;  // dirección 

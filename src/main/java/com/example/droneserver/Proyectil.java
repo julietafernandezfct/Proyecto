@@ -3,7 +3,7 @@ package com.example.droneserver;
 public class Proyectil {
     public String id;
     public String atacanteSessionId;
-    public String objIdDisparador; 
+    public int objIdDisparador; 
 
     public float x, y, z;
     public float dx, dy, dz; 
