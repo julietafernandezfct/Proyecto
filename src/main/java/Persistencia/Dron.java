@@ -2,22 +2,22 @@ package Persistencia;
 
 public class Dron {
 
-	private int codigo;
+	private int codigo; 
 	private String codPort;
 	private String tipo;
 	private int municion;
-	private float x;
+	private float x; 
 	private float y;
 	private float z;
-	private boolean vivo;
+	private int vivo;
 	
 	
-	public Dron(int cod, String codP, String tip, int mun, float posx, float posy, float posz, boolean viv) {
+	public Dron(int cod, String codP, String tip, int mun, float posx, float posy, float posz, int viv) {
 		codigo = cod;
 		codPort = codP;
 		municion = mun;
 		tipo = tip;
-		x = posx;
+		x = posx;//cambiar a posicion
 		y = posy;
 		z = posz;
 		vivo = viv;
@@ -51,7 +51,7 @@ public class Dron {
 		return z;
 	}
 	
-	public boolean getVivo() {
+	public int getVivo() {
 		return vivo;
 	}
 }

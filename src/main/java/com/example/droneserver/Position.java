@@ -29,6 +29,8 @@ public class Position {
         this.x = x; this.y = y; this.z = z;
         this.qx = qx; this.qy = qy; this.qz = qz; this.qw = qw;
     }
+    
+    //hacer un contructor q acepte solo x,y,z
 
     @Override
     public String toString() {

@@ -2,16 +2,21 @@ package com.example.droneserver;
 
 //SACAR Y PASAR LO QUE FALTA A LA CLASE EN EL PACKAGE PERSISTENCIA
 public class Dron {
-    private final String objId;   // "DRON_1", "DRON_2", etc
+    private final String objId;   //pasa a int
+    /*private String codPort;
+	private String tipo;*/
     private int vida;
     private int municion;
     private Position posicion; // null hasta que llegue update
 
+    
     public Dron(String objId, int vidaInicial, int municionInicial) {
         this.objId = objId;
         this.vida = vidaInicial;
         this.municion = municionInicial;
     }
+    
+    //copiar y pegar el mio
 
     public String getObjId() { 
     	return objId; 
