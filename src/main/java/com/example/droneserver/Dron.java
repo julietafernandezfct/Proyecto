@@ -5,7 +5,7 @@ public class Dron {
     private final String objId;   // "DRON_1", "DRON_2", etc
     private int vida;
     private int municion;
-    private EstadoPosicion posicion; // null hasta que llegue update
+    private Position posicion; // null hasta que llegue update
 
     public Dron(String objId, int vidaInicial, int municionInicial) {
         this.objId = objId;
@@ -25,11 +25,11 @@ public class Dron {
     	return municion; 
     }
     
-    public EstadoPosicion getPosicion() { 
+    public Position getPosicion() { 
     	return posicion; 
     }
 
-    public void setPosicion(EstadoPosicion p) { 
+    public void setPosicion(Position p) { 
     	this.posicion = p; 
     }
 
