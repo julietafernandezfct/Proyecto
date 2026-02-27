@@ -1,107 +1,93 @@
 package com.example.droneserver.jugador;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.example.droneserver.Dron;
-import com.example.droneserver.EstadoPosicion;
-import com.example.droneserver.PortaDrones;
+import com.example.droneserver.Position;
 
 public abstract class Jugador {
 
-    //  IDs oficiales (compatibles con Unity)
-    public static final String PORTA_AEREO = "PORTADRONAEREO";
-    public static final String PORTA_NAVAL = "PORTADRONNAVAL";
+    protected String sessionId;
+    protected int slot;
+    protected String tipo; 
 
-    protected final String sessionId;
-    protected final int slot; // 1 host, 2 join
+    protected Position[] dronesPos;
+    protected int[] vidas;
 
-    protected final PortaDrones porta;
-    protected final Dron[] drones;
+  
+    protected Position portaPos;
+    protected int portaVida = 10; 
 
-    protected final Map<String, Dron> dronesPorId = new HashMap<>();
+    public String getSessionId() { return sessionId; }
+    public int getSlot() { return slot; }
+    public String getTipo() { return tipo; }
 
-    protected Jugador(String sessionId, int slot, PortaDrones porta, Dron[] drones) {
-        this.sessionId = sessionId;
-        this.slot = slot;
-        this.porta = porta;
-        this.drones = drones;
-
-        if (drones != null) {
-            for (Dron d : drones) dronesPorId.put(d.getObjId(), d);
-        }
-    }
-
-    public String getSessionId() { 
-    	return sessionId; 
+  
+    protected String dronId(int idx1based) { 
+    	return "DRON_" + idx1based; 
     }
     
-    public int getSlot() { 
-    	return slot; 
-    }
-    
-    public PortaDrones getPorta() { 
-    	return porta; 
-    }
-    
-    public Dron[] getDrones() { 
-    	return drones; 
+    public String getObjIdPorta() { 
+    	return "PORTA"; 
     }
 
-    public String getObjIdPorta() {
-        return (this instanceof JugadorAereo) ? PORTA_AEREO : PORTA_NAVAL;
+    public Position getPortaPosicion() { 
+    	return portaPos; 
+    }
+    public int getPortaVida() { 
+    	return portaVida; 
     }
 
-    private boolean esPorta(String objId) {
-        return PORTA_AEREO.equals(objId) || PORTA_NAVAL.equals(objId);
+    public Position[] getDronesPos() { 
+    	return dronesPos; 
+    }
+    public int[] getVidas() { 
+    	return vidas; 
     }
 
-    // Fase inicial: colocar porta una sola vez
-    public boolean colocarPorta(EstadoPosicion p) {
-        return porta.colocar(p);
-    }
 
-    // Actualizar posiciones 
-    public void actualizarPosicion(String objId, EstadoPosicion p) {
-        if (p == null || objId == null) return;
-
-        if (esPorta(objId)) {
-            return; // porta solo se coloca con /placePorta
-        }
-
-        Dron d = dronesPorId.get(objId);
-        if (d != null) 
-        	d.setPosicion(p);
-    }
-
-    // Aplicar daño a porta o dron
-    public boolean aplicarDanio(String objId, int danio) {
-        if (objId == null || danio <= 0) return false;
-
-        if (esPorta(objId)) {
-            porta.aplicarDanio(danio);
-            return true;
-        }
-
-        Dron d = dronesPorId.get(objId);
-        if (d == null) return false;
-
-        d.aplicarDanio(danio);
+    public boolean colocarPorta(Position pos) {
+        if (portaPos != null) 
+        	return false; 
+        portaPos = pos;
+        portaPos.tipo = "PORTA";
+        portaPos.objId = getObjIdPorta();
+        portaPos.sessionId = sessionId;
+        portaPos.slot = slot;
         return true;
     }
 
-  
-    public int getVidaDe(String objId) {
-        if (objId == null) 
-        	return -1;
+    public void actualizarPosicion(String objId, Position pos) {
+        if (objId == null || pos == null) 
+        	return;
 
-        if (esPorta(objId)) 
-        	return porta.getVida();
+        if (getObjIdPorta().equals(objId)) {
+            if (portaPos == null) 
+            	return; 
+            portaPos.x = pos.x; portaPos.y = pos.y; portaPos.z = pos.z;
+            portaPos.qx = pos.qx; portaPos.qy = pos.qy; portaPos.qz = pos.qz; portaPos.qw = pos.qw;
+            return;
+        }
+        for (int i = 0; i < dronesPos.length; i++) {
+            if (dronesPos[i] != null && objId.equals(dronesPos[i].objId)) {
+                dronesPos[i].x = pos.x; dronesPos[i].y = pos.y; dronesPos[i].z = pos.z;
+                dronesPos[i].qx = pos.qx; dronesPos[i].qy = pos.qy; dronesPos[i].qz = pos.qz; dronesPos[i].qw = pos.qw;
+                return;
+            }
+        }
+    }
 
-        Dron d = dronesPorId.get(objId);
-        if (d == null) 
-        	return -1;
-        
-        return d.getVida();
+    public void aplicarDanio(String objId, int danio) {
+        if (danio <= 0 || objId == null) 
+        	return;
+
+        if (getObjIdPorta().equals(objId)) {
+            portaVida = Math.max(0, portaVida - danio);
+            return;
+        }
+
+        for (int i = 0; i < dronesPos.length; i++) {
+            if (dronesPos[i] != null && objId.equals(dronesPos[i].objId)) {
+                vidas[i] = Math.max(0, vidas[i] - danio);
+                return;
+            }
+        }
     }
 }

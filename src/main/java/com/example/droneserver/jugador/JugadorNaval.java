@@ -1,19 +1,22 @@
 package com.example.droneserver.jugador;
 
-import com.example.droneserver.Dron;
-import com.example.droneserver.PortaDrones;
+import com.example.droneserver.Position;
 
 public class JugadorNaval extends Jugador {
 
     public JugadorNaval(String sessionId, int slot) {
-        super(sessionId, slot, new PortaDrones(3), crearDrones());
-    }
+        this.sessionId = sessionId;
+        this.slot = slot;
+        this.tipo = "NAVAL";
 
-    private static Dron[] crearDrones() {
-        Dron[] arr = new Dron[6];
-        for (int i = 0; i < 6; i++) {
-            arr[i] = new Dron("DRON_NAVAL" + (i + 1), 2, 2); // vida 2, 2 misiles
+        int n = 6;
+        drones = new Position[n];
+        vidas = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            String objId = dronId(i + 1);        
+            drones[i] = new Position(sessionId, slot, objId, tipo, 0, 0, 0, 0, 0, 0, 1);
+            vidas[i] = 2;
         }
-        return arr;
     }
 }

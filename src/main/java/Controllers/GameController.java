@@ -18,7 +18,6 @@ public class GameController {
 
     private final Map<String, Sala> salas = new HashMap<>();
 
-    // Crear partida (HOST = AÉREO)
     @GetMapping("/create")
     public JoinResponse CrearSala() {
         String sessionId = UUID.randomUUID().toString();
@@ -35,7 +34,6 @@ public class GameController {
         );
     }
 
-    // Unirse a partida (JOIN = NAVAL)
     @GetMapping("/join/{codigo}")
     public JoinResponse UnirseSala(@PathVariable String codigo) {
         String sessionId = UUID.randomUUID().toString();
@@ -54,10 +52,8 @@ public class GameController {
         );
     }
 
-    // Colocar porta (una sola vez)
     @PostMapping("/placePorta/{codigo}")
-    public String PlacePorta(@PathVariable String codigo,
-                             @RequestBody Position pos) {
+    public String PlacePorta(@PathVariable String codigo, @RequestBody Position pos) {
 
         Sala sala = salas.get(codigo);
         if (sala == null) 
@@ -70,19 +66,21 @@ public class GameController {
         if (jugador == null) 
         	return "NO";
 
-        //  Validar que el objId que manda el cliente coincida con su tipo real
+        // validar objId porta
         String portaEsperado = jugador.getObjIdPorta();
         if (!portaEsperado.equals(pos.objId)) 
         	return "NO";
 
-        EstadoPosicion ep = new EstadoPosicion(pos.x, pos.y, pos.z, pos.qx, pos.qy, pos.qz, pos.qw);
-        return jugador.colocarPorta(ep) ? "OK" : "NO";
+        pos.sessionId = jugador.getSessionId();
+        pos.slot = jugador.getSlot();
+        pos.tipo = "PORTA";
+        pos.objId = portaEsperado;
+
+        return jugador.colocarPorta(pos) ? "OK" : "NO";
     }
 
-    // Enviar posiciones de drones 
     @PostMapping("/moveBatch/{codigo}")
-    public String MoveBatch(@PathVariable String codigo,
-                            @RequestBody SolicitudMovimientoBatch req) {
+    public String MoveBatch(@PathVariable String codigo, @RequestBody SolicitudMovimientoBatch req) {
 
         Sala sala = salas.get(codigo);
         if (sala == null) 
@@ -94,28 +92,32 @@ public class GameController {
         for (Position p : req.items) {
             if (p == null || p.sessionId == null || p.objId == null) 
             	continue;
-            
+
             Jugador jugador = sala.GetJugadorPorSession(p.sessionId);
             if (jugador == null) 
             	continue;
 
-            EstadoPosicion ep = new EstadoPosicion(p.x, p.y, p.z, p.qx, p.qy, p.qz, p.qw);
+            p.sessionId = jugador.getSessionId();
+            p.slot = jugador.getSlot();
 
-            // si llega un objId de porta por error, Jugador lo ignora igual
-            jugador.actualizarPosicion(p.objId, ep);
+
+            if (jugador.getObjIdPorta().equals(p.objId)) 
+            	p.tipo = "PORTA";
+            else 
+            	p.tipo = jugador.getTipo();
+
+            jugador.actualizarPosicion(p.objId, p);
         }
 
         return "OK";
     }
 
- // Estado del juego
     @GetMapping("/state/{codigo}")
     public Object State(@PathVariable String codigo) {
 
         Sala sala = salas.get(codigo);
         if (sala == null) return "Sala no existe.";
 
-        // avanzar proyectiles + aplicar daño
         TickProyectiles(sala, 0.1f);
 
         List<Position> posiciones = new ArrayList<>();
@@ -125,19 +127,13 @@ public class GameController {
         AgregarEstadoJugador(sala.GetHost(), posiciones, vidas, municion);
         AgregarEstadoJugador(sala.GetJoin(), posiciones, vidas, municion);
 
-        // devolver proyectiles actuales para que el cliente los vea
         List<DatoProyectil> proyectiles = new ArrayList<>();
         if (sala.GetProyectiles() != null) {
             for (Proyectil p : sala.GetProyectiles()) {
-                // si ya lo marcás inactivo, lo podés filtrar
                 if (!p.activo) continue;
-
                 DatoProyectil dp = new DatoProyectil();
                 dp.id = p.id;
-                dp.x = p.x;
-                dp.y = p.y;
-                dp.z = p.z;
-
+                dp.x = p.x; dp.y = p.y; dp.z = p.z;
                 proyectiles.add(dp);
             }
         }
@@ -151,55 +147,54 @@ public class GameController {
         return resp;
     }
 
-    private void AgregarEstadoJugador(Jugador jugador, List<Position> posiciones, List<DatoVida> vidas, List<DatoMunicion> municion) {
-
-        if (jugador == null) 
-        	return;
+    private void AgregarEstadoJugador(Jugador jugador,List<Position> posiciones,List<DatoVida> vidas,List<DatoMunicion> municion) {
+        if (jugador == null) return;
 
         String sid = jugador.getSessionId();
         int slot = jugador.getSlot();
 
         String portaId = jugador.getObjIdPorta();
+        vidas.add(new DatoVida(sid, portaId, jugador.getPortaVida()));
 
-        // Porta: vida siempre
-        vidas.add(new DatoVida(sid, portaId, jugador.getPorta().getVida()));
+        Position portaPos = jugador.getPortaPosicion();
+        if (portaPos != null) {
+            portaPos.sessionId = sid;
+            portaPos.slot = slot;
+            portaPos.objId = portaId;
+            portaPos.tipo = "PORTA";
+            posiciones.add(portaPos);
+        }
 
-        // Porta: posición si ya fue colocado
-        EstadoPosicion portaPos = jugador.getPorta().getPosicion();
-        if (portaPos != null) posiciones.add(ToPosition(sid, slot, portaId, portaPos));
+        Position[] drones = jugador.getDronesPos();
+        int[] v = jugador.getVidas();
 
-        // Drones
-        for (Dron d : jugador.getDrones()) {
-            vidas.add(new DatoVida(sid, d.getObjId(), d.getVida()));
-            municion.add(new DatoMunicion(sid, d.getObjId(), d.getMunicion()));
+        for (int i = 0; i < drones.length; i++) {
+            Position p = drones[i];
+            if (p == null) 
+            	continue;
+            vidas.add(new DatoVida(sid, p.objId, v[i]));
+            municion.add(new DatoMunicion(sid, p.objId, 0));
 
-            EstadoPosicion dp = d.getPosicion();
-            if (dp != null) posiciones.add(ToPosition(sid, slot, d.getObjId(), dp));
+            p.sessionId = sid;
+            p.slot = slot;
+            p.tipo = jugador.getTipo();
+
+            posiciones.add(p);
         }
     }
 
-    private Position ToPosition(String sessionId, int slot, String objId, EstadoPosicion ep) {
-        Position p = new Position();
-        p.sessionId = sessionId;
-        p.slot = slot;
-        p.objId = objId;
-
-        p.x = ep.x; p.y = ep.y; p.z = ep.z;
-        p.qx = ep.qx; p.qy = ep.qy; p.qz = ep.qz; p.qw = ep.qw;
-        return p;
-    }
-    
     @PostMapping("/disparar/{codigo}")
-    public String Disparar(@PathVariable String codigo,
-                           @RequestBody SolicitudDisparo req) {
+    public String Disparar(@PathVariable String codigo, @RequestBody SolicitudDisparo req) {
 
         Sala sala = salas.get(codigo);
-        if (sala == null) return "Sala no existe.";
-        if (req == null || req.sessionId == null) return "NO";
+        if (sala == null) 
+        	return "Sala no existe.";
+        if (req == null || req.sessionId == null) 
+        	return "NO";
 
-        // validar que el jugador exista
         Jugador atacante = sala.GetJugadorPorSession(req.sessionId);
-        if (atacante == null) return "NO";
+        if (atacante == null) 
+        	return "NO";
 
         Proyectil p = new Proyectil();
         p.id = java.util.UUID.randomUUID().toString().substring(0, 8);
@@ -216,7 +211,7 @@ public class GameController {
         sala.GetProyectiles().add(p);
         return "OK";
     }
-    
+
     private void TickProyectiles(Sala sala, float dt) {
 
         if (sala == null) return;
@@ -225,19 +220,16 @@ public class GameController {
         if (lista == null || lista.isEmpty()) return;
 
         for (Proyectil p : lista) {
-
-            if (!p.activo) continue;
-
+            if (!p.activo) 
+            	continue;
             float paso = p.velocidad * dt;
 
-            //mover proyectil
             p.x += p.dx * paso;
             p.y += p.dy * paso;
             p.z += p.dz * paso;
 
             p.recorrido += paso;
 
-            //buscar jugador enemigo
             Jugador host = sala.GetHost();
             Jugador join = sala.GetJoin();
 
@@ -249,54 +241,48 @@ public class GameController {
             if (join != null && !join.getSessionId().equals(p.atacanteSessionId))
                 enemigo = join;
 
-            if (enemigo == null) continue;
+            if (enemigo == null) 
+            	continue;
 
-            // chequeo contra PORTA enemigo
-            EstadoPosicion portaPos = enemigo.getPorta().getPosicion();
-
-            if (portaPos != null && enemigo.getPorta().getVida() > 0) {
-
-                float dist = distancia(p.x, p.y, p.z,
-                                       portaPos.x, portaPos.y, portaPos.z);
-
-                if (dist <= 1.0f) { // radio de impacto
+            Position portaPos = enemigo.getPortaPosicion();
+            if (portaPos != null && enemigo.getPortaVida() > 0) {
+                float dist = distancia(p.x, p.y, p.z, portaPos.x, portaPos.y, portaPos.z);
+                if (dist <= 1.0f) {
                     enemigo.aplicarDanio(enemigo.getObjIdPorta(), p.danio);
                     p.activo = false;
                     continue;
                 }
             }
 
-            // chequeo contra DRONES enemigos
-            for (Dron d : enemigo.getDrones()) {
+            Position[] drones = enemigo.getDronesPos();
+            int[] vidas = enemigo.getVidas();
 
-                if (d.getVida() <= 0) continue;
-
-                EstadoPosicion dp = d.getPosicion();
-                if (dp == null) continue;
-
-                float dist = distancia (p.x, p.y, p.z,
-                                       dp.x, dp.y, dp.z);
-
-                if (dist <= 0.7f) { // radio impacto dron
-                    enemigo.aplicarDanio(d.getObjId(), p.danio);
+            for (int i = 0; i < drones.length; i++) {
+                if (vidas[i] <= 0) 
+                	continue;
+                Position dp = drones[i];
+                if (dp == null) 
+                	continue;
+                float dist = distancia(p.x, p.y, p.z, dp.x, dp.y, dp.z);
+                if (dist <= 0.7f) {
+                    enemigo.aplicarDanio(dp.objId, p.danio);
                     p.activo = false;
                     break;
                 }
             }
-            //si no impactó y llegó al rango máximo
+
             if (p.activo && p.recorrido >= p.rangoMax) {
                 p.activo = false;
             }
         }
-        // limpiar proyectiles explotados
+
         lista.removeIf(pr -> !pr.activo);
     }
-    
+
     private float distancia(float x1, float y1, float z1, float x2, float y2, float z2) {
-		float dx = x1 - x2;
-		float dy = y1 - y2;
-		float dz = z1 - z2;
-		
-		return (float)Math.sqrt(dx*dx + dy*dy + dz*dz);
+        float dx = x1 - x2;
+        float dy = y1 - y2;
+        float dz = z1 - z2;
+        return (float)Math.sqrt(dx*dx + dy*dy + dz*dz);
     }
 }
