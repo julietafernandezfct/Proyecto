@@ -1,5 +1,6 @@
 package com.example.droneserver;
 
+//SACAR Y PASAR LO QUE FALTA A LA CLASE EN EL PACKAGE PERSISTENCIA
 public class PortaDrones {
     private int vida;
     private EstadoPosicion posicion; // null hasta que se coloque

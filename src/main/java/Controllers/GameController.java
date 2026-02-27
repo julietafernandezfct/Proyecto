@@ -3,6 +3,12 @@ package Controllers;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.droneserver.*;
+import com.example.droneserver.datos.DatoMunicion;
+import com.example.droneserver.datos.DatoProyectil;
+import com.example.droneserver.datos.DatoVida;
+import com.example.droneserver.jugador.Jugador;
+import com.example.droneserver.solicitudes.SolicitudDisparo;
+import com.example.droneserver.solicitudes.SolicitudMovimientoBatch;
 
 import java.util.*;
 

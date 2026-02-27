@@ -1,7 +1,11 @@
-package com.example.droneserver;
+package com.example.droneserver.jugador;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.example.droneserver.Dron;
+import com.example.droneserver.EstadoPosicion;
+import com.example.droneserver.PortaDrones;
 
 public abstract class Jugador {
 

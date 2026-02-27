@@ -1,4 +1,7 @@
-package com.example.droneserver;
+package com.example.droneserver.jugador;
+
+import com.example.droneserver.Dron;
+import com.example.droneserver.PortaDrones;
 
 public class JugadorNaval extends Jugador {
 

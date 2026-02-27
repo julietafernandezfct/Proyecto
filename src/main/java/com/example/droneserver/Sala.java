@@ -2,6 +2,10 @@ package com.example.droneserver;
 
 import java.util.UUID;
 
+import com.example.droneserver.jugador.Jugador;
+import com.example.droneserver.jugador.JugadorAereo;
+import com.example.droneserver.jugador.JugadorNaval;
+
 public class Sala {
 
     private final String codigo = UUID.randomUUID().toString().substring(0, 6);

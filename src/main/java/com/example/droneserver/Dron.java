@@ -1,5 +1,6 @@
 package com.example.droneserver;
 
+//SACAR Y PASAR LO QUE FALTA A LA CLASE EN EL PACKAGE PERSISTENCIA
 public class Dron {
     private final String objId;   // "DRON_1", "DRON_2", etc
     private int vida;

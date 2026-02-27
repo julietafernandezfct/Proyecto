@@ -1,4 +1,4 @@
-package com.example.droneserver;
+package com.example.droneserver.solicitudes;
 
 public class SolicitudDisparo {
     public String sessionId;
