@@ -47,13 +47,13 @@ public class BaseDatosPrueba {
 		String portadron = "CREATE TABLE Proyecto.Portadron (codigo varchar(45), posX int(10), posY int(10), posZ int(10), vida int(10), tipo varchar(10), PRIMARY KEY (codigo, tipo))";
 		PreparedStatement port = con.prepareStatement(portadron);
 		port.executeUpdate(portadron);
-		port.close();
+		port.close();*/
 
 		
-		String dron = "CREATE TABLE Proyecto.Dron (codigo int(10) PRIMARY KEY, codPort varchar(45), tipoPort varchar(45), municion int(10), posX float, posY float, posZ float, vivo bit, FOREIGN KEY (codPort, tipoPort) references Portadron(codigo, tipo))";
+		String dron = "CREATE TABLE Proyecto.Dron (codigo int(10) PRIMARY KEY, codPort varchar(45), tipoPort varchar(45), municion int(10), posX float, posY float, posZ float, vida int(10), FOREIGN KEY (codPort, tipoPort) references Portadron(codigo, tipo))";
 		PreparedStatement dr = con.prepareStatement(dron);
 		dr.executeUpdate(dron);
-		dr.close();*/
+		dr.close();
 		
 		
 		

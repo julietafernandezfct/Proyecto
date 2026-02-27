@@ -34,7 +34,7 @@ public class DAODron { //lista
 			insback.setFloat(5, dron.getPosX());
 			insback.setFloat(6, dron.getPosY());
 			insback.setFloat(7, dron.getPosZ());
-			insback.setBoolean(8, dron.getVivo());
+			insback.setInt(8, dron.getVivo());
 			insback.executeUpdate();
 			
 			insback.close();
@@ -85,7 +85,7 @@ public class DAODron { //lista
 				float x = rs.getFloat("posX");
 				float y = rs.getFloat("posY");
 				float z = rs.getFloat("posZ");
-				boolean vivo = rs.getBoolean("vivo");
+				int vivo = rs.getInt("vivo");
 				
 				Dron dron = new Dron(codigo, codPort, tip, municion, x, y, z, vivo);
 				lista.add(dron);

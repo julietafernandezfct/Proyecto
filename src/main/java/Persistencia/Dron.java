@@ -9,10 +9,10 @@ public class Dron {
 	private float x;
 	private float y;
 	private float z;
-	private boolean vivo;
+	private int vivo;
 	
 	
-	public Dron(int cod, String codP, String tip, int mun, float posx, float posy, float posz, boolean viv) {
+	public Dron(int cod, String codP, String tip, int mun, float posx, float posy, float posz, int viv) {
 		codigo = cod;
 		codPort = codP;
 		municion = mun;
@@ -51,7 +51,7 @@ public class Dron {
 		return z;
 	}
 	
-	public boolean getVivo() {
+	public int getVivo() {
 		return vivo;
 	}
 }

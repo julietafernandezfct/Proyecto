@@ -52,6 +52,7 @@ public class GameController {
         );
     }
 
+    //bloquea el portadron cuando es colocado en el mapa
     @PostMapping("/placePorta/{codigo}")
     public String PlacePorta(@PathVariable String codigo, @RequestBody Position pos) {
 
@@ -79,6 +80,7 @@ public class GameController {
         return jugador.colocarPorta(pos) ? "OK" : "NO";
     }
 
+    //manda la posicion de todos los drones
     @PostMapping("/moveBatch/{codigo}")
     public String MoveBatch(@PathVariable String codigo, @RequestBody SolicitudMovimientoBatch req) {
 
@@ -147,6 +149,7 @@ public class GameController {
         return resp;
     }
 
+    //guarda todos los datos de un jugador
     private void AgregarEstadoJugador(Jugador jugador,List<Position> posiciones,List<DatoVida> vidas,List<DatoMunicion> municion) {
         if (jugador == null) return;
 
@@ -183,6 +186,7 @@ public class GameController {
         }
     }
 
+    
     @PostMapping("/disparar/{codigo}")
     public String Disparar(@PathVariable String codigo, @RequestBody SolicitudDisparo req) {
 
@@ -212,6 +216,7 @@ public class GameController {
         return "OK";
     }
 
+    //hace que el proyectil avance
     private void TickProyectiles(Sala sala, float dt) {
 
         if (sala == null) return;
