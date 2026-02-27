@@ -249,6 +249,7 @@ public class GameController {
             if (enemigo == null) 
             	continue;
 
+            //reviso si le pego al portadron enemigo
             Position portaPos = enemigo.getPortaPosicion();
             if (portaPos != null && enemigo.getPortaVida() > 0) {
                 float dist = distancia(p.x, p.y, p.z, portaPos.x, portaPos.y, portaPos.z);
@@ -259,9 +260,10 @@ public class GameController {
                 }
             }
 
+            //reviso si le pegué al dron
             Position[] drones = enemigo.getDronesPos();
             int[] vidas = enemigo.getVidas();
-
+            
             for (int i = 0; i < drones.length; i++) {
                 if (vidas[i] <= 0) 
                 	continue;

@@ -2,11 +2,11 @@ package Persistencia;
 
 public class Dron {
 
-	private int codigo;
+	private int codigo; 
 	private String codPort;
 	private String tipo;
 	private int municion;
-	private float x;
+	private float x; 
 	private float y;
 	private float z;
 	private int vivo;
@@ -17,7 +17,7 @@ public class Dron {
 		codPort = codP;
 		municion = mun;
 		tipo = tip;
-		x = posx;
+		x = posx;//cambiar a posicion
 		y = posy;
 		z = posz;
 		vivo = viv;

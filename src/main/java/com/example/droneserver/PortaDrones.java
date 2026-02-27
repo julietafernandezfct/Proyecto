@@ -1,10 +1,19 @@
 package com.example.droneserver;
 
+import java.util.List;
+
+import Persistencia.Dron;
+
 //SACAR Y PASAR LO QUE FALTA A LA CLASE EN EL PACKAGE PERSISTENCIA
 public class PortaDrones {
     private int vida;
     private EstadoPosicion posicion; // null hasta que se coloque
     private boolean bloqueado;
+    /*private String tipo;
+	private List<Dron> drones;
+	private String idPartida;*/
+    
+    //agregar mi constructor
 
     public PortaDrones(int vidaInicial) {
         this.vida = vidaInicial;
@@ -42,4 +51,6 @@ public class PortaDrones {
     public boolean estaMuerto() { 
     	return vida <= 0; 
     }
+    
+    //setdrones
 }
