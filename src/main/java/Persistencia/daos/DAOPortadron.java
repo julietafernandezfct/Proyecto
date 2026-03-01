@@ -9,7 +9,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import Persistencia.Portadron;
+import com.example.droneserver.PortaDrones;
+import com.example.droneserver.Position;
+
 import Persistencia.consultas.Consultas;
 
 @Repository
@@ -22,15 +24,15 @@ public class DAOPortadron { //hash?
 		con = c;
 	}
 	
-	public void insert(Portadron p) {
+	public void insert(PortaDrones p) {
 		Consultas cons = new Consultas();
 		
 		try {
 			PreparedStatement insert = con.prepareStatement(cons.insert());
 			insert.setString(1, p.getIdPartida());
-			insert.setFloat(2, p.getPosX());
-			insert.setFloat(3, p.getPosY());
-			insert.setFloat(4, p.getPosZ());
+			insert.setFloat(2, p.getPosicion().posX());
+			insert.setFloat(3, p.getPosicion().posY());
+			insert.setFloat(4, p.getPosicion().posZ());
 			insert.setInt(5, p.getVida());
 			insert.setString(6, p.getTipo());
 			insert.executeUpdate();
@@ -63,9 +65,9 @@ public class DAOPortadron { //hash?
 		return esta;
 	}
 	
-	public Portadron find(String id, String tipo) {
+	public PortaDrones find(String id, String tipo) {
 		Consultas cons = new Consultas();
-		Portadron p = null;
+		PortaDrones p = null;
 		
 		try {
 			PreparedStatement find = con.prepareStatement(cons.member());
@@ -80,7 +82,9 @@ public class DAOPortadron { //hash?
 				float z = rs.getFloat("posZ");
 				int vida = rs.getInt("vida");
 				
-				p = new Portadron(idPar, x, y, z, vida, tipo);
+				Position pos = new Position(x,y,z);
+				
+				p = new PortaDrones(idPar, pos, vida, tipo);
 			}
 			
 			rs.close();

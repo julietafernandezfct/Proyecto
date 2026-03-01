@@ -30,9 +30,31 @@ public class Position {
         this.x = x; this.y = y; this.z = z;
         this.qx = qx; this.qy = qy; this.qz = qz; this.qw = qw;
     }
+    
+    public Position(float X, float Y, float Z) {
+    	x = X;
+    	y = Y;
+    	z = Z;
+    	qx = 0;
+    	qy = 0;
+    	qz = 0;
+    	qw = 1;
+    }
 
     @Override
     public String toString() {
         return "objId=" + objId + ", tipo=" + tipo + ", x=" + x + ", y=" + y + ", z=" + z;
+    }
+    
+    public float posX() {
+    	return x;
+    }
+    
+    public float posY() {
+    	return y;
+    }
+    
+    public float posZ() {
+    	return z;
     }
 }

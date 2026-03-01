@@ -8,15 +8,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import Persistencia.Dron;
-import Persistencia.Portadron;
+import com.example.droneserver.Dron;
+import com.example.droneserver.PortaDrones;
+
 import Persistencia.daos.DAOPortadron;
 import Persistencia.daos.DAODron;
 
 @RestController
 @RequestMapping("/api/portadrones")
 
-public class PortadronController {
+public class PersistenciaController {
 
 	@Autowired  
     private DAOPortadron portadrones;
@@ -25,11 +26,11 @@ public class PortadronController {
     private DAODron Ddrones;
 
 	@GetMapping("/{id}/{tipo}")
-	public Portadron obtenerPortadron(
+	public PortaDrones obtenerPortadron(
 	        @PathVariable String id,
 	        @PathVariable String tipo) {
 
-	    Portadron p = portadrones.find(id, tipo);
+		PortaDrones p = portadrones.find(id, tipo);
 
 	    if(p != null){
 	    	List<Dron> drones = Ddrones.ListarDrones(id, tipo);

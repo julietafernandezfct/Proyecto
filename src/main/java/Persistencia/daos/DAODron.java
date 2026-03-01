@@ -8,9 +8,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.example.droneserver.Dron;
+import com.example.droneserver.Position;
+
 import java.sql.Connection;
 
-import Persistencia.Dron;
 import Persistencia.consultas.Consultas;
 
 @Repository
@@ -27,14 +29,14 @@ public class DAODron { //lista
 		
 		try {
 			PreparedStatement insback = con.prepareStatement(cons.insback());
-			insback.setInt(1, dron.getCodigo());
+			insback.setInt(1, dron.codigo());
 			insback.setString(2, dron.getCodPort());
 			insback.setString(3, dron.getTipo());
 			insback.setInt(4, dron.getMunicion());
-			insback.setFloat(5, dron.getPosX());
-			insback.setFloat(6, dron.getPosY());
-			insback.setFloat(7, dron.getPosZ());
-			insback.setInt(8, dron.getVivo());
+			insback.setFloat(5, dron.getPosicion().posX());
+			insback.setFloat(6, dron.getPosicion().posY());
+			insback.setFloat(7, dron.getPosicion().posZ());
+			insback.setInt(8, dron.getVida());
 			insback.executeUpdate();
 			
 			insback.close();
@@ -87,7 +89,9 @@ public class DAODron { //lista
 				float z = rs.getFloat("posZ");
 				int vivo = rs.getInt("vivo");
 				
-				Dron dron = new Dron(codigo, codPort, tip, municion, x, y, z, vivo);
+				Position p = new Position(x,y,z);
+
+				Dron dron = new Dron(codigo, codPort, tip, municion, p, vivo);
 				lista.add(dron);
 			}
 			
