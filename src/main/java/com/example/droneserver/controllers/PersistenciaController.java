@@ -1,4 +1,4 @@
-package Controllers;
+package com.example.droneserver.controllers;
 
 import java.util.List;
 

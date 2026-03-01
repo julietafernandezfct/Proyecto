@@ -1,4 +1,4 @@
-package Controllers;
+package com.example.droneserver.controllers;
 
 import org.springframework.web.bind.annotation.*;
 import com.example.droneserver.*;
