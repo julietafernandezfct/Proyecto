@@ -24,6 +24,7 @@ public class GameController {
 		Sala sala = new Sala();
 		sala.CrearHost(sessionId);
 		salas.put(sala.GetCodigo(), sala);
+		System.out.println("SALAS ACTUALES: " + salas.keySet());
 		return new JoinResponse(sala.GetCodigo(),sessionId,sala.GetCantidadJugadores()
 		);
 	}
@@ -36,6 +37,7 @@ public class GameController {
 			return new JoinResponse(codigo, sessionId, 0);
 		}
 		sala.CrearJoin(sessionId);
+		System.out.println("SALAS ACTUALES: " + salas.keySet());
 		return new JoinResponse(codigo,sessionId,sala.GetCantidadJugadores());
 	}
 	
