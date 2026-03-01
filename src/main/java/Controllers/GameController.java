@@ -142,6 +142,7 @@ public class GameController {
 			posiciones.add(p);
 		}
 	}
+	
 	@PostMapping("/disparar/{codigo}")
 	public String Disparar(@PathVariable String codigo, @RequestBody SolicitudDisparo req)
 	{
@@ -154,6 +155,7 @@ public class GameController {
 		if (atacante == null)
 			return "NO";
 		Proyectil p = new Proyectil();
+		//esta medio tosco esto
 		p.id = java.util.UUID.randomUUID().toString().substring(0, 8);
 		p.atacanteSessionId = req.sessionId;
 		p.objIdDisparador = req.objIdDisparador;
@@ -227,4 +229,29 @@ public class GameController {
 		float dz = z1 - x2;
 		return (float)Math.sqrt(dx*dx + dy*dy + dz*dz);
 	}
+	
+	/*@PostMapping("/disparar/{codigo}")
+	public String Disparar(@PathVariable String codigo, @RequestBody SolicitudDisparo req)
+	{
+		Sala sala = salas.get(codigo);
+		if (sala == null)
+			return "Sala no existe.";
+		if (req == null || req.sessionId == null)
+			return "NO";
+		Jugador atacante = sala.GetJugadorPorSession(req.sessionId);
+		if (atacante == null)
+			return "NO";
+		Proyectil p = new Proyectil();
+		//esta medio tosco esto
+		p.id = java.util.UUID.randomUUID().toString().substring(0, 8);
+		p.atacanteSessionId = req.sessionId;
+		p.objIdDisparador = req.objIdDisparador;
+		p.x = req.x; p.y = req.y; p.z = req.z;
+		p.dx = req.dx; p.dy = req.dy; p.dz = req.dz;
+		p.velocidad = (req.velocidad <= 0) ? 20f : req.velocidad;
+		p.rangoMax = (req.rangoMax <= 0) ? 30f : req.rangoMax;
+		p.danio = (req.danio <= 0) ? 1 : req.danio;
+		sala.GetProyectiles().add(p);
+		return "OK";
+	}*/
 }

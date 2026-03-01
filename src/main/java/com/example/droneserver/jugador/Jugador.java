@@ -10,6 +10,7 @@ public abstract class Jugador {
 
     protected Position[] dronesPos;
     protected int[] vidas;
+    protected int municion;
 
     protected Position portaPos;
     protected int portaVida = 10;
@@ -47,6 +48,10 @@ public abstract class Jugador {
     public int[] getVidas() {
         return vidas;
     }
+    
+    public int getMunicion() {
+    	return municion;
+    }
 
     public boolean colocarPorta(Position pos) {
 
@@ -83,17 +88,30 @@ public abstract class Jugador {
     }
 
     public void aplicarDanio(int objId, int danio) {
+    	//se necesita?
         if (danio <= 0)
             return;
         if (objId == getObjIdPorta()) {
             portaVida = Math.max(0, portaVida - danio);
             return;
         }
+        //no tiene sentido que este for este en un if?
         for (int i = 0; i < dronesPos.length; i++) {
             if (i + 1 == objId) {
                 vidas[i] = Math.max(0, vidas[i] - danio);
+                //conultar con jose, esta peligroso este return
                 return;
             }
         }
+    }
+    
+    public void recargaMunicion(int objId) {
+    	for(int i = 0; i < dronesPos.length; i++) {
+    		if(i + 1 == objId) {
+    			municion = municion + 1;
+    			//misma situacion 
+    			return;
+    		}
+    	}
     }
 }
