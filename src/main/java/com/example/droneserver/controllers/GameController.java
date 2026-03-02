@@ -66,7 +66,7 @@ public class GameController {
 			return "NO";
 		pos.sessionId = jugador.getSessionId();
 		pos.slot = jugador.getSlot();
-		//pos.tipo = "PORTA";
+		pos.tipo = "PORTA";
 		pos.objId = portaEsperado;
 		return jugador.colocarPorta(pos) ? "OK" : "NO";
 	}
@@ -87,11 +87,11 @@ public class GameController {
 				continue;
 			p.sessionId = jugador.getSessionId();
 			p.slot = jugador.getSlot();
-			/*if (jugador.getObjIdPorta() == p.objId)
+			if (jugador.getObjIdPorta() == p.objId)
 				p.tipo = "PORTA";
 			else
 				p.tipo = jugador.getTipo();
-			jugador.actualizarPosicion(p.objId, p);*/
+			jugador.actualizarPosicion(p.objId, p);
 		}
 		return "OK";
 	}
