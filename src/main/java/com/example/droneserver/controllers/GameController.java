@@ -16,7 +16,14 @@ import java.util.*;
 
 @RequestMapping("/game")
 public class GameController {
+	private final DAOPortadron daoPorta;
+	private final DAODron daoDron;
 	private final Map<String, Sala> salas = new HashMap<>();
+	
+	public GameController(DAOPortadron daoPorta, DAODron daoDron) {
+        this.daoPorta = daoPorta;
+        this.daoDron = daoDron;
+    }
 
 	@GetMapping("/create")
 	public JoinResponse CrearSala() {
@@ -275,5 +282,51 @@ public class GameController {
 	    float radio = 5f; 
 
 	    return distanciaCuadrada <= radio * radio;
+	}
+	
+	//GUARDAR PARTIDA
+	@PostMapping("/save/{codigo}")
+	public String guardarPartida(@PathVariable String codigo) {
+
+	    Sala sala = salas.get(codigo);
+	    if (sala == null)
+	        return "Sala no existe.";
+
+	    Jugador host = sala.GetHost();
+	    Jugador join = sala.GetJoin();
+
+	    if (host != null) {
+	        host.getPorta().guardarPortadron(daoPorta);
+	    }
+
+	    if (join != null) {
+	        join.getPorta().guardarPortadron(daoPorta);
+	    }
+
+	    return "PARTIDA GUARDADA";
+	}
+	
+	//LEVANTARPARTIDA
+	@GetMapping("/load/{codigo}")
+	public String cargarPartida(@PathVariable String codigo) {
+
+	    Sala sala = salas.get(codigo);
+	    if (sala == null)
+	        return "Sala no existe.";
+
+	    Jugador host = sala.GetHost();
+	    Jugador join = sala.GetJoin();
+
+	    if (host != null) {
+	        PortaDrones portaHost = host.getPorta().levantarPortadrones(daoPorta);
+	        host.setPorta(portaHost);
+	    }
+
+	    if (join != null) {
+	        PortaDrones portaJoin = join.getPorta().levantarPortadrones(daoPorta);
+	        join.setPorta(portaJoin);
+	    }
+
+	    return "PARTIDA CARGADA";
 	}
 }
