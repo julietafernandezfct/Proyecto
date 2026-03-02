@@ -1,5 +1,6 @@
 package com.example.droneserver.jugador;
 
+import com.example.droneserver.PortaDrones;
 import com.example.droneserver.Position;
 
 public abstract class Jugador {
@@ -14,6 +15,7 @@ public abstract class Jugador {
 
     protected Position portaPos;
     protected int portaVida = 10;
+    protected PortaDrones porta;
 
     public String getSessionId() { 
     	return sessionId; 
@@ -51,6 +53,14 @@ public abstract class Jugador {
     
     public int getMunicion() {
     	return municion;
+    }
+    
+    public PortaDrones getPorta() {
+        return porta;
+    }
+
+    public void setPorta(PortaDrones porta) {
+        this.porta = porta;
     }
 
     public boolean colocarPorta(Position pos) {

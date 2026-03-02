@@ -85,8 +85,15 @@ public class PortaDrones {
     	return vida <= 0; 
     }
     
-    public void guardarPortadron() {
-    	
+    public void guardarPortadron(DAOPortadron dao) {
+    	dao.insert(this);
+    	for(Dron dron : getDrones()) {
+    		dron.guardarDron(null);
+    	}
+    }
+
+    public PortaDrones levantarPortadrones(DAOPortadron dao) {
+    	return dao.find(idPartida, tipo);    	
     }
     
 }
