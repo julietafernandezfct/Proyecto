@@ -2,6 +2,7 @@ package com.example.droneserver;
 
 import java.util.List;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,6 +14,7 @@ public class PortaDrones {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int vida;
+    @Embedded
     private Position posicion; 
     private boolean bloqueado;
     private String tipo;

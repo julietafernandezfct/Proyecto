@@ -1,5 +1,9 @@
 package com.example.droneserver;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
+
 public class Position {
 
     public String sessionId;

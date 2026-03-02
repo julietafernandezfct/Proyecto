@@ -1,5 +1,7 @@
 package com.example.droneserver;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +18,7 @@ public class Dron {
 	private String tipo;
     private int vida;
     private int municion;
+    @Embedded
     private Position posicion; // null hasta que llegue update
 
     
