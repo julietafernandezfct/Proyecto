@@ -2,8 +2,21 @@ package com.example.droneserver;
 
 import java.util.List;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 //SACAR Y PASAR LO QUE FALTA A LA CLASE EN EL PACKAGE PERSISTENCIA
+@Entity
 public class Dron {
+	@Id
+    private int id;
+
+    @ManyToOne
+    @JoinColumn(name = "porta_id")
+    private PortaDrones porta;
+	
     private int codigo;   //pasa a int
     private String codPort;
     private int vida;
