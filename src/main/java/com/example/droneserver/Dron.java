@@ -17,7 +17,7 @@ public class Dron {
     private Long id;
     private int codigo;   //pasa a int
     private String codPort;
-	private String tipo;
+	//private String tipo;
     private int vida;
     private int municion;
     @Embedded
@@ -38,7 +38,7 @@ public class Dron {
 		codigo = cod;
 		codPort = codP;
 		municion = mun;
-		tipo = tip;
+		//tipo = tip;
 		posicion = posi;
 		vida = vid;
 	}
@@ -51,9 +51,9 @@ public class Dron {
 		return codPort;
 	}
     
-    public String getTipo() {
-		return tipo;
-	}
+    //public String getTipo() {
+//		return tipo;
+	//}
 	
     public int getVida() { 
     	return vida; 
