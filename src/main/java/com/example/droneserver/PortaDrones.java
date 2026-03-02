@@ -70,4 +70,8 @@ public class PortaDrones {
     	return vida <= 0; 
     }
     
+    public void guardarPortadron() {
+    	
+    }
+    
 }

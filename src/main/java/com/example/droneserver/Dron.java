@@ -1,5 +1,7 @@
 package com.example.droneserver;
 
+import java.util.List;
+
 //SACAR Y PASAR LO QUE FALTA A LA CLASE EN EL PACKAGE PERSISTENCIA
 public class Dron {
     private int codigo;   //pasa a int
@@ -61,5 +63,13 @@ public class Dron {
 
     public boolean estaMuerto() { 
     	return vida <= 0; 
+    }
+    
+    public void guardarDron(DAODron dao) {
+    	dao.insback(this);
+    }
+    
+    public List<Dron> levantarDrones(DAODron dao){
+    	return dao.ListarDrones(codPort, tipo);
     }
 }
