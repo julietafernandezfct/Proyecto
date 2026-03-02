@@ -11,8 +11,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
-import Persistencia.daos.DAODron;
-import Persistencia.daos.DAOPortadron;
+import com.example.droneserver.DAODron;
+import com.example.droneserver.DAOPortadron;
 
 public class BaseDatosPrueba {
 

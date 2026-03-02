@@ -29,6 +29,10 @@ public class Consultas {
 		return consulta;
 	}
 	
+	public String empty() {
+		String consulta = "SELECT COUNT(*) FROM dron WHERE codPort = ? AND tipoPort = ?";
+		return consulta;
+	}
 	
 
 }

@@ -8,6 +8,8 @@ import com.example.droneserver.datos.DatoVida;
 import com.example.droneserver.jugador.Jugador;
 import com.example.droneserver.solicitudes.SolicitudDisparo;
 import com.example.droneserver.solicitudes.SolicitudMovimientoBatch;
+import com.example.droneserver.solicitudes.SolicitudRecarga;
+
 import java.util.*;
 
 @RestController
@@ -18,12 +20,14 @@ public class GameController {
 
 	@GetMapping("/create")
 	public JoinResponse CrearSala() {
-		String sessionId = UUID.randomUUID().toString();
-		Sala sala = new Sala();
-		sala.CrearHost(sessionId);
-		salas.put(sala.GetCodigo(), sala);
-		return new JoinResponse(sala.GetCodigo(),sessionId,sala.GetCantidadJugadores()
-		);
+	    System.out.println("ENTRE A CREATE !!!");
+
+	    String sessionId = UUID.randomUUID().toString();
+	    Sala sala = new Sala();
+	    sala.CrearHost(sessionId);
+	    salas.put(sala.GetCodigo(), sala);
+
+	    return new JoinResponse(sala.GetCodigo(),sessionId,sala.GetCantidadJugadores());
 	}
 		
 	@GetMapping("/join/{codigo}")
@@ -34,7 +38,8 @@ public class GameController {
 			return new JoinResponse(codigo, sessionId, 0);
 		}
 		sala.CrearJoin(sessionId);
-		return new JoinResponse(codigo, sessionId ,sala.GetCantidadJugadores());
+		System.out.println("SALAS ACTUALES: " + salas.keySet());
+		return new JoinResponse(codigo,sessionId,sala.GetCantidadJugadores());
 	}
 	
 	//bloquea el portadron cuando es colocado en el mapa
@@ -230,28 +235,46 @@ public class GameController {
 		return (float)Math.sqrt(dx*dx + dy*dy + dz*dz);
 	}
 	
-	/*@PostMapping("/disparar/{codigo}")
-	public String Disparar(@PathVariable String codigo, @RequestBody SolicitudDisparo req)
-	{
+	@PostMapping("/recargar/{codigo}")
+	public String Disparar(@PathVariable String codigo, @RequestBody SolicitudRecarga req) {
 		Sala sala = salas.get(codigo);
 		if (sala == null)
 			return "Sala no existe.";
 		if (req == null || req.sessionId == null)
 			return "NO";
-		Jugador atacante = sala.GetJugadorPorSession(req.sessionId);
-		if (atacante == null)
+		Jugador peticion = sala.GetJugadorPorSession(req.sessionId);
+		if (peticion == null) {
 			return "NO";
-		Proyectil p = new Proyectil();
-		//esta medio tosco esto
-		p.id = java.util.UUID.randomUUID().toString().substring(0, 8);
-		p.atacanteSessionId = req.sessionId;
-		p.objIdDisparador = req.objIdDisparador;
-		p.x = req.x; p.y = req.y; p.z = req.z;
-		p.dx = req.dx; p.dy = req.dy; p.dz = req.dz;
-		p.velocidad = (req.velocidad <= 0) ? 20f : req.velocidad;
-		p.rangoMax = (req.rangoMax <= 0) ? 30f : req.rangoMax;
-		p.danio = (req.danio <= 0) ? 1 : req.danio;
-		sala.GetProyectiles().add(p);
-		return "OK";
-	}*/
+		}else {
+			Jugador host = sala.GetHost();
+			
+			Position portaPos = host.getPortaPosicion();
+			Position[] drones = host.getDronesPos();
+			
+			Position dp = drones[req.objIdDisparador];
+			if (dp == null)
+				return "NO";
+			else {
+				if(distanciaRecarga(portaPos.x, portaPos.y, portaPos.z, dp.x, dp.y, dp.z)) {
+					host.recargaMunicion(req.objIdDisparador);
+				}
+			}
+			
+			return "OK";
+		}
+			
+	}
+	
+	//calcula como si fuera una esfera al rededor del portadron
+	public boolean distanciaRecarga(float px, float py, float pz, float x, float y, float z) {
+		float distanciaCuadrada =  px * x + py * y + pz * z;
+		float radio = 200;
+		
+		//la funcion seria la raiz cuadrada de distanciaCuadrada
+		//por eso radio^2 = distanciaCuadrada
+		if(radio * radio == distanciaCuadrada)
+			return true;
+		else
+			return false;
+	}
 }
