@@ -24,7 +24,7 @@ public class Dron {
     private Position posicion; // null hasta que llegue update
     
     @ManyToOne
-    @JoinColumn(name="portadrones_id")
+    @JoinColumn(name="PortaDrones_id")
     private PortaDrones portadron;
 
     

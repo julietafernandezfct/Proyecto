@@ -20,7 +20,7 @@ public class PortaDrones {
     private Position posicion; 
     private boolean bloqueado;
     private String tipo;
-    @OneToMany(mappedBy = "portadrones", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "PortaDrones", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Dron> drones;
 	private String idPartida;
     
