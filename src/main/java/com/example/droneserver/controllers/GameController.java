@@ -267,14 +267,13 @@ public class GameController {
 	
 	//calcula como si fuera una esfera al rededor del portadron
 	public boolean distanciaRecarga(float px, float py, float pz, float x, float y, float z) {
-		float distanciaCuadrada =  px * x + py * y + pz * z;
-		float radio = 200;
-		
-		//la funcion seria la raiz cuadrada de distanciaCuadrada
-		//por eso radio^2 = distanciaCuadrada
-		if(radio * radio == distanciaCuadrada)
-			return true;
-		else
-			return false;
+		float dx = px - x;
+	    float dy = py - y;
+	    float dz = pz - z;
+
+	    float distanciaCuadrada = dx*dx + dy*dy + dz*dz;
+	    float radio = 5f; 
+
+	    return distanciaCuadrada <= radio * radio;
 	}
 }
