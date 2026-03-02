@@ -245,32 +245,31 @@ public class GameController {
 	
 	@PostMapping("/recargar/{codigo}")
 	public String Recargar(@PathVariable String codigo, @RequestBody SolicitudRecarga req) {
-		Sala sala = salas.get(codigo);
-		if (sala == null)
-			return "Sala no existe.";
-		if (req == null || req.sessionId == null)
-			return "NO";
-		Jugador peticion = sala.GetJugadorPorSession(req.sessionId);
-		if (peticion == null) {
-			return "NO";
-		}else {
-			Jugador host = sala.GetHost();
-			
-			Position portaPos = host.getPortaPosicion();
-			Position[] drones = host.getDronesPos();
-			
-			Position dp = drones[req.objIdDisparador];
-			if (dp == null)
-				return "NO";
-			else {
-				if(distanciaRecarga(portaPos.x, portaPos.y, portaPos.z, dp.x, dp.y, dp.z)) {
-					host.recargaMunicion(req.objIdDisparador);
-				}
-			}
-			
-			return "OK";
-		}
-			
+	    Sala sala = salas.get(codigo);
+	    if (sala == null) return "Sala no existe.";
+	    if (req == null || req.sessionId == null) return "NO";
+
+	    Jugador jugador = sala.GetJugadorPorSession(req.sessionId);
+	    if (jugador == null) return "NO";
+
+	    Position portaPos = jugador.getPortaPosicion();
+	    if (portaPos == null) return "NO";
+
+	    int objId = req.objIdDisparador;
+	    if (objId <= 0) return "NO";
+
+	    Position[] drones = jugador.getDronesPos();
+	    int idx = objId - 1;
+	    if (idx < 0 || idx >= drones.length) return "NO";
+
+	    Position dp = drones[idx];
+	    if (dp == null) return "NO";
+
+	    if (distanciaRecarga(portaPos.x, portaPos.y, portaPos.z, dp.x, dp.y, dp.z)) {
+	        jugador.recargaMunicion(objId);
+	    }
+
+	    return "OK";
 	}
 	
 	//calcula como si fuera una esfera al rededor del portadron
