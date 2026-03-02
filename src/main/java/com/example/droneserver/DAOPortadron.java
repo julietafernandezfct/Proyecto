@@ -28,7 +28,7 @@ public class DAOPortadron { //hash?
 	            p.getPosicion().posY(),
 	            p.getPosicion().posZ(),
 	            p.getVida(),
-	            p.getTipo()
+	            p.getPosicion().getTipo()
 	    );
 	}
 	

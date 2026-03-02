@@ -20,7 +20,6 @@ public class PortaDrones {
     @Embedded
     private Position posicion; 
     private boolean bloqueado;
-    private String tipo;
     @OneToMany(mappedBy = "portaDrones", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Dron> drones = new ArrayList<>();
 	private String idPartida;
@@ -29,7 +28,6 @@ public class PortaDrones {
 		idPartida = partida;
 		posicion = pos;
 		vida = vid;
-		tipo = tip;
 	}
 
     public PortaDrones(int vidaInicial) {
@@ -53,9 +51,6 @@ public class PortaDrones {
 		return idPartida;
 	}
     
-    public String getTipo() {
-		return tipo;
-	}
 	
 	public List<Dron> getDrones(){
 		return drones;
@@ -93,7 +88,7 @@ public class PortaDrones {
     }
 
     public PortaDrones levantarPortadrones(DAOPortadron dao) {
-    	return dao.find(idPartida, tipo);    	
+    	return dao.find(idPartida, posicion.getTipo());    	
     }
     
 }

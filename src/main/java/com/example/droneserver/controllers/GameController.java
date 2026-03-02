@@ -66,7 +66,7 @@ public class GameController {
 			return "NO";
 		pos.sessionId = jugador.getSessionId();
 		pos.slot = jugador.getSlot();
-		//pos.tipo = "PORTA";
+		pos.tipo = "PORTA";
 		pos.objId = portaEsperado;
 		return jugador.colocarPorta(pos) ? "OK" : "NO";
 	}
@@ -87,14 +87,15 @@ public class GameController {
 				continue;
 			p.sessionId = jugador.getSessionId();
 			p.slot = jugador.getSlot();
-			/*if (jugador.getObjIdPorta() == p.objId)
+			if (jugador.getObjIdPorta() == p.objId)
 				p.tipo = "PORTA";
 			else
 				p.tipo = jugador.getTipo();
-			jugador.actualizarPosicion(p.objId, p);*/
+			jugador.actualizarPosicion(p.objId, p);
 		}
 		return "OK";
 	}
+	
 	@GetMapping("/state/{codigo}")
 	public Object State(@PathVariable String codigo) {
 		Sala sala = salas.get(codigo);
@@ -150,7 +151,7 @@ public class GameController {
 			municion.add(new DatoMunicion(sid, p.objId, 0));
 			p.sessionId = sid;
 			p.slot = slot;
-			//p.tipo = jugador.getTipo();
+			p.tipo = jugador.getTipo();
 			posiciones.add(p);
 		}
 	}
@@ -288,18 +289,18 @@ public class GameController {
 	@PostMapping("/save/{codigo}")
 	public String guardarPartida(@PathVariable String codigo) {
 
-	    Sala sala = salas.get(codigo);
+		Sala sala = salas.get(codigo);
 	    if (sala == null)
 	        return "Sala no existe.";
 
 	    Jugador host = sala.GetHost();
 	    Jugador join = sala.GetJoin();
 
-	    if (host != null) {
+	    if (host != null && host.getPorta() != null) {
 	        host.getPorta().guardarPortadron(daoPorta);
 	    }
 
-	    if (join != null) {
+	    if (join != null && join.getPorta() != null) {
 	        join.getPorta().guardarPortadron(daoPorta);
 	    }
 
