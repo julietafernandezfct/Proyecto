@@ -2,11 +2,13 @@ package com.example.droneserver;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class PortaDrones {
@@ -18,6 +20,7 @@ public class PortaDrones {
     private Position posicion; 
     private boolean bloqueado;
     private String tipo;
+    @OneToMany(mappedBy = "portadrones", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Dron> drones;
 	private String idPartida;
     

@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 //SACAR Y PASAR LO QUE FALTA A LA CLASE EN EL PACKAGE PERSISTENCIA
 @Entity
@@ -20,6 +22,10 @@ public class Dron {
     private int municion;
     @Embedded
     private Position posicion; // null hasta que llegue update
+    
+    @ManyToOne
+    @JoinColumn(name="portadrones_id")
+    private PortaDrones portadron;
 
     
     public Dron(int codigo, int vidaInicial, int municionInicial) {
