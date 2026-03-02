@@ -1,5 +1,6 @@
 package com.example.droneserver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -20,8 +21,8 @@ public class PortaDrones {
     private Position posicion; 
     private boolean bloqueado;
     private String tipo;
-    @OneToMany(mappedBy = "PortaDrones", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Dron> drones;
+    @OneToMany(mappedBy = "portaDrones", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Dron> drones = new ArrayList<>();
 	private String idPartida;
     
 	public PortaDrones(String partida, Position pos, int vid, String tip) {
