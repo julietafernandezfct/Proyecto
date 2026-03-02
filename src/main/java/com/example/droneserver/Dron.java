@@ -17,7 +17,6 @@ public class Dron {
     private Long id;
     private int codigo;   //pasa a int
     private String codPort;
-	//private String tipo;
     private int vida;
     private int municion;
     @Embedded

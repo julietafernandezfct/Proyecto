@@ -11,8 +11,6 @@ public class Position {
 
     public int objId;
 
-    public String tipo;
-
     public float x;
     public float y;
     public float z;
@@ -24,12 +22,11 @@ public class Position {
 
     public Position() {}
 
-    public Position(String sessionId, int slot, int objId, String tipo, float x, float y, float z, float qx, float qy, float qz, float qw) {
+    public Position(String sessionId, int slot, int objId,  float x, float y, float z, float qx, float qy, float qz, float qw) {
 
         this.sessionId = sessionId;
         this.slot = slot;
         this.objId = objId;
-        this.tipo = tipo;
 
         this.x = x; this.y = y; this.z = z;
         this.qx = qx; this.qy = qy; this.qz = qz; this.qw = qw;
@@ -47,7 +44,7 @@ public class Position {
 
     @Override
     public String toString() {
-        return "objId=" + objId + ", tipo=" + tipo + ", x=" + x + ", y=" + y + ", z=" + z;
+        return "objId=" + objId  + ", x=" + x + ", y=" + y + ", z=" + z;
     }
     
     public float posX() {
