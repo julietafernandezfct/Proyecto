@@ -2,6 +2,9 @@ package com.example.droneserver;
 
 import java.util.List;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class PortaDrones {
     private int vida;
     private Position posicion; 

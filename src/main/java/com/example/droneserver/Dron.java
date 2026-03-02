@@ -1,6 +1,9 @@
 package com.example.droneserver;
 
+import jakarta.persistence.Entity;
+
 //SACAR Y PASAR LO QUE FALTA A LA CLASE EN EL PACKAGE PERSISTENCIA
+@Entity
 public class Dron {
     private int codigo;   //pasa a int
     private String codPort;
