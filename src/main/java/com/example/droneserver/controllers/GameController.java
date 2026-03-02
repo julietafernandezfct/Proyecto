@@ -95,6 +95,7 @@ public class GameController {
 		}
 		return "OK";
 	}
+	
 	@GetMapping("/state/{codigo}")
 	public Object State(@PathVariable String codigo) {
 		Sala sala = salas.get(codigo);

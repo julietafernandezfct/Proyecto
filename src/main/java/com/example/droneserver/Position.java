@@ -10,6 +10,7 @@ public class Position {
     public int slot;
 
     public int objId;
+    public String tipo;
 
     public float x;
     public float y;
@@ -57,5 +58,9 @@ public class Position {
     
     public float posZ() {
     	return z;
+    }
+    
+    public String getTipo() {
+    	return tipo;
     }
 }
