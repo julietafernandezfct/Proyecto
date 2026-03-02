@@ -289,18 +289,18 @@ public class GameController {
 	@PostMapping("/save/{codigo}")
 	public String guardarPartida(@PathVariable String codigo) {
 
-	    Sala sala = salas.get(codigo);
+		Sala sala = salas.get(codigo);
 	    if (sala == null)
 	        return "Sala no existe.";
 
 	    Jugador host = sala.GetHost();
 	    Jugador join = sala.GetJoin();
 
-	    if (host != null) {
+	    if (host != null && host.getPorta() != null) {
 	        host.getPorta().guardarPortadron(daoPorta);
 	    }
 
-	    if (join != null) {
+	    if (join != null && join.getPorta() != null) {
 	        join.getPorta().guardarPortadron(daoPorta);
 	    }
 
