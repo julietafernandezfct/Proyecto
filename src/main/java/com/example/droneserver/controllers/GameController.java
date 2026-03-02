@@ -236,7 +236,7 @@ public class GameController {
 	}
 	
 	@PostMapping("/recargar/{codigo}")
-	public String Disparar(@PathVariable String codigo, @RequestBody SolicitudRecarga req) {
+	public String Recargar(@PathVariable String codigo, @RequestBody SolicitudRecarga req) {
 		Sala sala = salas.get(codigo);
 		if (sala == null)
 			return "Sala no existe.";
