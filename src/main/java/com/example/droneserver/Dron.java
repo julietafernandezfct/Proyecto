@@ -3,6 +3,8 @@ package com.example.droneserver;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -11,11 +13,12 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Dron {
 	@Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "porta_id")
-    private PortaDrones porta;
+    private PortaDrones portaDrones;
 	
     private int codigo;   //pasa a int
     private String codPort;
