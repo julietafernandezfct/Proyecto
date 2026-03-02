@@ -20,13 +20,14 @@ public class GameController {
 
 	@GetMapping("/create")
 	public JoinResponse CrearSala() {
-		String sessionId = UUID.randomUUID().toString();
-		Sala sala = new Sala();
-		sala.CrearHost(sessionId);
-		salas.put(sala.GetCodigo(), sala);
-		System.out.println("SALAS ACTUALES: " + salas.keySet());
-		return new JoinResponse(sala.GetCodigo(),sessionId,sala.GetCantidadJugadores()
-		);
+	    System.out.println("ENTRE A CREATE !!!");
+
+	    String sessionId = UUID.randomUUID().toString();
+	    Sala sala = new Sala();
+	    sala.CrearHost(sessionId);
+	    salas.put(sala.GetCodigo(), sala);
+
+	    return new JoinResponse(sala.GetCodigo(),sessionId,sala.GetCantidadJugadores());
 	}
 		
 	@GetMapping("/join/{codigo}")
