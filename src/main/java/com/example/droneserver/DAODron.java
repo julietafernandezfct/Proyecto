@@ -1,4 +1,4 @@
-package com.example.droneserver;
+/*package com.example.droneserver;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -59,4 +59,4 @@ public class DAODron { //lista
 	}
 	
 	
-}
+}*/
