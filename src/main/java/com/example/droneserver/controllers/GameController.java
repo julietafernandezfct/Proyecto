@@ -151,7 +151,7 @@ public class GameController {
 			municion.add(new DatoMunicion(sid, p.objId, 0));
 			p.sessionId = sid;
 			p.slot = slot;
-			//p.tipo = jugador.getTipo();
+			p.tipo = jugador.getTipo();
 			posiciones.add(p);
 		}
 	}
