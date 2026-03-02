@@ -34,7 +34,7 @@ public class GameController {
 			return new JoinResponse(codigo, sessionId, 0);
 		}
 		sala.CrearJoin(sessionId);
-		return new JoinResponse(codigo,sessionId,sala.GetCantidadJugadores());
+		return new JoinResponse(codigo, sessionId ,sala.GetCantidadJugadores());
 	}
 	
 	//bloquea el portadron cuando es colocado en el mapa
