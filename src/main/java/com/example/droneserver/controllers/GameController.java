@@ -124,7 +124,7 @@ public class GameController {
 		String sid = jugador.getSessionId();
 		int slot = jugador.getSlot();
 		int portaId = jugador.getObjIdPorta();
-		vidas.add(new DatoVida(portaId, sid, jugador.getPortaVida()));
+		vidas.add(new DatoVida(portaId,  jugador.getPortaVida()));
 		Position portaPos = jugador.getPortaPosicion();
 		if (portaPos != null) {
 			portaPos.sessionId = sid;
@@ -139,7 +139,7 @@ public class GameController {
 			Position p = drones[i];
 			if (p == null)
 				continue;
-			vidas.add(new DatoVida(p.objId, sid, v[i]));
+			vidas.add(new DatoVida(p.objId, v[i]));
 			municion.add(new DatoMunicion(sid, p.objId, 0));
 			p.sessionId = sid;
 			p.slot = slot;
