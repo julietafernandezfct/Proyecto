@@ -1,4 +1,4 @@
-/*package com.example.droneserver;
+package com.example.droneserver;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -22,21 +22,21 @@ public class DAODron { //lista
 	public void insback(Dron dron) {
 		Consultas cons = new Consultas();
 		
-		jdbcTemplate.update(cons.insback(), dron.codigo(), dron.getCodPort(), dron.getTipo(), dron.getMunicion(), dron.getPosicion().posX(), dron.getPosicion().posY(), 
+		jdbcTemplate.update(cons.insback(), dron.codigo(), dron.getCodPort(), dron.getMunicion(), dron.getPosicion().posX(), dron.getPosicion().posY(), 
 				dron.getPosicion().posZ(), dron.getVida());
 		
 	}
 	
-	public boolean empty(String cod, String tipo) {
+	public boolean empty(String cod) {
 		Consultas cons = new Consultas();
 		
-		Integer count = jdbcTemplate.queryForObject(cons.empty(), Integer.class, cod, tipo);
+		Integer count = jdbcTemplate.queryForObject(cons.empty(), Integer.class, cod);
 
         return count == null || count == 0;
 
 	}
 	
-	public List<Dron> ListarDrones(String cod, String tipo){
+	public List<Dron> ListarDrones(String cod){
 		Consultas cons = new Consultas();
 
 		return jdbcTemplate.query(cons.Listar(),
@@ -52,11 +52,11 @@ public class DAODron { //lista
 
                     Position p = new Position(x, y, z);
 
-                    return new Dron(codigo, codPort, tipo, municion, p, vivo);
+                    return new Dron(codigo, codPort, municion, p, vivo);
                 },
-                cod, tipo
+                cod
         );
 	}
 	
 	
-}*/
+}

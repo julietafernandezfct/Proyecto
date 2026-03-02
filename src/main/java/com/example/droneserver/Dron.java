@@ -34,11 +34,10 @@ public class Dron {
         this.municion = municionInicial;
     }
     
-    public Dron(int cod, String codP, String tip, int mun, Position posi, int vid) {
+    public Dron(int cod, String codP, int mun, Position posi, int vid) {
 		codigo = cod;
 		codPort = codP;
 		municion = mun;
-		//tipo = tip;
 		posicion = posi;
 		vida = vid;
 	}
