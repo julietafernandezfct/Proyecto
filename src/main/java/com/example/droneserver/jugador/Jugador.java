@@ -59,7 +59,6 @@ public abstract class Jugador {
             return false;
 
         portaPos = pos;
-        portaPos.tipo = "PORTA";
         portaPos.objId = getObjIdPorta();
         portaPos.sessionId = sessionId;
         portaPos.slot = slot;

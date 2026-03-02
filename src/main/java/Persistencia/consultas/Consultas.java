@@ -19,18 +19,18 @@ public class Consultas {
 	
 	//PRECONDICION: viene en orden del juego
 	public String insback() {
-		String consulta = "INSERT INTO Proyecto.Dron (codigo, codPort, tipoPort, municion, posX, posY, posZ, vivo) "
-				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		String consulta = "INSERT INTO Proyecto.Dron (codigo, codPort, municion, posX, posY, posZ, vivo) "
+				+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
 		return consulta;
 	}
 	
 	public String Listar() {
-		String consulta = "select * from Proyecto.Dron where codPort = ? and tipoPort = ?";
+		String consulta = "select * from Proyecto.Dron where codPort = ? ";
 		return consulta;
 	}
 	
 	public String empty() {
-		String consulta = "SELECT COUNT(*) FROM dron WHERE codPort = ? AND tipoPort = ?";
+		String consulta = "SELECT COUNT(*) FROM dron WHERE codPort = ? ";
 		return consulta;
 	}
 	

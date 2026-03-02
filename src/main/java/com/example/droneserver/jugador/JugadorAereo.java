@@ -17,7 +17,7 @@ public class JugadorAereo extends Jugador {
 
         for (int i = 0; i < n; i++) {
             int objId = dronId(i + 1);
-            dronesPos[i] = new Position(sessionId,slot,objId,tipo,0, 0, 0,0, 0, 0, 1);
+            dronesPos[i] = new Position(sessionId,slot,objId,0, 0, 0,0, 0, 0, 1);
             vidas[i] = 1;
         }
     }

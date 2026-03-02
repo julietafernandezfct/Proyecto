@@ -1,4 +1,4 @@
-package com.example.droneserver.controllers;
+/*package com.example.droneserver.controllers;
 
 import java.util.List;
 
@@ -38,4 +38,4 @@ public class PersistenciaController {
 
 	    return p;
 	}
-}
+}*/

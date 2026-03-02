@@ -59,7 +59,7 @@ public class GameController {
 			return "NO";
 		pos.sessionId = jugador.getSessionId();
 		pos.slot = jugador.getSlot();
-		pos.tipo = "PORTA";
+		//pos.tipo = "PORTA";
 		pos.objId = portaEsperado;
 		return jugador.colocarPorta(pos) ? "OK" : "NO";
 	}
@@ -80,11 +80,11 @@ public class GameController {
 				continue;
 			p.sessionId = jugador.getSessionId();
 			p.slot = jugador.getSlot();
-			if (jugador.getObjIdPorta() == p.objId)
+			/*if (jugador.getObjIdPorta() == p.objId)
 				p.tipo = "PORTA";
 			else
 				p.tipo = jugador.getTipo();
-			jugador.actualizarPosicion(p.objId, p);
+			jugador.actualizarPosicion(p.objId, p);*/
 		}
 		return "OK";
 	}
@@ -130,7 +130,7 @@ public class GameController {
 			portaPos.sessionId = sid;
 			portaPos.slot = slot;
 			portaPos.objId = portaId;
-			portaPos.tipo = "PORTA";
+			//portaPos.tipo = "PORTA";
 			posiciones.add(portaPos);
 			}
 		Position[] drones = jugador.getDronesPos();
@@ -143,7 +143,7 @@ public class GameController {
 			municion.add(new DatoMunicion(sid, p.objId, 0));
 			p.sessionId = sid;
 			p.slot = slot;
-			p.tipo = jugador.getTipo();
+			//p.tipo = jugador.getTipo();
 			posiciones.add(p);
 		}
 	}
@@ -236,7 +236,7 @@ public class GameController {
 	}
 	
 	@PostMapping("/recargar/{codigo}")
-	public String Disparar(@PathVariable String codigo, @RequestBody SolicitudRecarga req) {
+	public String Recargar(@PathVariable String codigo, @RequestBody SolicitudRecarga req) {
 		Sala sala = salas.get(codigo);
 		if (sala == null)
 			return "Sala no existe.";

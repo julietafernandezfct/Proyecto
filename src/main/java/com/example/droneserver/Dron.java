@@ -1,15 +1,34 @@
 package com.example.droneserver;
 
+<<<<<<< HEAD
 import java.util.List;
+=======
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+>>>>>>> branch 'main' of https://github.com/julietafernandezfct/Proyecto.git
 
 //SACAR Y PASAR LO QUE FALTA A LA CLASE EN EL PACKAGE PERSISTENCIA
+@Entity
 public class Dron {
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private int codigo;   //pasa a int
     private String codPort;
-	private String tipo;
     private int vida;
     private int municion;
+    @Embedded
     private Position posicion; // null hasta que llegue update
+    
+    @ManyToOne
+    @JoinColumn(name = "porta_drones_id")
+    private PortaDrones portaDrones;
 
     
     public Dron(int codigo, int vidaInicial, int municionInicial) {
@@ -18,11 +37,10 @@ public class Dron {
         this.municion = municionInicial;
     }
     
-    public Dron(int cod, String codP, String tip, int mun, Position posi, int vid) {
+    public Dron(int cod, String codP, int mun, Position posi, int vid) {
 		codigo = cod;
 		codPort = codP;
 		municion = mun;
-		tipo = tip;
 		posicion = posi;
 		vida = vid;
 	}
@@ -35,9 +53,9 @@ public class Dron {
 		return codPort;
 	}
     
-    public String getTipo() {
-		return tipo;
-	}
+    //public String getTipo() {
+//		return tipo;
+	//}
 	
     public int getVida() { 
     	return vida; 
