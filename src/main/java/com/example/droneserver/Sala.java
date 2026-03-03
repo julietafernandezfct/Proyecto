@@ -31,12 +31,12 @@ public class Sala {
 
     public void CrearHost(String sessionId) {
         if (host == null) 
-        	host = new JugadorAereo(sessionId, 1);
+        	host = new JugadorAereo(sessionId, 1, 0);
     }
 
     public void CrearJoin(String sessionId) {
         if (join == null) 
-        	join = new JugadorNaval(sessionId, 2);
+        	join = new JugadorNaval(sessionId, 2, 1);
     }
 
     public Jugador GetHost() { 

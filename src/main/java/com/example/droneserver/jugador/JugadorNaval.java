@@ -4,12 +4,12 @@ import com.example.droneserver.Position;
 
 public class JugadorNaval extends Jugador {
 
-    public JugadorNaval(String sessionId, int slot) {
+    public JugadorNaval(String sessionId, int slot, int id) {
 
         this.sessionId = sessionId;
         this.slot = slot;
         this.tipo = "NAVAL";
-        this.objId = 1;
+        this.objId = id;
 
         int n = 6;
 
