@@ -98,62 +98,41 @@ public class GameController {
 	
 	@GetMapping("/state/{codigo}")
 	public Object State(@PathVariable String codigo) {
-		Sala sala = salas.get(codigo);
-		if (sala == null) 
-			return "Sala no existe.";
-		TickProyectiles(sala, 0.1f);
-		List<Position> posiciones = new ArrayList<>();
-		List<DatoVida> vidas = new ArrayList<>();
-		List<DatoMunicion> municion = new ArrayList<>();
-		AgregarEstadoJugador(sala.GetHost(), posiciones, vidas, municion);
-		AgregarEstadoJugador(sala.GetJoin(), posiciones, vidas, municion);
-		List<DatoProyectil> proyectiles = new ArrayList<>();
-		if (sala.GetProyectiles() != null) {
-			for (Proyectil p : sala.GetProyectiles()) {
-				if (!p.activo) 
-					continue;
-				DatoProyectil dp = new DatoProyectil();
-				dp.id = p.id;
-				dp.x = p.x; dp.y = p.y; dp.z = p.z;
-				proyectiles.add(dp);
-			}
-		}
-		RespuestaEstado resp = new RespuestaEstado();
-		resp.posiciones = posiciones.toArray(new Position[0]);
-		resp.vidas = vidas.toArray(new DatoVida[0]);
-		resp.municion = municion.toArray(new DatoMunicion[0]);
-		resp.proyectiles = proyectiles.toArray(new DatoProyectil[0]);
-		return resp;
+	    Sala sala = salas.get(codigo);
+	    if (sala == null)
+	        return "Sala no existe.";
+
+	    List<Position> posiciones = new ArrayList<>();
+	    List<DatoVida> vidas = new ArrayList<>();
+	    List<DatoMunicion> municion = new ArrayList<>();
+
+	    AgregarEstadoPorta(sala.GetHost(), posiciones, vidas);
+	    AgregarEstadoPorta(sala.GetJoin(), posiciones, vidas);
+
+	    RespuestaEstado resp = new RespuestaEstado();
+	    resp.posiciones = posiciones.toArray(new Position[0]);
+	    resp.vidas = vidas.toArray(new DatoVida[0]);
+	    resp.municion = municion.toArray(new DatoMunicion[0]);
+	    resp.proyectiles = new DatoProyectil[0];
+
+	    return resp;
 	}
-	//guarda todos los datos de un jugador
-	private void AgregarEstadoJugador(Jugador jugador,List<Position>posiciones,List<DatoVida> vidas,List<DatoMunicion> municion) {
-		if (jugador == null) 
-			return;
-		String sid = jugador.getSessionId();
-		int slot = jugador.getSlot();
-		int portaId = jugador.getObjIdPorta();
-		vidas.add(new DatoVida(portaId,  jugador.getPortaVida()));
-		Position portaPos = jugador.getPortaPosicion();
-		if (portaPos != null) {
-			portaPos.sessionId = sid;
-			portaPos.slot = slot;
-			portaPos.objId = portaId;
-			portaPos.tipo = "PORTA";
-			posiciones.add(portaPos);
-			}
-		Position[] drones = jugador.getDronesPos();
-		int[] v = jugador.getVidas();
-		for (int i = 1; i < drones.length + 1; i++) {
-			Position p = drones[i];
-			if (p == null)
-				continue;
-			vidas.add(new DatoVida(p.objId, v[i]));
-			municion.add(new DatoMunicion(sid, p.objId, 0));
-			p.sessionId = sid;
-			p.slot = slot;
-			p.tipo = jugador.getTipo();
-			posiciones.add(p);
-		}
+
+	private void AgregarEstadoPorta(Jugador jugador, List<Position> posiciones, List<DatoVida> vidas) {
+	    if (jugador == null) return;
+
+	    int portaId = jugador.getObjIdPorta();
+	    vidas.add(new DatoVida(portaId, jugador.getPortaVida()));
+
+	    Position portaPos = jugador.getPortaPosicion();
+	    if (portaPos == null) return;
+
+	    portaPos.sessionId = jugador.getSessionId();
+	    portaPos.slot = jugador.getSlot();
+	    portaPos.objId = portaId;
+	    portaPos.tipo = "PORTA";
+
+	    posiciones.add(portaPos);
 	}
 	
 	@PostMapping("/disparar/{codigo}")
