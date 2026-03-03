@@ -138,7 +138,7 @@ public class GameController {
 			portaPos.sessionId = sid;
 			portaPos.slot = slot;
 			portaPos.objId = portaId;
-			//portaPos.tipo = "PORTA";
+			portaPos.tipo = "PORTA";
 			posiciones.add(portaPos);
 			}
 		Position[] drones = jugador.getDronesPos();
