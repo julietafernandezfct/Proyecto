@@ -143,7 +143,7 @@ public class GameController {
 			}
 		Position[] drones = jugador.getDronesPos();
 		int[] v = jugador.getVidas();
-		for (int i = 0; i < drones.length; i++) {
+		for (int i = 1; i < drones.length + 1; i++) {
 			Position p = drones[i];
 			if (p == null)
 				continue;
