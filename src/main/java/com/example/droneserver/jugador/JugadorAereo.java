@@ -9,6 +9,7 @@ public class JugadorAereo extends Jugador {
         this.sessionId = sessionId;
         this.slot = slot;
         this.tipo = "AEREO";
+        this.objId = 0;
 
         int n = 12;
 

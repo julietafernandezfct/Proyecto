@@ -8,7 +8,8 @@ public abstract class Jugador {
     protected String sessionId;
     protected int slot;
     protected String tipo;
-
+    protected int objId;
+    
     protected Position[] dronesPos;
     protected int[] vidas;
     protected int municion;
@@ -32,7 +33,7 @@ public abstract class Jugador {
     }
 
     public int getObjIdPorta() {
-        return 0;
+        return objId;
     }
 
     public Position getPortaPosicion() {

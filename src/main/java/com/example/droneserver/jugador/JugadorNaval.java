@@ -9,6 +9,7 @@ public class JugadorNaval extends Jugador {
         this.sessionId = sessionId;
         this.slot = slot;
         this.tipo = "NAVAL";
+        this.objId = 1;
 
         int n = 6;
 
