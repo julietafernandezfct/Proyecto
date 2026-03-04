@@ -104,6 +104,7 @@ public class GameController {
 				continue;
 			p.sessionId = jugador.getSessionId();
 			p.slot = jugador.getSlot();
+			p.tipo = jugador.getTipo();
 			jugador.actualizarPosicion(p.objId, p);
 		}
 		return "OK";
