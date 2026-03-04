@@ -262,11 +262,7 @@ public class GameController {
 	    int objId = req.objIdDisparador;
 	    if (objId <= 0) return "NO";
 
-	    Position[] drones = jugador.getDronesPos();
-	    int idx = objId - 1;
-	    if (idx < 0 || idx >= drones.length) return "NO";
-
-	    Position dp = drones[idx];
+	    Position dp = jugador.getDronPorObjId(objId);
 	    if (dp == null) return "NO";
 
 	    if (distanciaRecarga(portaPos.x, portaPos.y, portaPos.z, dp.x, dp.y, dp.z)) {
