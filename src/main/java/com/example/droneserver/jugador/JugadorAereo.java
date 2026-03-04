@@ -23,7 +23,7 @@ public class JugadorAereo extends Jugador {
 
         for (int i = 0; i < n; i++) {
             int objId = baseDronId() + i; // 8..19
-            dronesPos[i] = new Position(sessionId, slot, objId, 0, 0, 0, 0, 0, 0, 1);
+            dronesPos[i] = null; //inicializamos todas las posiciones en null hasta que se spawneen 
             vidas[i] = 1;
         }
     }
