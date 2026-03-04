@@ -24,7 +24,7 @@ public class PortaDrones {
     private List<Dron> drones = new ArrayList<>();
 	private String idPartida;
     
-	public PortaDrones(String partida, Position pos, int vid, String tip) {
+	public PortaDrones(String partida, Position pos, int vid) {
 		idPartida = partida;
 		posicion = pos;
 		vida = vid;
@@ -88,7 +88,7 @@ public class PortaDrones {
     }
 
     public PortaDrones levantarPortadrones(DAOPortadron dao) {
-    	return dao.find(idPartida, posicion.getTipo());    	
+    	return dao.find(idPartida);    	
     }
     
 }

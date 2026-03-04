@@ -10,7 +10,7 @@ public class Consultas {
 	}
 	
 	public String member() {
-		String consulta = "select * from Proyecto.Portadron where codigo = ? and tipo = ?";
+		String consulta = "select * from Proyecto.Portadron where codigo = ? ";
 		return consulta;
 	}
 	

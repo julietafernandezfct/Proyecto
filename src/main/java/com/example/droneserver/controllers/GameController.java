@@ -66,7 +66,6 @@ public class GameController {
 			return "NO";
 		pos.sessionId = jugador.getSessionId();
 		pos.slot = jugador.getSlot();
-		pos.tipo = "PORTA";
 		pos.objId = portaEsperado;
 		return jugador.colocarPorta(pos) ? "OK" : "NO";
 	}
@@ -87,10 +86,6 @@ public class GameController {
 				continue;
 			p.sessionId = jugador.getSessionId();
 			p.slot = jugador.getSlot();
-			if (jugador.getObjIdPorta() == p.objId)
-				p.tipo = "PORTA";
-			else
-				p.tipo = jugador.getTipo();
 			jugador.actualizarPosicion(p.objId, p);
 		}
 		return "OK";
@@ -125,6 +120,7 @@ public class GameController {
 		resp.proyectiles = proyectiles.toArray(new DatoProyectil[0]);
 		return resp;
 	}
+	
 	//guarda todos los datos de un jugador
 	private void AgregarEstadoJugador(Jugador jugador,List<Position>posiciones,List<DatoVida> vidas,List<DatoMunicion> municion) {
 		if (jugador == null) 
@@ -138,7 +134,6 @@ public class GameController {
 			portaPos.sessionId = sid;
 			portaPos.slot = slot;
 			portaPos.objId = portaId;
-			portaPos.tipo = "PORTA";
 			posiciones.add(portaPos);
 			}
 		Position[] drones = jugador.getDronesPos();
@@ -151,10 +146,10 @@ public class GameController {
 			municion.add(new DatoMunicion(sid, p.objId, 0));
 			p.sessionId = sid;
 			p.slot = slot;
-			p.tipo = jugador.getTipo();
 			posiciones.add(p);
 		}
 	}
+	
 	
 	@PostMapping("/disparar/{codigo}")
 	public String Disparar(@PathVariable String codigo, @RequestBody SolicitudDisparo req)
@@ -242,7 +237,7 @@ public class GameController {
 		float dz = z1 - z2;
 		return (float)Math.sqrt(dx*dx + dy*dy + dz*dz);
 	}
-	
+	/*
 	@PostMapping("/recargar/{codigo}")
 	public String Recargar(@PathVariable String codigo, @RequestBody SolicitudRecarga req) {
 	    Sala sala = salas.get(codigo);
@@ -328,5 +323,5 @@ public class GameController {
 	    }
 
 	    return "PARTIDA CARGADA";
-	}
+	}*/
 }

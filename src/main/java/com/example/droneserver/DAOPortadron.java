@@ -27,8 +27,7 @@ public class DAOPortadron { //hash?
 	            p.getPosicion().posX(),
 	            p.getPosicion().posY(),
 	            p.getPosicion().posZ(),
-	            p.getVida(),
-	            p.getPosicion().getTipo()
+	            p.getVida()
 	    );
 	}
 	
@@ -40,7 +39,7 @@ public class DAOPortadron { //hash?
 	    return count != null && count > 0;
 	}
 	
-	public PortaDrones find(String id, String tipo) {
+	public PortaDrones find(String id) {
 		Consultas cons = new Consultas();
 
 		return jdbcTemplate.queryForObject(cons.member(),
@@ -51,7 +50,7 @@ public class DAOPortadron { //hash?
 		            int vida = rs.getInt("vida");
 
 		            Position pos = new Position(x, y, z);
-		            PortaDrones p = new PortaDrones(id, pos, vida, tipo);
+		            PortaDrones p = new PortaDrones(id, pos, vida);
 		            
 		            DAODron dao = new DAODron(jdbcTemplate);
 		            List<Dron> drones = dao.ListarDrones(id);
@@ -59,7 +58,7 @@ public class DAOPortadron { //hash?
 		            
 		            return p;
 		        },
-		        id, tipo
+		        id
 		    );
 	}
 	
