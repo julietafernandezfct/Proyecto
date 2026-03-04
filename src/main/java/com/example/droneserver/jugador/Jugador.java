@@ -18,6 +18,12 @@ public abstract class Jugador {
     protected int portaVida = 10;
     protected PortaDrones porta;
 
+    protected abstract int baseDronId();
+
+    protected int idxFromObjId(int objId) {
+        return objId - baseDronId();
+    }
+    
     public String getSessionId() { 
     	return sessionId; 
     }
@@ -77,51 +83,50 @@ public abstract class Jugador {
         return true;
     }
 
-    public void actualizarPosicion(int objId, Position pos) {
+    public void actualizarPosicion(int objId, Position p) {
+        if (objId == this.objId) { // si este objId es del porta
+            this.portaPos = p;
+            return;
+        }
 
-        if (pos == null)
-            return;
-        if (objId == getObjIdPorta()) {
-            if (portaPos == null)
-                return;
-            portaPos.x = pos.x; portaPos.y = pos.y; portaPos.z = pos.z;
-            portaPos.qx = pos.qx; portaPos.qy = pos.qy; portaPos.qz = pos.qz; portaPos.qw = pos.qw;
-            return;
-        }
-        for (int i = 0; i < dronesPos.length; i++) {
-            if (i + 1 == objId && dronesPos[i] != null) {
-                dronesPos[i].x = pos.x; dronesPos[i].y = pos.y; dronesPos[i].z = pos.z;
-                dronesPos[i].qx = pos.qx; dronesPos[i].qy = pos.qy; dronesPos[i].qz = pos.qz; dronesPos[i].qw = pos.qw;
-                return;
-            }
-        }
+        int idx = idxFromObjId(objId);
+        if (idx < 0 || idx >= dronesPos.length) return;
+
+        dronesPos[idx] = p;
+        // por si querés asegurar el objId:
+        dronesPos[idx].objId = objId;
     }
 
     public void aplicarDanio(int objId, int danio) {
-    	//se necesita?
-        if (danio <= 0)
-            return;
-        if (objId == getObjIdPorta()) {
+        if (objId == this.objId) {
             portaVida = Math.max(0, portaVida - danio);
             return;
         }
-        //no tiene sentido que este for este en un if?
-        for (int i = 0; i < dronesPos.length; i++) {
-            if (i + 1 == objId) {
-                vidas[i] = Math.max(0, vidas[i] - danio);
-                //conultar con jose, esta peligroso este return
-                return;
-            }
-        }
+
+        int idx = idxFromObjId(objId);
+        if (idx < 0 || idx >= vidas.length) return;
+
+        vidas[idx] = Math.max(0, vidas[idx] - danio);
     }
     
     public void recargaMunicion(int objId) {
-    	for(int i = 0; i < dronesPos.length; i++) {
-    		if(i + 1 == objId) {
-    			municion = municion + 1;
-    			//misma situacion 
-    			return;
-    		}
-    	}
+        int idx = idxFromObjId(objId);
+        if (idx < 0 || idx >= dronesPos.length) return;
+
+        // ejemplo:
+        // municion[idx] = MAX;
     }
+
+    public abstract Position getDronPorObjId(int objId);
+
+public int[] getDronesIds() {
+
+    int[] ids = new int[dronesPos.length];
+
+    for (int i = 0; i < dronesPos.length; i++) {
+        ids[i] = dronesPos[i].objId;
+    }
+
+    return ids;
+}
 }

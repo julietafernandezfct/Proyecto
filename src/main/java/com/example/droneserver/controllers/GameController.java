@@ -33,20 +33,38 @@ public class GameController {
 	    Sala sala = new Sala();
 	    sala.CrearHost(sessionId);
 	    salas.put(sala.GetCodigo(), sala);
+	    
+	    Jugador host = sala.GetHost();
 
-	    return new JoinResponse(sala.GetCodigo(),sessionId,sala.GetCantidadJugadores());
+	    return new JoinResponse(
+	        sala.GetCodigo(),
+	        sessionId,
+	        sala.GetCantidadJugadores(),
+	        host.getObjIdPorta(),
+	        host.getDronesIds()
+	    );
 	}
 		
 	@GetMapping("/join/{codigo}")
 	public JoinResponse UnirseSala(@PathVariable String codigo) {
 		String sessionId = UUID.randomUUID().toString();
 		Sala sala = salas.get(codigo);
+		
 		if (sala == null) {
-			return new JoinResponse(codigo, sessionId, 0);
+			return new JoinResponse(codigo, sessionId, 0, 0, null);
 		}
 		sala.CrearJoin(sessionId);
 		System.out.println("SALAS ACTUALES: " + salas.keySet());
-		return new JoinResponse(codigo,sessionId,sala.GetCantidadJugadores());
+		Jugador join = sala.GetJoin();
+
+		return new JoinResponse(
+		    codigo,
+		    sessionId,
+		    sala.GetCantidadJugadores(),
+		    join.getObjIdPorta(),
+		    join.getDronesIds()
+		);
+
 	}
 	
 	//bloquea el portadron cuando es colocado en el mapa
@@ -138,7 +156,7 @@ public class GameController {
 			}
 		Position[] drones = jugador.getDronesPos();
 		int[] v = jugador.getVidas();
-		for (int i = 1; i < drones.length + 1; i++) {
+		for (int i = 0; i < drones.length; i++) {
 			Position p = drones[i];
 			if (p == null)
 				continue;
@@ -253,11 +271,7 @@ public class GameController {
 	    int objId = req.objIdDisparador;
 	    if (objId <= 0) return "NO";
 
-	    Position[] drones = jugador.getDronesPos();
-	    int idx = objId - 1;
-	    if (idx < 0 || idx >= drones.length) return "NO";
-
-	    Position dp = drones[idx];
+	    Position dp = jugador.getDronPorObjId(objId);
 	    if (dp == null) return "NO";
 
 	    if (distanciaRecarga(portaPos.x, portaPos.y, portaPos.z, dp.x, dp.y, dp.z)) {

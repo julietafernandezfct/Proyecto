@@ -4,6 +4,11 @@ import com.example.droneserver.Position;
 
 public class JugadorNaval extends Jugador {
 
+		@Override
+	protected int baseDronId() {
+	    return 2;
+	}
+		
     public JugadorNaval(String sessionId, int slot, int id) {
 
         this.sessionId = sessionId;
@@ -17,9 +22,44 @@ public class JugadorNaval extends Jugador {
         vidas = new int[n];
 
         for (int i = 0; i < n; i++) {
-            int objId = dronId(i + 1);
-            dronesPos[i] = new Position(sessionId,slot,objId, 0, 0, 0, 0, 0, 0, 1);
+            int objId = baseDronId() + i; // 2..7
+            dronesPos[i] = new Position(sessionId, slot, objId, 0, 0, 0, 0, 0, 0, 1);
             vidas[i] = 2;
         }
+    }
+    
+    @Override
+    public void actualizarPosicion(int objId, Position p) {
+        if (objId == this.objId) { portaPos = p; return; }
+        int idx = idxFromObjId(objId);
+        if (idx < 0 || idx >= dronesPos.length) return;
+        dronesPos[idx] = p;
+        dronesPos[idx].objId = objId;
+    }
+
+    @Override
+    public void aplicarDanio(int objId, int danio) {
+        if (objId == this.objId) { portaVida = Math.max(0, portaVida - danio); return; }
+        int idx = idxFromObjId(objId);
+        if (idx < 0 || idx >= vidas.length) return;
+        vidas[idx] = Math.max(0, vidas[idx] - danio);
+    }
+
+    @Override
+    public void recargaMunicion(int objId) {
+        int idx = idxFromObjId(objId);
+        if (idx < 0 || idx >= dronesPos.length) return;
+        // tu lógica real de recarga acá
+    }
+    
+    @Override
+    public Position getDronPorObjId(int objId) {
+
+        int idx = objId - 2;
+
+        if (idx < 0 || idx >= dronesPos.length)
+            return null;
+
+        return dronesPos[idx];
     }
 }
