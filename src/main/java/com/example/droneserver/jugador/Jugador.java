@@ -117,4 +117,16 @@ public abstract class Jugador {
         // municion[idx] = MAX;
     }
 
-    public abstract Position getDronPorObjId(int objId);}
+    public abstract Position getDronPorObjId(int objId);
+
+public int[] getDronesIds() {
+
+    int[] ids = new int[dronesPos.length];
+
+    for (int i = 0; i < dronesPos.length; i++) {
+        ids[i] = dronesPos[i].objId;
+    }
+
+    return ids;
+}
+}

@@ -35,7 +35,14 @@ public class GameController {
 	    salas.put(sala.GetCodigo(), sala);
 	    
 	    Jugador host = sala.GetHost();
-	    return new JoinResponse(sala.GetCodigo(), sessionId, sala.GetCantidadJugadores(), host.getObjIdPorta());
+
+	    return new JoinResponse(
+	        sala.GetCodigo(),
+	        sessionId,
+	        sala.GetCantidadJugadores(),
+	        host.getObjIdPorta(),
+	        host.getDronesIds()
+	    );
 	}
 		
 	@GetMapping("/join/{codigo}")
@@ -44,12 +51,19 @@ public class GameController {
 		Sala sala = salas.get(codigo);
 		
 		if (sala == null) {
-			return new JoinResponse(codigo, sessionId, 0, 0);
+			return new JoinResponse(codigo, sessionId, 0, 0, null);
 		}
 		sala.CrearJoin(sessionId);
 		System.out.println("SALAS ACTUALES: " + salas.keySet());
 		Jugador join = sala.GetJoin();
-		return new JoinResponse(codigo, sessionId, sala.GetCantidadJugadores(), join.getObjIdPorta());
+
+		return new JoinResponse(
+		    codigo,
+		    sessionId,
+		    sala.GetCantidadJugadores(),
+		    join.getObjIdPorta(),
+		    join.getDronesIds()
+		);
 
 	}
 	
