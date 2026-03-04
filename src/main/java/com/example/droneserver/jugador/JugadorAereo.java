@@ -22,17 +22,20 @@ public class JugadorAereo extends Jugador {
         vidas = new int[n];
 
         for (int i = 0; i < n; i++) {
-            int objId = dronId(i + 1);
-            dronesPos[i] = new Position(sessionId,slot,objId,0, 0, 0,0, 0, 0, 1);
+            int objId = baseDronId() + i; // 8..19
+            dronesPos[i] = new Position(sessionId, slot, objId, 0, 0, 0, 0, 0, 0, 1);
             vidas[i] = 1;
         }
     }
     
     @Override
     public void actualizarPosicion(int objId, Position p) {
-        if (objId == this.objId) { portaPos = p; return; }
+        if (objId == this.objId) { 
+        	portaPos = p; 
+        	return; }
         int idx = idxFromObjId(objId);
-        if (idx < 0 || idx >= dronesPos.length) return;
+        if (idx < 0 || idx >= dronesPos.length) 
+        	return;
         dronesPos[idx] = p;
         dronesPos[idx].objId = objId;
     }

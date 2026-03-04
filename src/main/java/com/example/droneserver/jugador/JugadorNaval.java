@@ -22,8 +22,8 @@ public class JugadorNaval extends Jugador {
         vidas = new int[n];
 
         for (int i = 0; i < n; i++) {
-            int objId = dronId(i + 1);
-            dronesPos[i] = new Position(sessionId,slot,objId, 0, 0, 0, 0, 0, 0, 1);
+            int objId = baseDronId() + i; // 2..7
+            dronesPos[i] = new Position(sessionId, slot, objId, 0, 0, 0, 0, 0, 0, 1);
             vidas[i] = 2;
         }
     }
