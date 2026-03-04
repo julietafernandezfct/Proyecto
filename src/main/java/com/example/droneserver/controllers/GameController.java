@@ -255,7 +255,7 @@ public class GameController {
 		float dz = z1 - z2;
 		return (float)Math.sqrt(dx*dx + dy*dy + dz*dz);
 	}
-	/*
+	
 	@PostMapping("/recargar/{codigo}")
 	public String Recargar(@PathVariable String codigo, @RequestBody SolicitudRecarga req) {
 	    Sala sala = salas.get(codigo);
@@ -264,15 +264,23 @@ public class GameController {
 
 	    Jugador jugador = sala.GetJugadorPorSession(req.sessionId);
 	    if (jugador == null) return "NO";
-
-	    Position portaPos = jugador.getPortaPosicion();
-	    if (portaPos == null) return "NO";
-
+	    
+	    //agarro el dron
 	    int objId = req.objIdDisparador;
 	    if (objId <= 0) return "NO";
-
+	    
 	    Position dp = jugador.getDronPorObjId(objId);
 	    if (dp == null) return "NO";
+
+	    //veo a que portadron tiene que apuntar
+	    Position portaPos = jugador.getPortaPosicion();
+	    if (portaPos == null ) {
+	    	return "NO";
+	    }else if(portaPos.objId == 0 && (dp.objId < 8 || dp.objId > 19)) { //si porta es aereo, dron id [8 ... 19]
+	    	return "NO";
+	    }else if(portaPos.objId == 1 && (dp.objId < 2 || dp.objId > 7)) { //si porta es naval, dron id [2 ... 7]
+	    	return "NO";
+	    }	    
 
 	    if (distanciaRecarga(portaPos.x, portaPos.y, portaPos.z, dp.x, dp.y, dp.z)) {
 	        jugador.recargaMunicion(objId);
@@ -337,5 +345,5 @@ public class GameController {
 	    }
 
 	    return "PARTIDA CARGADA";
-	}*/
+	}
 }
