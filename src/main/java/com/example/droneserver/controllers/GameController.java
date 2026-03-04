@@ -152,19 +152,20 @@ public class GameController {
 			portaPos.sessionId = sid;
 			portaPos.slot = slot;
 			portaPos.objId = portaId;
+			portaPos.tipo = "PORTA";
 			posiciones.add(portaPos);
 			}
 		Position[] drones = jugador.getDronesPos();
 		int[] v = jugador.getVidas();
 		for (int i = 0; i < drones.length; i++) {
-			Position p = drones[i];
-			if (p == null)
-				continue;
-			vidas.add(new DatoVida(p.objId, v[i]));
-			municion.add(new DatoMunicion(sid, p.objId, 0));
-			p.sessionId = sid;
-			p.slot = slot;
-			posiciones.add(p);
+		    Position p = drones[i];
+		    if (p == null) continue;  // ← skip undeployed drones
+		    vidas.add(new DatoVida(p.objId, v[i]));
+		    municion.add(new DatoMunicion(sid, p.objId, 0));
+		    p.sessionId = sid;
+		    p.slot = slot;
+		    p.tipo = jugador.getTipo();
+		    posiciones.add(p);
 		}
 	}
 	

@@ -119,14 +119,14 @@ public abstract class Jugador {
 
     public abstract Position getDronPorObjId(int objId);
 
-public int[] getDronesIds() {
-
-    int[] ids = new int[dronesPos.length];
-
-    for (int i = 0; i < dronesPos.length; i++) {
-        ids[i] = dronesPos[i].objId;
-    }
-
-    return ids;
-}
+	public int[] getDronesIds() {
+	
+	    int[] ids = new int[dronesPos.length];
+	
+	    for (int i = 0; i < dronesPos.length; i++) {
+	    	ids[i] = (dronesPos[i] != null) ? dronesPos[i].objId : -1;
+	    }
+	
+	    return ids;
+	}
 }
