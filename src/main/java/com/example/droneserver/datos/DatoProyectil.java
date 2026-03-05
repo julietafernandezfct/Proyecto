@@ -3,6 +3,7 @@ package com.example.droneserver.datos;
 public class DatoProyectil {
 
     public String id;
+    public String sessionId;
     public float x;
     public float y;
     public float z;
