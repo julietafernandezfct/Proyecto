@@ -129,6 +129,8 @@ public class GameController {
 				DatoProyectil dp = new DatoProyectil();
 				dp.id = p.id;
 				dp.x = p.x; dp.y = p.y; dp.z = p.z;
+				dp.dx = p.dx; dp.dy = p.dy; dp.dz = p.dz;   
+				dp.velocidad = p.velocidad;   
 				proyectiles.add(dp);
 			}
 		}

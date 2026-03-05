@@ -6,6 +6,8 @@ public class DatoProyectil {
     public float x;
     public float y;
     public float z;
+    public float dx, dy, dz;    
+    public float velocidad;
 
     public DatoProyectil() {}
 
