@@ -10,6 +10,7 @@ public class RespuestaEstado {
     public DatoVida[] vidas;
     public DatoMunicion[] municion;
     public DatoProyectil[] proyectiles;
+    public ResultadoPartida resultado;
 
     public RespuestaEstado() {}
 }
