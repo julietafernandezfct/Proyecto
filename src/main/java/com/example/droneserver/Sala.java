@@ -7,7 +7,7 @@ import com.example.droneserver.jugador.JugadorNaval;
 
 public class Sala {
 
-    private final String codigo = UUID.randomUUID().toString().substring(0, 6);
+    private final String codigo;
 
     private Jugador host; // aéreo
     private Jugador join; // naval
@@ -20,7 +20,14 @@ public class Sala {
     public java.util.List<Proyectil> GetProyectiles() { 
     	return proyectiles; }
     
+    public Sala() {
+        this.codigo = UUID.randomUUID().toString().substring(0, 6);
+    }
     
+    public Sala(String codigoFijo) {
+        this.codigo = codigoFijo;
+    }
+
 
     public String GetCodigo() { return codigo; }
 

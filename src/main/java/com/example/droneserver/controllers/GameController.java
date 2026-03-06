@@ -355,10 +355,14 @@ public class GameController {
 	    Jugador host = sala.GetHost();
 
 	    // objId 0 = AEREO = host
-	    if (daoPorta.member(codigoGuardado, "AEREO")) {
-	        PortaDrones portaHost = daoPorta.find(codigoGuardado, "AEREO");
-	        host.setPorta(portaHost);
-	        RestaurarEstadoJugador(host, portaHost);
+	    try {
+	        if (daoPorta.member(codigoGuardado, "AEREO")) {
+	            PortaDrones portaHost = daoPorta.find(codigoGuardado, "AEREO");
+	            host.setPorta(portaHost);
+	            RestaurarEstadoJugador(host, portaHost);
+	        }
+	    } catch (Exception e) {
+	        System.out.println("No hay estado guardado para AEREO: " + e.getMessage());
 	    }
 
 	    return new JoinResponse(
