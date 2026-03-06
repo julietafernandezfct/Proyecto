@@ -57,10 +57,14 @@ public class GameController {
 		System.out.println("SALAS ACTUALES: " + salas.keySet());
 		Jugador join = sala.GetJoin();
 		
-		if (daoPorta.member(codigo, "NAVAL")) {
-	        PortaDrones portaJoin = daoPorta.find(codigo, "NAVAL");
-	        join.setPorta(portaJoin);
-	        RestaurarEstadoJugador(join, portaJoin);
+		try {
+	        if (daoPorta.member(codigo, "NAVAL")) {
+	            PortaDrones portaJoin = daoPorta.find(codigo, "NAVAL");
+	            join.setPorta(portaJoin);
+	            RestaurarEstadoJugador(join, portaJoin);
+	        }
+	    } catch (Exception e) {
+	        System.out.println("No hay partida guardada para este código, join normal: " + e.getMessage());
 	    }
 
 
@@ -367,6 +371,7 @@ public class GameController {
 	}
 	
 	//LEVANTARPARTIDA
+	//creo q hay q sacar esta clase pero me estoy volviendo loca
 	@GetMapping("/load/{codigo}")
 	public String cargarPartida(@PathVariable String codigo) {
 
@@ -440,6 +445,7 @@ public class GameController {
 	        }
 	    }
 	}
+	
 	private boolean TodosLosDronesMuertos(Jugador j) {
 	    int[] vidas = j.getVidas();
 	    for (int v : vidas) if (v > 0) return false;
