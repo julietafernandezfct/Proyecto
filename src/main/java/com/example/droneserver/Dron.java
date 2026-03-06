@@ -25,6 +25,7 @@ public class Dron {
     private int vida;
     private int municion;
     private Position posicion; // null hasta que llegue update
+    
 
     
     public Dron(int codigo, int vidaInicial, int municionInicial) {

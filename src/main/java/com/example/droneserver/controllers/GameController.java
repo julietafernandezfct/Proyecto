@@ -20,9 +20,9 @@ public class GameController {
 	private final DAODron daoDron;
 	private final Map<String, Sala> salas = new HashMap<>();
 	
-	public GameController(DAOPortadron daoPorta, DAODron daoDron) {
+	public GameController(DAOPortadron daoPorta, DAODron daoD) {
         this.daoPorta = daoPorta;
-        this.daoDron = daoDron;
+        this.daoDron = daoD;
     }
 
 	@GetMapping("/create")
@@ -56,6 +56,13 @@ public class GameController {
 		sala.CrearJoin(sessionId);
 		System.out.println("SALAS ACTUALES: " + salas.keySet());
 		Jugador join = sala.GetJoin();
+		
+		if (daoPorta.member(codigo, "NAVAL")) {
+	        PortaDrones portaJoin = daoPorta.find(codigo, "NAVAL");
+	        join.setPorta(portaJoin);
+	        RestaurarEstadoJugador(join, portaJoin);
+	    }
+
 
 		return new JoinResponse(
 		    codigo,
@@ -320,14 +327,43 @@ public class GameController {
 	    Jugador join = sala.GetJoin();
 
 	    if (host != null && host.getPorta() != null) {
-	        host.getPorta().guardarPortadron(daoPorta);
+	    	host.getPorta().setIdPartida(codigo);
+	        // tipo ya está en portaPos.tipo = "AEREO" porque vino del moveBatch
+	    	host.getPorta().guardarPortadron(daoPorta, daoDron);
 	    }
 
 	    if (join != null && join.getPorta() != null) {
-	        join.getPorta().guardarPortadron(daoPorta);
+	    	join.getPorta().setIdPartida(codigo);
+	        // tipo ya está en portaPos.tipo = "NAVAL"
+	        join.getPorta().guardarPortadron(daoPorta, daoDron);
 	    }
 
 	    return "PARTIDA GUARDADA";
+	}
+	
+	@GetMapping("/loadAndCreate/{codigoGuardado}")
+	public JoinResponse loadAndCreate(@PathVariable String codigoGuardado) {
+	    String sessionIdHost = UUID.randomUUID().toString();
+	    Sala sala = new Sala();
+	    sala.CrearHost(sessionIdHost);
+	    salas.put(codigoGuardado, sala);
+
+	    Jugador host = sala.GetHost();
+
+	    // objId 0 = AEREO = host
+	    if (daoPorta.member(codigoGuardado, "AEREO")) {
+	        PortaDrones portaHost = daoPorta.find(codigoGuardado, "AEREO");
+	        host.setPorta(portaHost);
+	        RestaurarEstadoJugador(host, portaHost);
+	    }
+
+	    return new JoinResponse(
+	        codigoGuardado,
+	        sessionIdHost,
+	        sala.GetCantidadJugadores(),
+	        host.getObjIdPorta(),
+	        host.getDronesIds()
+	    );
 	}
 	
 	//LEVANTARPARTIDA
@@ -342,12 +378,12 @@ public class GameController {
 	    Jugador join = sala.GetJoin();
 
 	    if (host != null) {
-	        PortaDrones portaHost = host.getPorta().levantarPortadrones(daoPorta);
+	        PortaDrones portaHost = host.getPorta().levantarPortadrones(daoPorta, "AEREO");
 	        host.setPorta(portaHost);
 	    }
 
 	    if (join != null) {
-	        PortaDrones portaJoin = join.getPorta().levantarPortadrones(daoPorta);
+	        PortaDrones portaJoin = join.getPorta().levantarPortadrones(daoPorta, "NAVAL");
 	        join.setPorta(portaJoin);
 	    }
 
@@ -408,6 +444,38 @@ public class GameController {
 	    int[] vidas = j.getVidas();
 	    for (int v : vidas) if (v > 0) return false;
 	    return true;
+	}
+	
+	private void RestaurarEstadoJugador(Jugador jugador, PortaDrones porta) {
+	    // Restaurar posición del porta
+	    Position portaPos = porta.getPosicion();
+	    if (portaPos != null) {
+	        portaPos.objId = jugador.getObjIdPorta();
+	        portaPos.sessionId = jugador.getSessionId();
+	        portaPos.slot = jugador.getSlot();
+	        portaPos.tipo = "PORTA";
+	        jugador.setPortaPos(portaPos);
+	        jugador.colocarPorta(portaPos);
+	    }
+
+	    // Restaurar drones
+	    List<Dron> drones = porta.getDrones();
+	    if (drones == null || drones.isEmpty()) return;
+
+	    for (Dron dron : drones) {
+	        // No restaurar muertos
+	        if (dron.estaMuerto()) continue;
+
+	        Position p = dron.getPosicion();
+	        if (p == null) continue;
+
+	        p.objId = dron.codigo();
+	        p.sessionId = jugador.getSessionId();
+	        p.slot = jugador.getSlot();
+	        p.tipo = jugador.getTipo(); // "AEREO" o "NAVAL"
+
+	        jugador.actualizarPosicion(dron.codigo(), p);
+	    }
 	}
 	
 }

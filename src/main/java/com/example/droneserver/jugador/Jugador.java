@@ -82,6 +82,10 @@ public abstract class Jugador {
 
         return true;
     }
+    
+    public void setPortaPos(Position pos) {
+        this.portaPos = pos;
+    }
 
     public void actualizarPosicion(int objId, Position p) {
         if (objId == this.objId) { // si este objId es del porta

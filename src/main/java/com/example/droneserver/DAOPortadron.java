@@ -27,19 +27,20 @@ public class DAOPortadron { //hash?
 	            p.getPosicion().posX(),
 	            p.getPosicion().posY(),
 	            p.getPosicion().posZ(),
-	            p.getVida()
+	            p.getVida(),
+	            p.getPosicion().getTipo()
 	    );
 	}
 	
-	public boolean member(String id) {
+	public boolean member(String id, String tipo) {
 		Consultas cons = new Consultas();
 
-		Integer count = jdbcTemplate.queryForObject(cons.member(), Integer.class, id);
+		Integer count = jdbcTemplate.queryForObject(cons.member(), Integer.class, id, tipo);
 
 	    return count != null && count > 0;
 	}
 	
-	public PortaDrones find(String id) {
+	public PortaDrones find(String id, String tipo) {
 		Consultas cons = new Consultas();
 
 		return jdbcTemplate.queryForObject(cons.member(),
@@ -50,6 +51,7 @@ public class DAOPortadron { //hash?
 		            int vida = rs.getInt("vida");
 
 		            Position pos = new Position(x, y, z);
+		            pos.tipo = tipo;
 		            PortaDrones p = new PortaDrones(id, pos, vida);
 		            
 		            DAODron dao = new DAODron(jdbcTemplate);
