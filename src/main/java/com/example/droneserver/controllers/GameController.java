@@ -345,6 +345,7 @@ public class GameController {
 	    return "PARTIDA GUARDADA";
 	}
 	
+	//crea la partida vieja
 	@GetMapping("/loadAndCreate/{codigoGuardado}")
 	public JoinResponse loadAndCreate(@PathVariable String codigoGuardado) {
 	    String sessionIdHost = UUID.randomUUID().toString();
@@ -374,8 +375,7 @@ public class GameController {
 	    );
 	}
 	
-	//LEVANTARPARTIDA
-	//creo q hay q sacar esta clase pero me estoy volviendo loca
+	//carga la partida guardada, ya tiene que haber sido creada
 	@GetMapping("/load/{codigo}")
 	public String cargarPartida(@PathVariable String codigo) {
 
