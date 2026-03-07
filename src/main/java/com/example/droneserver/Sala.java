@@ -12,7 +12,7 @@ public class Sala {
     private Jugador host; // aéreo
     private Jugador join; // naval
     
-    public ResultadoPartida resultado = new ResultadoPartida("JUGANDO", 0);
+    public ResultadoPartida resultado = new ResultadoPartida("JUGANDO", 0, 0);
     public long tiempoMuertePorta = -1; // tiempo de cuando murió el porta
 
     private final java.util.List<Proyectil> proyectiles = new java.util.ArrayList<>();

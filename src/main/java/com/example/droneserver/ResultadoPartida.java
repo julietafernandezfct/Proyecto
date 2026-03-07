@@ -1,11 +1,13 @@
 package com.example.droneserver;
 
 public class ResultadoPartida {
-    public String estado; // "JUGANDO", "VICTORIA_HOST", "VICTORIA_JOIN", "EMPATE", "CUENTA_REGRESIVA"
+    public String estado;
     public int segundosRestantes;
+    public int slotSinPorta; //slot del jugador que perdió el porta
     
-    public ResultadoPartida(String estado, int segundos) {
+    public ResultadoPartida(String estado, int segundos, int slotSinPorta) {
         this.estado = estado;
         this.segundosRestantes = segundos;
+        this.slotSinPorta = slotSinPorta;
     }
 }

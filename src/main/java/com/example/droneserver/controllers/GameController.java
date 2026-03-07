@@ -403,8 +403,9 @@ public class GameController {
 	    Jugador host = sala.GetHost();
 	    Jugador join = sala.GetJoin();
 	    if (host == null || join == null) return;
-	    if (sala.resultado.estado.equals("VICTORIA_HOST") || sala.resultado.estado.equals("VICTORIA_JOIN") || sala.resultado.estado.equals("EMPATE")) 
-	    	return; // partida terminada, no cambiar
+	    if (sala.resultado.estado.equals("VICTORIA_HOST") || 
+	        sala.resultado.estado.equals("VICTORIA_JOIN") || 
+	        sala.resultado.estado.equals("EMPATE")) return;
 
 	    boolean portaHostMuerto = host.getPortaVida() <= 0;
 	    boolean portaJoinMuerto = join.getPortaVida() <= 0;
@@ -413,39 +414,45 @@ public class GameController {
 
 	    // victoria directa — todos los drones muertos
 	    if (dronesHostMuertos && !portaJoinMuerto && !portaHostMuerto) {
-	        sala.resultado = new ResultadoPartida("VICTORIA_JOIN", 0);
+	        sala.resultado = new ResultadoPartida("VICTORIA_JOIN", 0, 0);
 	        return;
 	    }
 	    if (dronesJoinMuertos && !portaHostMuerto && !portaJoinMuerto) {
-	        sala.resultado = new ResultadoPartida("VICTORIA_HOST", 0);
+	        sala.resultado = new ResultadoPartida("VICTORIA_HOST", 0, 0);
 	        return;
 	    }
 
-	    // porta muerto arranca cuenta regresiva
+	    // porta muerto — arranca cuenta regresiva solo una vez
 	    if ((portaHostMuerto || portaJoinMuerto) && sala.tiempoMuertePorta == -1) {
 	        sala.tiempoMuertePorta = System.currentTimeMillis();
+	        System.out.println("Cuenta regresiva iniciada: " + sala.tiempoMuertePorta);
 	    }
 
 	    if (sala.tiempoMuertePorta != -1) {
 	        long elapsed = (System.currentTimeMillis() - sala.tiempoMuertePorta) / 1000;
 	        int restantes = (int)(10 - elapsed);
+	        System.out.println("Elapsed: " + elapsed + " Restantes: " + restantes);
 
 	        if (restantes > 0) {
-	            sala.resultado = new ResultadoPartida("CUENTA_REGRESIVA", restantes);
-
 	            // durante la cuenta — el equipo sin porta puede empatar
 	            if (portaHostMuerto && (dronesJoinMuertos || portaJoinMuerto)) {
-	                sala.resultado = new ResultadoPartida("EMPATE", 0);
+	                sala.resultado = new ResultadoPartida("EMPATE", 0, 0);
 	                return;
 	            }
 	            if (portaJoinMuerto && (dronesHostMuertos || portaHostMuerto)) {
-	                sala.resultado = new ResultadoPartida("EMPATE", 0);
+	                sala.resultado = new ResultadoPartida("EMPATE", 0, 0);
 	                return;
 	            }
+
+	            if (portaHostMuerto)
+	                sala.resultado = new ResultadoPartida("CUENTA_REGRESIVA", restantes, 1);
+	            if (portaJoinMuerto)
+	                sala.resultado = new ResultadoPartida("CUENTA_REGRESIVA", restantes, 2);
+
 	        } else {
 	            // se acabó el tiempo
-	            if (portaHostMuerto) sala.resultado = new ResultadoPartida("VICTORIA_JOIN", 0);
-	            if (portaJoinMuerto) sala.resultado = new ResultadoPartida("VICTORIA_HOST", 0);
+	            if (portaHostMuerto) sala.resultado = new ResultadoPartida("VICTORIA_JOIN", 0, 1);
+	            if (portaJoinMuerto) sala.resultado = new ResultadoPartida("VICTORIA_HOST", 0, 2);
 	        }
 	    }
 	}
