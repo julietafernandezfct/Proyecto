@@ -22,19 +22,16 @@ public class Consultas {
 	
 	//PRECONDICION: viene en orden del juego
 	public String insback() {
-		String consulta = "INSERT INTO dron (codigo, codPort, municion, posX, posY, posZ, vivo) "
-				+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
-		return consulta;
+	    return "INSERT INTO dron (codigo, cod_port, municion, x, y, z, vida) " +
+	           "VALUES (?, ?, ?, ?, ?, ?, ?)";
 	}
 	
 	public String Listar() {
-		String consulta = "select * from dron where codPort = ? ";
-		return consulta;
+	    return "SELECT * FROM dron WHERE cod_port = ?";
 	}
-	
+
 	public String empty() {
-		String consulta = "SELECT COUNT(*) FROM dron WHERE codPort = ? ";
-		return consulta;
+	    return "SELECT COUNT(*) FROM dron WHERE cod_port = ?";
 	}
 	
 

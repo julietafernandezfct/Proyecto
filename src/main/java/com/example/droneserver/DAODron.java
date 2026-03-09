@@ -36,26 +36,22 @@ public class DAODron { //lista
 
 	}
 	
-	public List<Dron> ListarDrones(String cod){
-		Consultas cons = new Consultas();
-
-		return jdbcTemplate.query(cons.Listar(),
-                (rs, rowNum) -> {
-
-                    int codigo = rs.getInt("codigo");
-                    String codPort = rs.getString("codPort");
-                    int municion = rs.getInt("municion");
-                    float x = rs.getFloat("posX");
-                    float y = rs.getFloat("posY");
-                    float z = rs.getFloat("posZ");
-                    int vivo = rs.getInt("vivo");
-
-                    Position p = new Position(x, y, z);
-
-                    return new Dron(codigo, codPort, municion, p, vivo);
-                },
-                cod
-        );
+	public List<Dron> ListarDrones(String cod) {
+	    Consultas cons = new Consultas();
+	    return jdbcTemplate.query(cons.Listar(),
+	        (rs, rowNum) -> {
+	            int codigo = rs.getInt("codigo");
+	            String codPort = rs.getString("cod_port");  // era "codPort"
+	            int municion = rs.getInt("municion");
+	            float x = rs.getFloat("x");   // era "posX"
+	            float y = rs.getFloat("y");   // era "posY"
+	            float z = rs.getFloat("z");   // era "posZ"
+	            int vivo = rs.getInt("vida"); // era "vivo"
+	            Position p = new Position(x, y, z);
+	            return new Dron(codigo, codPort, municion, p, vivo);
+	        },
+	        cod
+	    );
 	}
 	
 	
