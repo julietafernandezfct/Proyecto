@@ -389,6 +389,14 @@ public class GameController {
 	            PortaDrones portaHost = daoPorta.find(codigoGuardado, "AEREO");
 	            host.setPorta(portaHost);
 	            RestaurarEstadoJugador(host, portaHost);
+	            
+	            //prueba
+	            System.out.println("Drones restaurados host: ");
+	            Position[] dp = host.getDronesPos();
+	            for (int i = 0; i < dp.length; i++) {
+	                if (dp[i] != null)
+	                    System.out.println("  idx=" + i + " objId=" + dp[i].objId + " x=" + dp[i].x);
+	            }
 	        }
 	    } catch (Exception e) {
 	        System.out.println("No hay estado guardado para AEREO: " + e.getMessage());
