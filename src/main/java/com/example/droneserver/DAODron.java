@@ -22,7 +22,7 @@ public class DAODron { //lista
 	public void insback(Dron dron) {
 		Consultas cons = new Consultas();
 		
-		jdbcTemplate.update(cons.insback(), dron.codigo(), dron.getCodPort(), dron.getMunicion(), dron.getPosicion().posX(), dron.getPosicion().posY(), 
+		jdbcTemplate.update(cons.insback(), dron.getCodPort(), dron.codigo(),  dron.getMunicion(), dron.getPosicion().posX(), dron.getPosicion().posY(), 
 				dron.getPosicion().posZ(), dron.getVida());
 		
 	}
@@ -38,7 +38,7 @@ public class DAODron { //lista
 	
 	public List<Dron> ListarDrones(String cod) {
 	    Consultas cons = new Consultas();
-	    return jdbcTemplate.query(cons.Listar(),
+	    List<Dron> result = jdbcTemplate.query(cons.Listar(),
 	        (rs, rowNum) -> {
 	            int codigo = rs.getInt("codigo");
 	            String codPort = rs.getString("cod_port");  // era "codPort"
@@ -52,6 +52,9 @@ public class DAODron { //lista
 	        },
 	        cod
 	    );
+	    
+	    System.out.println("ListarDrones cod=" + cod + " resultado=" + result.size());
+	    return result;
 	}
 	
 	public void delete(String codPort) {

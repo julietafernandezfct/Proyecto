@@ -512,7 +512,7 @@ public class GameController {
 	        portaPos.sessionId = jugador.getSessionId();
 	        portaPos.slot = jugador.getSlot();
 	        portaPos.tipo = "PORTA";
-	        // NO llamar setPortaPos antes, dejar que colocarPorta lo haga
+	        jugador.setPortaPos(null); 
 	        jugador.colocarPorta(portaPos); // esto setea portaPos internamente
 	    }
 

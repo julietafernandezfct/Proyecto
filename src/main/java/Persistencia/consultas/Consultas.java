@@ -24,7 +24,7 @@ public class Consultas {
     // CONSULTAS DE DRON
 
     public String insback() {
-        return "INSERT INTO dron (codigo, cod_port, municion, x, y, z, vida) " +
+        return "INSERT INTO dron (cod_port,codigo, municion, x, y, z, vida) " +
                "VALUES (?, ?, ?, ?, ?, ?, ?)";
     }
 
