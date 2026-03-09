@@ -377,11 +377,14 @@ public class GameController {
 	@GetMapping("/loadAndCreate/{codigoGuardado}")
 	public JoinResponse loadAndCreate(@PathVariable String codigoGuardado) {
 	    String sessionIdHost = UUID.randomUUID().toString();
-	    Sala sala = new Sala();
+	    Sala sala = new Sala(codigoGuardado);
 	    sala.CrearHost(sessionIdHost);
 	    salas.put(codigoGuardado, sala);
 
 	    Jugador host = sala.GetHost();
+	    
+	    System.out.println("Buscando en DB: codigo=" + codigoGuardado + " tipo=AEREO");
+	    System.out.println("member result: " + daoPorta.member(codigoGuardado, "AEREO"));
 
 	    // objId 0 = AEREO = host
 	    try {

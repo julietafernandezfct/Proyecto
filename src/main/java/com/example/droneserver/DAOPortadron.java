@@ -22,6 +22,8 @@ public class DAOPortadron { //hash?
     public void insert(PortaDrones p) {
         Consultas cons = new Consultas();
         Position pos = p.getPosicion();
+        System.out.println("INSERT porta_drones: idPartida=" + p.getIdPartida() + 
+                " tipo=" + pos.getTipo() + " vida=" + p.getVida());
         jdbcTemplate.update(cons.insert(),
             p.getIdPartida(),
             pos.posX(),
