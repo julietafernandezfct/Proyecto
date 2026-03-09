@@ -322,55 +322,51 @@ public class GameController {
 	//GUARDAR PARTIDA
 	@PostMapping("/save/{codigo}")
 	public String guardarPartida(@PathVariable String codigo) {
-
 	    Sala sala = salas.get(codigo);
-	    if (sala == null)
-	        return "Sala no existe.";
+	    if (sala == null) return "Sala no existe.";
 
 	    Jugador host = sala.GetHost();
 	    Jugador join = sala.GetJoin();
 
-	    System.out.println("=== GUARDANDO PARTIDA: " + codigo + " ===");
+	    System.out.println("=== GUARDANDO: " + codigo + " ===");
 
-	    if (host != null) {
-	        System.out.println("Host porta: " + host.getPorta());
-	        System.out.println("Host portaPos: " + host.getPortaPosicion());
-	        if (host.getPorta() != null) {
-	            System.out.println("Host porta posicion: " + host.getPorta().getPosicion());
-	            System.out.println("Host drones count: " + host.getPorta().getDrones().size());
-	        }
-	    } else {
-	        System.out.println("Host es NULL");
-	    }
-
-	    if (join != null) {
-	        System.out.println("Join porta: " + join.getPorta());
-	        System.out.println("Join portaPos: " + join.getPortaPosicion());
-	        if (join.getPorta() != null) {
-	            System.out.println("Join porta posicion: " + join.getPorta().getPosicion());
-	            System.out.println("Join drones count: " + join.getPorta().getDrones().size());
-	        }
-	    } else {
-	        System.out.println("Join es NULL");
-	    }
-
-	    if (host != null && host.getPorta() != null) {
-	        host.getPorta().setIdPartida(codigo);
-	        host.getPorta().guardarPortadron(daoPorta, daoDron);
-	        System.out.println("Host guardado OK");
-	    } else {
-	        System.out.println("Host NO guardado - porta es null");
-	    }
-
-	    if (join != null && join.getPorta() != null) {
-	        join.getPorta().setIdPartida(codigo);
-	        join.getPorta().guardarPortadron(daoPorta, daoDron);
-	        System.out.println("Join guardado OK");
-	    } else {
-	        System.out.println("Join NO guardado - porta es null");
-	    }
+	    guardarJugador(host, codigo);
+	    guardarJugador(join, codigo);
 
 	    return "PARTIDA GUARDADA";
+	}
+
+	private void guardarJugador(Jugador jugador, String codigo) {
+	    if (jugador == null) return;
+
+	    Position portaPos = jugador.getPortaPosicion();
+	    if (portaPos == null) {
+	        System.out.println("Jugador slot=" + jugador.getSlot() + " no tiene porta colocada, no se guarda");
+	        return;
+	    }
+
+	    // Construir PortaDrones desde el estado actual
+	    PortaDrones porta = new PortaDrones(jugador.getPortaVida());
+	    porta.setIdPartida(codigo);
+	    portaPos.tipo = jugador.getTipo();
+	    porta.colocar(portaPos);
+
+	    // Agregar drones vivos
+	    Position[] dronesPos = jugador.getDronesPos();
+	    int[] vidas = jugador.getVidas();
+	    int baseId = (jugador.getSlot() == 1) ? 8 : 2;
+
+	    for (int i = 0; i < dronesPos.length; i++) {
+	        if (dronesPos[i] == null) continue;
+	        if (vidas[i] <= 0) continue;
+	        Dron dron = new Dron(dronesPos[i].objId, codigo, 3, dronesPos[i], vidas[i]);
+	        porta.getDrones().add(dron);
+	    }
+
+	    System.out.println("Guardando jugador slot=" + jugador.getSlot() + 
+	        " porta=" + portaPos + " drones=" + porta.getDrones().size());
+
+	    porta.guardarPortadron(daoPorta, daoDron);
 	}
 	
 	//crea la partida vieja

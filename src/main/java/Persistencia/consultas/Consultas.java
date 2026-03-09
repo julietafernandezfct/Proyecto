@@ -4,18 +4,16 @@ public class Consultas {
 	
 	//CONSULTAS DE PORTADRON
 	
-	public String insert() {
-		String consulta = "INSERT INTO Proyecto.Portadron VALUES (?,?,?,?,?,?)";
-		return consulta;
-	}
-	
 	public String member() {
-		String consulta = "select count(*) from Proyecto.Portadron where codigo = ? AND tipo = ?";
-		return consulta;
+	    return "SELECT COUNT(*) FROM portadron WHERE codigo = ? AND tipo = ?";
 	}
-	
+
 	public String find() {
-	    return "SELECT * FROM Proyecto.Portadron WHERE codigo = ? AND tipo = ?";
+	    return "SELECT * FROM portadron WHERE codigo = ? AND tipo = ?";
+	}
+
+	public String insert() {
+	    return "INSERT INTO portadron VALUES (?,?,?,?,?,?)";
 	}
 	
 	
@@ -23,13 +21,13 @@ public class Consultas {
 	
 	//PRECONDICION: viene en orden del juego
 	public String insback() {
-		String consulta = "INSERT INTO Proyecto.Dron (codigo, codPort, municion, posX, posY, posZ, vivo) "
+		String consulta = "INSERT INTO dron (codigo, codPort, municion, posX, posY, posZ, vivo) "
 				+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
 		return consulta;
 	}
 	
 	public String Listar() {
-		String consulta = "select * from Proyecto.Dron where codPort = ? ";
+		String consulta = "select * from dron where codPort = ? ";
 		return consulta;
 	}
 	
