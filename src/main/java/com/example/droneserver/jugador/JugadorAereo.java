@@ -52,7 +52,6 @@ public class JugadorAereo extends Jugador {
     public void recargaMunicion(int objId) {
         int idx = idxFromObjId(objId);
         if (idx < 0 || idx >= dronesPos.length) return;
-        // tu lógica real de recarga acá
     }
     
     @Override

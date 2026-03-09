@@ -492,18 +492,16 @@ public class GameController {
 	}
 	
 	private void RestaurarEstadoJugador(Jugador jugador, PortaDrones porta) {
-	    // Restaurar posición del porta
 	    Position portaPos = porta.getPosicion();
 	    if (portaPos != null) {
 	        portaPos.objId = jugador.getObjIdPorta();
 	        portaPos.sessionId = jugador.getSessionId();
 	        portaPos.slot = jugador.getSlot();
 	        portaPos.tipo = "PORTA";
-	        jugador.setPortaPos(portaPos);
-	        jugador.colocarPorta(portaPos);
+	        // NO llamar setPortaPos antes, dejar que colocarPorta lo haga
+	        jugador.colocarPorta(portaPos); // esto setea portaPos internamente
 	    }
 
-	    // Restaurar drones
 	    List<Dron> drones = porta.getDrones();
 	    if (drones == null || drones.isEmpty()) return;
 
@@ -512,8 +510,9 @@ public class GameController {
 	        Position p = dron.getPosicion();
 	        if (p == null) continue;
 	        p.objId = dron.codigo();
-	        System.out.println("Restaurando dron codigo=" + dron.codigo() + 
-	            " idx=" + (dron.codigo() - jugador.getSlot())); // ver qué índice calcula
+	        p.sessionId = jugador.getSessionId();
+	        p.slot = jugador.getSlot();
+	        p.tipo = jugador.getTipo();
 	        jugador.actualizarPosicion(dron.codigo(), p);
 	    }
 	}
