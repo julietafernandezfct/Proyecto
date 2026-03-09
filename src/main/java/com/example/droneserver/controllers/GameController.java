@@ -110,6 +110,8 @@ public class GameController {
 		if (req == null || req.items == null)
 			return "Sin items.";
 		for (Position p : req.items) {
+			System.out.println("MoveBatch recibido: sessionId=" + p.sessionId + 
+			        " objId=" + p.objId + " slot=" + p.slot);
 			if (p == null || p.sessionId == null)
 				continue;
 			Jugador jugador = sala.GetJugadorPorSession(p.sessionId);
@@ -366,6 +368,8 @@ public class GameController {
 	    for (int i = 0; i < dronesPos.length; i++) {
 	        if (dronesPos[i] == null) continue;
 	        if (vidas[i] <= 0) continue;
+	        System.out.println("  dron i=" + i + " objId=" + dronesPos[i].objId + 
+	                " x=" + dronesPos[i].x);
 	        Dron dron = new Dron(dronesPos[i].objId, codigo, 3, dronesPos[i], vidas[i]);
 	        porta.getDrones().add(dron);
 	    }
