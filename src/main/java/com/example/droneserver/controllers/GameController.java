@@ -323,23 +323,51 @@ public class GameController {
 	@PostMapping("/save/{codigo}")
 	public String guardarPartida(@PathVariable String codigo) {
 
-		Sala sala = salas.get(codigo);
+	    Sala sala = salas.get(codigo);
 	    if (sala == null)
 	        return "Sala no existe.";
 
 	    Jugador host = sala.GetHost();
 	    Jugador join = sala.GetJoin();
 
+	    System.out.println("=== GUARDANDO PARTIDA: " + codigo + " ===");
+
+	    if (host != null) {
+	        System.out.println("Host porta: " + host.getPorta());
+	        System.out.println("Host portaPos: " + host.getPortaPosicion());
+	        if (host.getPorta() != null) {
+	            System.out.println("Host porta posicion: " + host.getPorta().getPosicion());
+	            System.out.println("Host drones count: " + host.getPorta().getDrones().size());
+	        }
+	    } else {
+	        System.out.println("Host es NULL");
+	    }
+
+	    if (join != null) {
+	        System.out.println("Join porta: " + join.getPorta());
+	        System.out.println("Join portaPos: " + join.getPortaPosicion());
+	        if (join.getPorta() != null) {
+	            System.out.println("Join porta posicion: " + join.getPorta().getPosicion());
+	            System.out.println("Join drones count: " + join.getPorta().getDrones().size());
+	        }
+	    } else {
+	        System.out.println("Join es NULL");
+	    }
+
 	    if (host != null && host.getPorta() != null) {
-	    	host.getPorta().setIdPartida(codigo);
-	        // tipo ya está en portaPos.tipo = "AEREO" porque vino del moveBatch
-	    	host.getPorta().guardarPortadron(daoPorta, daoDron);
+	        host.getPorta().setIdPartida(codigo);
+	        host.getPorta().guardarPortadron(daoPorta, daoDron);
+	        System.out.println("Host guardado OK");
+	    } else {
+	        System.out.println("Host NO guardado - porta es null");
 	    }
 
 	    if (join != null && join.getPorta() != null) {
-	    	join.getPorta().setIdPartida(codigo);
-	        // tipo ya está en portaPos.tipo = "NAVAL"
+	        join.getPorta().setIdPartida(codigo);
 	        join.getPorta().guardarPortadron(daoPorta, daoDron);
+	        System.out.println("Join guardado OK");
+	    } else {
+	        System.out.println("Join NO guardado - porta es null");
 	    }
 
 	    return "PARTIDA GUARDADA";
