@@ -350,6 +350,8 @@ public class GameController {
 	    porta.setIdPartida(codigo);
 	    portaPos.tipo = jugador.getTipo();
 	    porta.colocar(portaPos);
+	    System.out.println("Porta bloqueado: " + porta.estaBloqueado() + 
+	        " posicion: " + porta.getPosicion());
 
 	    // Agregar drones vivos
 	    Position[] dronesPos = jugador.getDronesPos();
