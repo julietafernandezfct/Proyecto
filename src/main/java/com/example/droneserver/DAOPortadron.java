@@ -28,7 +28,8 @@ public class DAOPortadron { //hash?
             pos.posY(),
             pos.posZ(),
             p.getVida(),
-            pos.getTipo()
+            pos.getTipo(),
+            p.estaBloqueado() ? 1 : 0
         );
     }
 	
