@@ -5,15 +5,15 @@ public class Consultas {
 	//CONSULTAS DE PORTADRON
 	
 	public String member() {
-	    return "SELECT COUNT(*) FROM portadron WHERE codigo = ? AND tipo = ?";
+	    return "SELECT COUNT(*) FROM porta_drones WHERE codigo = ? AND tipo = ?";
 	}
 
 	public String find() {
-	    return "SELECT * FROM portadron WHERE codigo = ? AND tipo = ?";
+	    return "SELECT * FROM porta_drones WHERE codigo = ? AND tipo = ?";
 	}
 
 	public String insert() {
-	    return "INSERT INTO portadron VALUES (?,?,?,?,?,?)";
+	    return "INSERT INTO porta_drones VALUES (?,?,?,?,?,?)";
 	}
 	
 	
