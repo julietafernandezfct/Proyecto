@@ -347,10 +347,12 @@ public class GameController {
 	        return;
 	    }
 
-	    // Construir PortaDrones desde el estado actual
+	 // Forzar tipo correcto, ignorar el "PORTA" que puso AgregarEstadoJugador
+	    String tipoJugador = jugador.getTipo(); // "AEREO" o "NAVAL"
+	    portaPos.tipo = tipoJugador;
+
 	    PortaDrones porta = new PortaDrones(jugador.getPortaVida());
 	    porta.setIdPartida(codigo);
-	    portaPos.tipo = jugador.getTipo();
 	    porta.colocar(portaPos);
 	    System.out.println("Porta bloqueado: " + porta.estaBloqueado() + 
 	        " posicion: " + porta.getPosicion());
