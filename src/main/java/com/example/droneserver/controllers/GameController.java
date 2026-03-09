@@ -528,6 +528,14 @@ public class GameController {
 	        p.slot = jugador.getSlot();
 	        p.tipo = jugador.getTipo();
 	        jugador.actualizarPosicion(dron.codigo(), p);
+	        System.out.println("  → idx=" + (dron.codigo() - 8) + " dronesPos actualizado");
+	    }
+	    
+	    System.out.println("Drones restaurados host:");
+	    Position[] dp = jugador.getDronesPos();
+	    for (int i = 0; i < dp.length; i++) {
+	        if (dp[i] != null)
+	            System.out.println("  idx=" + i + " objId=" + dp[i].objId);
 	    }
 	}
 	
