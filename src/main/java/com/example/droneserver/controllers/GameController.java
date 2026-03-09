@@ -96,8 +96,10 @@ public class GameController {
 		pos.sessionId = jugador.getSessionId();
 		pos.slot = jugador.getSlot();
 		pos.objId = portaEsperado;
+		System.out.println("fijado el porta" );
 		return jugador.colocarPorta(pos) ? "OK" : "NO";
 	}
+	
 	//manda la posicion de todos los drones
 	@PostMapping("/moveBatch/{codigo}")
 	public String MoveBatch(@PathVariable String codigo, @RequestBody
@@ -506,17 +508,12 @@ public class GameController {
 	    if (drones == null || drones.isEmpty()) return;
 
 	    for (Dron dron : drones) {
-	        // No restaurar muertos
 	        if (dron.estaMuerto()) continue;
-
 	        Position p = dron.getPosicion();
 	        if (p == null) continue;
-
 	        p.objId = dron.codigo();
-	        p.sessionId = jugador.getSessionId();
-	        p.slot = jugador.getSlot();
-	        p.tipo = jugador.getTipo(); // "AEREO" o "NAVAL"
-
+	        System.out.println("Restaurando dron codigo=" + dron.codigo() + 
+	            " idx=" + (dron.codigo() - jugador.getSlot())); // ver qué índice calcula
 	        jugador.actualizarPosicion(dron.codigo(), p);
 	    }
 	}
