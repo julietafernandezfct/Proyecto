@@ -1,38 +1,34 @@
 package Persistencia.consultas;
 
 public class Consultas {
-	
-	//CONSULTAS DE PORTADRON
-	
-	public String member() {
-	    return "SELECT COUNT(*) FROM porta_drones WHERE id_partida = ? AND tipo = ?";
-	}
 
-	public String find() {
-	    return "SELECT * FROM porta_drones WHERE id_partida = ? AND tipo = ?";
-	}
+    // CONSULTAS DE PORTADRON
 
-	public String insert() {
-	    return "INSERT INTO porta_drones (id_partida, x, y, z, vida, tipo) " +
-	           "VALUES (?, ?, ?, ?, ?, ?)";
-	}
-	
-	
-	//CONSULTAS DE DRON
-	
-	//PRECONDICION: viene en orden del juego
-	public String insback() {
-	    return "INSERT INTO dron (codigo, cod_port, municion, x, y, z, vida) " +
-	           "VALUES (?, ?, ?, ?, ?, ?, ?)";
-	}
-	
-	public String Listar() {
-	    return "SELECT * FROM dron WHERE cod_port = ?";
-	}
+    public String insert() {
+        return "INSERT INTO porta_drones (id_partida, x, y, z, vida, tipo, bloqueado) " +
+               "VALUES (?, ?, ?, ?, ?, ?, ?)";
+    }
 
-	public String empty() {
-	    return "SELECT COUNT(*) FROM dron WHERE cod_port = ?";
-	}
-	
+    public String member() {
+        return "SELECT COUNT(*) FROM porta_drones WHERE id_partida = ? AND tipo = ?";
+    }
 
+    public String find() {
+        return "SELECT * FROM porta_drones WHERE id_partida = ? AND tipo = ?";
+    }
+
+    // CONSULTAS DE DRON
+
+    public String insback() {
+        return "INSERT INTO dron (codigo, cod_port, municion, x, y, z, vida) " +
+               "VALUES (?, ?, ?, ?, ?, ?, ?)";
+    }
+
+    public String Listar() {
+        return "SELECT * FROM dron WHERE cod_port = ?";
+    }
+
+    public String empty() {
+        return "SELECT COUNT(*) FROM dron WHERE cod_port = ?";
+    }
 }
