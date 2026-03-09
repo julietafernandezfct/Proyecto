@@ -14,6 +14,10 @@ public class Consultas {
 		return consulta;
 	}
 	
+	public String find() {
+	    return "SELECT * FROM Proyecto.Portadron WHERE codigo = ? AND tipo = ?";
+	}
+	
 	
 	//CONSULTAS DE DRON
 	

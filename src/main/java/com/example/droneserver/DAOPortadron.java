@@ -41,27 +41,23 @@ public class DAOPortadron { //hash?
 	}
 	
 	public PortaDrones find(String id, String tipo) {
-		Consultas cons = new Consultas();
-
-		return jdbcTemplate.queryForObject(cons.member(),
-		        (rs, rowNum) -> {
-		            float x = rs.getFloat("posX");
-		            float y = rs.getFloat("posY");
-		            float z = rs.getFloat("posZ");
-		            int vida = rs.getInt("vida");
-
-		            Position pos = new Position(x, y, z);
-		            pos.tipo = tipo;
-		            PortaDrones p = new PortaDrones(id, pos, vida);
-		            
-		            DAODron dao = new DAODron(jdbcTemplate);
-		            List<Dron> drones = dao.ListarDrones(id);
-		            p.setDrones(drones);
-		            
-		            return p;
-		        },
-		        id
-		    );
+	    Consultas cons = new Consultas();
+	    return jdbcTemplate.queryForObject(cons.find(),  // <-- usar find(), no member()
+	        (rs, rowNum) -> {
+	            float x = rs.getFloat("posX");
+	            float y = rs.getFloat("posY");
+	            float z = rs.getFloat("posZ");
+	            int vida = rs.getInt("vida");
+	            Position pos = new Position(x, y, z);
+	            pos.tipo = tipo;
+	            PortaDrones p = new PortaDrones(id, pos, vida);
+	            DAODron dao = new DAODron(jdbcTemplate);
+	            List<Dron> drones = dao.ListarDrones(id);
+	            p.setDrones(drones);
+	            return p;
+	        },
+	        id, tipo
+	    );
 	}
 	
 }
