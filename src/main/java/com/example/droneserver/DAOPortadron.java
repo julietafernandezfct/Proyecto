@@ -61,4 +61,8 @@ public class DAOPortadron { //hash?
 	    );
 	}
 	
+	public void delete(String idPartida, String tipo) {
+	    Consultas cons = new Consultas();
+	    jdbcTemplate.update(cons.delete(), idPartida, tipo);
+	}
 }

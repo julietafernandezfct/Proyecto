@@ -16,6 +16,10 @@ public class Consultas {
     public String find() {
         return "SELECT * FROM porta_drones WHERE id_partida = ? AND tipo = ?";
     }
+    
+    public String delete() {
+        return "DELETE FROM porta_drones WHERE id_partida = ? AND tipo = ?";
+    }
 
     // CONSULTAS DE DRON
 
@@ -30,5 +34,9 @@ public class Consultas {
 
     public String empty() {
         return "SELECT COUNT(*) FROM dron WHERE cod_port = ?";
+    }
+    
+    public String deleteDrones() {
+        return "DELETE FROM dron WHERE cod_port = ?";
     }
 }
