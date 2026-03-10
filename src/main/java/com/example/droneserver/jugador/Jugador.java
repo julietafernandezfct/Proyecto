@@ -102,10 +102,13 @@ public abstract class Jugador {
         int idx = idxFromObjId(objId);
         if (idx < 0 || idx >= dronesPos.length) return;
         
+        System.out.println("actualizarPosicion: objId=" + objId + " porta=" + (porta != null ? "OK" : "null") + " dronesPos[idx]=" + (dronesPos[idx] == null ? "null(nuevo)" : "existe"));
+        
         // Si el dron es nuevo, agregarlo al porta
         if (dronesPos[idx] == null && porta != null) {
             Dron dron = new Dron(objId, portaVida > 0 ? vidas[idx] : 0, municion);
             porta.getDrones().add(dron);
+            System.out.println("Dron agregado al porta: objId=" + objId + " total drones=" + porta.getDrones().size());
         }
 
         dronesPos[idx] = p;
@@ -116,6 +119,7 @@ public abstract class Jugador {
             for (Dron d : porta.getDrones()) {
                 if (d.codigo() == objId) {
                     d.setPosicion(p);
+                    System.out.println("Posicion sincronizada en dron: objId=" + objId);
                     break;
                 }
             }
