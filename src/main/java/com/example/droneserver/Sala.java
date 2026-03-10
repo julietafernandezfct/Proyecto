@@ -17,6 +17,8 @@ public class Sala {
 
     private final java.util.List<Proyectil> proyectiles = new java.util.ArrayList<>();
 
+    public volatile boolean guardando = false;
+    
     public java.util.List<Proyectil> GetProyectiles() { 
     	return proyectiles; }
     

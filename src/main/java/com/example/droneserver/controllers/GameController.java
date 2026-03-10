@@ -109,6 +109,7 @@ public class GameController {
 			return "Sala no existe.";
 		if (req == null || req.items == null)
 			return "Sin items.";
+		if (sala.guardando) return "OK";
 		for (Position p : req.items) {
 			System.out.println("MoveBatch recibido: sessionId=" + p.sessionId + 
 			        " objId=" + p.objId + " slot=" + p.slot);
@@ -334,20 +335,25 @@ public class GameController {
 	        return "Sala no existe.";
 	    }
 
-	    Jugador host = sala.GetHost();
-	    Jugador join = sala.GetJoin();
-	    
-	    System.out.println("host=" + host + " host.getPorta()=" + (host != null ? host.getPorta() : "null"));
-	    System.out.println("join=" + join + " join.getPorta()=" + (join != null ? join.getPorta() : "null"));
-
-	    if (host != null && host.getPorta() != null) {
-	        host.getPorta().setIdPartida(codigo);
-	        host.getPorta().guardarPortadron(daoPorta, daoDron, host.getTipo());
-	    }
-
-	    if (join != null && join.getPorta() != null) {
-	        join.getPorta().setIdPartida(codigo);
-	        join.getPorta().guardarPortadron(daoPorta, daoDron, join.getTipo());
+	    sala.guardando = true; // ← bloquear MoveBatch
+	    try {
+		    Jugador host = sala.GetHost();
+		    Jugador join = sala.GetJoin();
+		    
+		    System.out.println("host=" + host + " host.getPorta()=" + (host != null ? host.getPorta() : "null"));
+		    System.out.println("join=" + join + " join.getPorta()=" + (join != null ? join.getPorta() : "null"));
+	
+		    if (host != null && host.getPorta() != null) {
+		        host.getPorta().setIdPartida(codigo);
+		        host.getPorta().guardarPortadron(daoPorta, daoDron, host.getTipo());
+		    }
+	
+		    if (join != null && join.getPorta() != null) {
+		        join.getPorta().setIdPartida(codigo);
+		        join.getPorta().guardarPortadron(daoPorta, daoDron, join.getTipo());
+		    }
+	    } finally {
+	        sala.guardando = false; // ← siempre desbloquear
 	    }
 
 	    return "PARTIDA GUARDADA";
