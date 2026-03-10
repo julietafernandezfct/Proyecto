@@ -58,5 +58,9 @@ public class DAODron { //lista
         );
 	}
 	
+	public void delete(String codPort) {
+	    Consultas cons = new Consultas();
+	    jdbcTemplate.update(cons.deleteDrones(), codPort);
+	}
 	
 }
