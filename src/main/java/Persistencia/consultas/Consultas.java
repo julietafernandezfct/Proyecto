@@ -43,5 +43,13 @@ public class Consultas {
 	public String deleteDrones() {
 	    return "DELETE FROM dron WHERE cod_port = ?";
 	}
+	
+	public String deleteAereo() {
+	    return "DELETE FROM dron WHERE cod_port = ? AND codigo >= 8 AND codigo > 1";
+	}
+
+	public String deleteNaval() {
+	    return "DELETE FROM dron WHERE cod_port = ? AND codigo <= 7  AND codigo > 1";
+	}
 }
     
