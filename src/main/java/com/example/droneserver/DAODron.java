@@ -25,7 +25,7 @@ public class DAODron { //lista
 		jdbcTemplate.update(cons.insback(), 
 			    dron.codigo(), dron.getCodPort(), dron.getMunicion(), 
 			    dron.getPosicion().posX(), dron.getPosicion().posY(),
-			    dron.getPosicion().posZ(), dron.getVida(), 0);
+			    dron.getPosicion().posZ(), dron.getVida());
 		
 	}
 	

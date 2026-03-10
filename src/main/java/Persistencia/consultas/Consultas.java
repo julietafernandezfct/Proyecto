@@ -32,12 +32,12 @@ public class Consultas {
 	}
 	
 	public String Listar() {
-		String consulta = "select * from dron where codPort = ? ";
+		String consulta = "select * from dron where cod_port = ? ";
 		return consulta;
 	}
 	
 	public String empty() {
-		String consulta = "SELECT COUNT(*) FROM dron WHERE codPort = ? ";
+		String consulta = "SELECT COUNT(*) FROM dron WHERE cod_port = ? ";
 		return consulta;
 	}
 	
