@@ -25,7 +25,7 @@ public class Consultas {
 
     public String insback() {
         return "INSERT INTO dron (cod_port, codigo, municion, x, y, z, vida, obj_id_porta) " +
-               "VALUES (?, ?, ?, ?, ?, ?, ?, 0)";
+               "VALUES (?, ?, ?, ?, ?, ?, ?)";
     }
 
     public String Listar() {
