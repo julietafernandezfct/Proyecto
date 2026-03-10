@@ -30,14 +30,7 @@ public class JugadorAereo extends Jugador {
     
     @Override
     public void actualizarPosicion(int objId, Position p) {
-        if (objId == this.objId) { 
-        	portaPos = p; 
-        	return; }
-        int idx = idxFromObjId(objId);
-        if (idx < 0 || idx >= dronesPos.length) 
-        	return;
-        dronesPos[idx] = p;
-        dronesPos[idx].objId = objId;
+    	super.actualizarPosicion(objId, p);
     }
 
     @Override

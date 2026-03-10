@@ -1,5 +1,6 @@
 package com.example.droneserver.jugador;
 
+import com.example.droneserver.Dron;
 import com.example.droneserver.PortaDrones;
 import com.example.droneserver.Position;
 
@@ -79,6 +80,11 @@ public abstract class Jugador {
         portaPos.objId = getObjIdPorta();
         portaPos.sessionId = sessionId;
         portaPos.slot = slot;
+        
+        if (porta == null) {
+            porta = new PortaDrones(portaVida);
+            porta.colocar(pos);
+        }
 
         return true;
     }
@@ -95,10 +101,25 @@ public abstract class Jugador {
 
         int idx = idxFromObjId(objId);
         if (idx < 0 || idx >= dronesPos.length) return;
+        
+        // Si el dron es nuevo, agregarlo al porta
+        if (dronesPos[idx] == null && porta != null) {
+            Dron dron = new Dron(objId, portaVida > 0 ? vidas[idx] : 0, municion);
+            porta.getDrones().add(dron);
+        }
 
         dronesPos[idx] = p;
-        // por si querés asegurar el objId:
         dronesPos[idx].objId = objId;
+        
+        // Sincronizar posición en el objeto Dron
+        if (porta != null) {
+            for (Dron d : porta.getDrones()) {
+                if (d.codigo() == objId) {
+                    d.setPosicion(p);
+                    break;
+                }
+            }
+        }
     }
 
     public void aplicarDanio(int objId, int danio) {
