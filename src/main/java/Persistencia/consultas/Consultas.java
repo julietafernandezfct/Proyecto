@@ -5,8 +5,7 @@ public class Consultas {
 	//CONSULTAS DE PORTADRON
 	
 	public String insert() {
-	    return "INSERT INTO porta_drones (id_partida, x, y, z, vida, tipo) " +
-	           "VALUES (?, ?, ?, ?, ?, ?)";
+	    return "INSERT INTO porta_drones (id_partida, x, y, z, vida, tipo, bloqueado) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	}
 	
 	public String member() {
