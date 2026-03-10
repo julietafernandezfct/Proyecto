@@ -368,9 +368,11 @@ public class GameController {
 	    for (int i = 0; i < dronesPos.length; i++) {
 	        if (dronesPos[i] == null) continue;
 	        if (vidas[i] <= 0) continue;
+	        
+	        int objIdCorrecto = baseId + i;
 	        System.out.println("  dron i=" + i + " objId=" + dronesPos[i].objId + 
 	                " x=" + dronesPos[i].x);
-	        Dron dron = new Dron(dronesPos[i].objId, codigo, 3, dronesPos[i], vidas[i]);
+	        Dron dron = new Dron(objIdCorrecto, codigo, 3, dronesPos[i], vidas[i]);
 	        porta.getDrones().add(dron);
 	    }
 
@@ -532,7 +534,8 @@ public class GameController {
 	        p.slot = jugador.getSlot();
 	        p.tipo = jugador.getTipo();
 	        jugador.actualizarPosicion(dron.codigo(), p);
-	        System.out.println("  → idx=" + (dron.codigo() - 8) + " dronesPos actualizado");
+	        int baseId = (jugador.getSlot() == 1) ? 8 : 2;
+	        System.out.println("  → idx=" + (dron.codigo() - baseId) + " dronesPos actualizado");
 	    }
 	    
 	    System.out.println("Drones restaurados host:");
