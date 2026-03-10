@@ -22,8 +22,10 @@ public class DAODron { //lista
 	public void insback(Dron dron) {
 		Consultas cons = new Consultas();
 		
-		jdbcTemplate.update(cons.insback(), dron.codigo(), dron.getCodPort(), dron.getMunicion(), dron.getPosicion().posX(), dron.getPosicion().posY(), 
-				dron.getPosicion().posZ(), dron.getVida());
+		jdbcTemplate.update(cons.insback(), 
+			    dron.codigo(), dron.getCodPort(), dron.getMunicion(), 
+			    dron.getPosicion().posX(), dron.getPosicion().posY(),
+			    dron.getPosicion().posZ(), dron.getVida(), 0);
 		
 	}
 	
@@ -43,16 +45,16 @@ public class DAODron { //lista
                 (rs, rowNum) -> {
 
                     int codigo = rs.getInt("codigo");
-                    String codPort = rs.getString("codPort");
+                    String codPort = rs.getString("cod_port");
                     int municion = rs.getInt("municion");
-                    float x = rs.getFloat("posX");
-                    float y = rs.getFloat("posY");
-                    float z = rs.getFloat("posZ");
-                    int vivo = rs.getInt("vivo");
+                    float x = rs.getFloat("x");
+                    float y = rs.getFloat("y");
+                    float z = rs.getFloat("z");
+                    int vida = rs.getInt("vida");
 
                     Position p = new Position(x, y, z);
 
-                    return new Dron(codigo, codPort, municion, p, vivo);
+                    return new Dron(codigo, codPort, municion, p, vida);
                 },
                 cod
         );
