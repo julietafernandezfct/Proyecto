@@ -96,8 +96,10 @@ public class GameController {
 		pos.sessionId = jugador.getSessionId();
 		pos.slot = jugador.getSlot();
 		pos.objId = portaEsperado;
+		System.out.println("fijado el porta" );
 		return jugador.colocarPorta(pos) ? "OK" : "NO";
 	}
+	
 	//manda la posicion de todos los drones
 	@PostMapping("/moveBatch/{codigo}")
 	public String MoveBatch(@PathVariable String codigo, @RequestBody
@@ -108,6 +110,8 @@ public class GameController {
 		if (req == null || req.items == null)
 			return "Sin items.";
 		for (Position p : req.items) {
+			System.out.println("MoveBatch recibido: sessionId=" + p.sessionId + 
+			        " objId=" + p.objId + " slot=" + p.slot);
 			if (p == null || p.sessionId == null)
 				continue;
 			Jugador jugador = sala.GetJugadorPorSession(p.sessionId);
@@ -163,13 +167,14 @@ public class GameController {
 		String sid = jugador.getSessionId();
 		int slot = jugador.getSlot();
 		int portaId = jugador.getObjIdPorta();
+		String tipo = jugador.getTipo();
 		vidas.add(new DatoVida(portaId,  jugador.getPortaVida()));
 		Position portaPos = jugador.getPortaPosicion();
 		if (portaPos != null) {
 			portaPos.sessionId = sid;
 			portaPos.slot = slot;
 			portaPos.objId = portaId;
-			portaPos.tipo = "PORTA";
+			portaPos.tipo = tipo;
 			posiciones.add(portaPos);
 			}
 		Position[] drones = jugador.getDronesPos();
@@ -323,7 +328,7 @@ public class GameController {
 	@PostMapping("/save/{codigo}")
 	public String guardarPartida(@PathVariable String codigo) {
 
-		Sala sala = salas.get(codigo);
+	    Sala sala = salas.get(codigo);
 	    if (sala == null)
 	        return "Sala no existe.";
 
@@ -332,26 +337,58 @@ public class GameController {
 
 	    if (host != null && host.getPorta() != null) {
 	        host.getPorta().setIdPartida(codigo);
-	        host.getPorta().guardarPortadron(daoPorta, daoDron, host.getTipo()); // ← pasar tipo
+	        host.getPorta().guardarPortadron(daoPorta, daoDron, host.getTipo());
 	    }
 
 	    if (join != null && join.getPorta() != null) {
 	        join.getPorta().setIdPartida(codigo);
-	        join.getPorta().guardarPortadron(daoPorta, daoDron, join.getTipo()); // ← pasar tipo
+	        join.getPorta().guardarPortadron(daoPorta, daoDron, join.getTipo());
 	    }
 
 	    return "PARTIDA GUARDADA";
+	}
+
+	private void guardarJugador(Jugador jugador, String codigo) {
+	    if (jugador == null) return;
+	    Position portaPos = jugador.getPortaPosicion();
+	    if (portaPos == null) return;
+
+	    String tipoJugador = jugador.getTipo(); // "AEREO" o "NAVAL"
+	    portaPos.tipo = tipoJugador;
+
+	    PortaDrones porta = new PortaDrones(jugador.getPortaVida());
+	    porta.setIdPartida(codigo);
+	    porta.colocar(portaPos);
+
+	    Position[] dronesPos = jugador.getDronesPos();
+	    int[] vidas = jugador.getVidas();
+	    int baseId = (jugador.getSlot() == 1) ? 8 : 2;
+
+	    for (int i = 0; i < dronesPos.length; i++) {
+	        if (dronesPos[i] == null) continue;
+	        if (vidas[i] <= 0) continue;
+	        int objIdCorrecto = baseId + i;
+	        dronesPos[i].objId = objIdCorrecto;
+	        // cod_port = tipo del jugador ("AEREO" o "NAVAL")
+	        Dron dron = new Dron(objIdCorrecto, tipoJugador, 3, dronesPos[i], vidas[i]);
+	        porta.getDrones().add(dron);
+	    }
+
+	    porta.guardarPortadron(daoPorta, daoDron, tipoJugador);
 	}
 	
 	//crea la partida vieja
 	@GetMapping("/loadAndCreate/{codigoGuardado}")
 	public JoinResponse loadAndCreate(@PathVariable String codigoGuardado) {
 	    String sessionIdHost = UUID.randomUUID().toString();
-	    Sala sala = new Sala();
+	    Sala sala = new Sala(codigoGuardado);
 	    sala.CrearHost(sessionIdHost);
 	    salas.put(codigoGuardado, sala);
 
 	    Jugador host = sala.GetHost();
+	    
+	    System.out.println("Buscando en DB: codigo=" + codigoGuardado + " tipo=AEREO");
+	    System.out.println("member result: " + daoPorta.member(codigoGuardado, "AEREO"));
 
 	    // objId 0 = AEREO = host
 	    try {
@@ -359,6 +396,14 @@ public class GameController {
 	            PortaDrones portaHost = daoPorta.find(codigoGuardado, "AEREO");
 	            host.setPorta(portaHost);
 	            RestaurarEstadoJugador(host, portaHost);
+	            
+	            //prueba
+	            System.out.println("Drones restaurados host: ");
+	            Position[] dp = host.getDronesPos();
+	            for (int i = 0; i < dp.length; i++) {
+	                if (dp[i] != null)
+	                    System.out.println("  idx=" + i + " objId=" + dp[i].objId + " x=" + dp[i].x);
+	            }
 	        }
 	    } catch (Exception e) {
 	        System.out.println("No hay estado guardado para AEREO: " + e.getMessage());
@@ -462,34 +507,37 @@ public class GameController {
 	}
 	
 	private void RestaurarEstadoJugador(Jugador jugador, PortaDrones porta) {
-	    // Restaurar posición del porta
 	    Position portaPos = porta.getPosicion();
 	    if (portaPos != null) {
 	        portaPos.objId = jugador.getObjIdPorta();
 	        portaPos.sessionId = jugador.getSessionId();
 	        portaPos.slot = jugador.getSlot();
 	        portaPos.tipo = "PORTA";
-	        jugador.setPortaPos(portaPos);
-	        jugador.colocarPorta(portaPos);
+	        jugador.setPortaPos(null); 
+	        jugador.colocarPorta(portaPos); // esto setea portaPos internamente
 	    }
 
-	    // Restaurar drones
 	    List<Dron> drones = porta.getDrones();
 	    if (drones == null || drones.isEmpty()) return;
 
 	    for (Dron dron : drones) {
-	        // No restaurar muertos
 	        if (dron.estaMuerto()) continue;
-
 	        Position p = dron.getPosicion();
 	        if (p == null) continue;
-
 	        p.objId = dron.codigo();
 	        p.sessionId = jugador.getSessionId();
 	        p.slot = jugador.getSlot();
-	        p.tipo = jugador.getTipo(); // "AEREO" o "NAVAL"
-
+	        p.tipo = jugador.getTipo();
 	        jugador.actualizarPosicion(dron.codigo(), p);
+	        int baseId = (jugador.getSlot() == 1) ? 8 : 2;
+	        System.out.println("  → idx=" + (dron.codigo() - baseId) + " dronesPos actualizado");
+	    }
+	    
+	    System.out.println("Drones restaurados host:");
+	    Position[] dp = jugador.getDronesPos();
+	    for (int i = 0; i < dp.length; i++) {
+	        if (dp[i] != null)
+	            System.out.println("  idx=" + i + " objId=" + dp[i].objId);
 	    }
 	}
 	

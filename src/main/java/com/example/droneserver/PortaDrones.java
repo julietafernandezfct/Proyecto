@@ -23,6 +23,8 @@ public class PortaDrones {
     @OneToMany(mappedBy = "portaDrones", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Dron> drones = new ArrayList<>();
 	private String idPartida;
+	
+	public PortaDrones() {}
     
 	public PortaDrones(String partida, Position pos, int vid) {
 		idPartida = partida;
@@ -55,6 +57,8 @@ public class PortaDrones {
 	public List<Dron> getDrones(){
 		return drones;
 	}
+	
+	
 
     // se llama una sola vez (fase colocación)
     public boolean colocar(Position p) {

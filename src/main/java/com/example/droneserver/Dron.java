@@ -21,7 +21,7 @@ public class Dron {
     private PortaDrones portaDrones;
 	
     private int codigo;   //pasa a int
-    private String codPort;
+    private String codPort; //codigo de la partida
     private int vida;
     private int municion;
     private Position posicion; // null hasta que llegue update

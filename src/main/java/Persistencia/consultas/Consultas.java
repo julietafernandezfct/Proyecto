@@ -44,5 +44,5 @@ public class Consultas {
 	public String deleteDrones() {
 	    return "DELETE FROM dron WHERE cod_port = ?";
 	}
-
 }
+    

@@ -19,18 +19,21 @@ public class DAOPortadron { //hash?
         this.jdbcTemplate = jdbcTemplate;
     }
 	
-	public void insert(PortaDrones p) {
-		Consultas cons = new Consultas();
-		
-		jdbcTemplate.update(cons.insert(),
-	            p.getIdPartida(),
-	            p.getPosicion().posX(),
-	            p.getPosicion().posY(),
-	            p.getPosicion().posZ(),
-	            p.getVida(),
-	            p.getPosicion().getTipo()
-	    );
-	}
+    public void insert(PortaDrones p) {
+        Consultas cons = new Consultas();
+        Position pos = p.getPosicion();
+        System.out.println("INSERT porta_drones: idPartida=" + p.getIdPartida() + 
+                " tipo=" + pos.getTipo() + " vida=" + p.getVida());
+        jdbcTemplate.update(cons.insert(),
+            p.getIdPartida(),
+            pos.posX(),
+            pos.posY(),
+            pos.posZ(),
+            p.getVida(),
+            pos.getTipo(),
+            p.estaBloqueado() ? 1 : 0
+        );
+    }
 	
 	public boolean member(String id, String tipo) {
 		Consultas cons = new Consultas();
@@ -42,17 +45,20 @@ public class DAOPortadron { //hash?
 	
 	public PortaDrones find(String id, String tipo) {
 	    Consultas cons = new Consultas();
-	    return jdbcTemplate.queryForObject(cons.find(),  // <-- usar find(), no member()
+	    return jdbcTemplate.queryForObject(cons.find(),
 	        (rs, rowNum) -> {
-	            float x = rs.getFloat("posX");
-	            float y = rs.getFloat("posY");
-	            float z = rs.getFloat("posZ");
+	            float x = rs.getFloat("x");
+	            float y = rs.getFloat("y");
+	            float z = rs.getFloat("z");
 	            int vida = rs.getInt("vida");
 	            Position pos = new Position(x, y, z);
 	            pos.tipo = tipo;
 	            PortaDrones p = new PortaDrones(id, pos, vida);
+	            
 	            DAODron dao = new DAODron(jdbcTemplate);
+	            
 	            List<Dron> drones = dao.ListarDrones(id);
+	            System.out.println("find: drones cargados=" + drones.size());
 	            p.setDrones(drones);
 	            return p;
 	        },
@@ -64,5 +70,4 @@ public class DAOPortadron { //hash?
 	    Consultas cons = new Consultas();
 	    jdbcTemplate.update(cons.delete(), idPartida, tipo);
 	}
-	
 }

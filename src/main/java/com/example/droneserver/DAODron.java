@@ -20,13 +20,16 @@ public class DAODron { //lista
 	}
 	
 	public void insback(Dron dron) {
-		Consultas cons = new Consultas();
-		
-		jdbcTemplate.update(cons.insback(), 
-			    dron.codigo(), dron.getCodPort(), dron.getMunicion(), 
-			    dron.getPosicion().posX(), dron.getPosicion().posY(),
-			    dron.getPosicion().posZ(), dron.getVida());
-		
+	    Consultas cons = new Consultas();
+	    jdbcTemplate.update(cons.insback(), 
+	        dron.getCodPort(),        // cod_port
+	        dron.codigo(),            // codigo
+	        dron.getMunicion(),       // municion
+	        dron.getPosicion().posX(), // x
+	        dron.getPosicion().posY(), // y
+	        dron.getPosicion().posZ(), // z
+	        dron.getVida()            // vida  ← sin el 0 final
+	    );
 	}
 	
 	public boolean empty(String cod) {
@@ -38,6 +41,7 @@ public class DAODron { //lista
 
 	}
 	
+
 	public List<Dron> ListarDrones(String cod){
 		Consultas cons = new Consultas();
 
@@ -64,5 +68,4 @@ public class DAODron { //lista
 	    Consultas cons = new Consultas();
 	    jdbcTemplate.update(cons.deleteDrones(), codPort);
 	}
-	
 }
