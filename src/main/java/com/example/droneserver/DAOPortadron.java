@@ -54,8 +54,12 @@ public class DAOPortadron { //hash?
 	            Position pos = new Position(x, y, z);
 	            pos.tipo = tipo;
 	            PortaDrones p = new PortaDrones(id, pos, vida);
+	            
+	            int objIdPorta = tipo.equals("AEREO") ? 0 : 1;
+	            
 	            DAODron dao = new DAODron(jdbcTemplate);
-	            List<Dron> drones = dao.ListarDrones(id);
+	            
+	            List<Dron> drones = dao.ListarDrones(id, objIdPorta);
 	            System.out.println("find: drones cargados=" + drones.size());
 	            p.setDrones(drones);
 	            return p;

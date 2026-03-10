@@ -342,8 +342,15 @@ public class GameController {
 	}
 
 	private void guardarJugador(Jugador jugador, String codigo) {
-	    if (jugador == null) return;
+		if (jugador == null) {
+	        System.out.println("jugador es NULL");
+	        return;
+	    }
 
+		System.out.println("=== guardarJugador: slot=" + jugador.getSlot() + 
+                " tipo=" + jugador.getTipo() + 
+                " portaVida=" + jugador.getPortaVida());
+		
 	    Position portaPos = jugador.getPortaPosicion();
 	    if (portaPos == null) {
 	        System.out.println("Jugador slot=" + jugador.getSlot() + " no tiene porta colocada, no se guarda");
@@ -364,15 +371,17 @@ public class GameController {
 	    Position[] dronesPos = jugador.getDronesPos();
 	    int[] vidas = jugador.getVidas();
 	    int baseId = (jugador.getSlot() == 1) ? 8 : 2;
+	    int portaObjId = jugador.getObjIdPorta();
 
 	    for (int i = 0; i < dronesPos.length; i++) {
 	        if (dronesPos[i] == null) continue;
 	        if (vidas[i] <= 0) continue;
 	        
 	        int objIdCorrecto = baseId + i;
-	        System.out.println("  dron i=" + i + " objId=" + dronesPos[i].objId + 
-	                " x=" + dronesPos[i].x);
+	        System.out.println("  dron[" + i + "] = " + (dronesPos[i] == null ? "NULL" : 
+                "objId=" + dronesPos[i].objId + " x=" + dronesPos[i].x));
 	        Dron dron = new Dron(objIdCorrecto, codigo, 3, dronesPos[i], vidas[i]);
+	        dron.setObjIdPorta(portaObjId); 
 	        porta.getDrones().add(dron);
 	    }
 

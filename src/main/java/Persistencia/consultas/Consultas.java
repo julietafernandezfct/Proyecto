@@ -24,12 +24,12 @@ public class Consultas {
     // CONSULTAS DE DRON
 
     public String insback() {
-        return "INSERT INTO dron (cod_port,codigo, municion, x, y, z, vida) " +
-               "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        return "INSERT INTO dron (cod_port, obj_id_porta, codigo, municion, x, y, z, vida) " +
+               "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
     public String Listar() {
-        return "SELECT * FROM dron WHERE cod_port = ?";
+        return "SELECT * FROM dron WHERE cod_port = ? AND obj_id_porta = ?";
     }
 
     public String empty() {
@@ -37,6 +37,6 @@ public class Consultas {
     }
     
     public String deleteDrones() {
-        return "DELETE FROM dron WHERE cod_port = ?";
+        return "DELETE FROM dron WHERE cod_port = ? AND obj_id_porta = ?";
     }
 }

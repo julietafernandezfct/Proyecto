@@ -57,6 +57,8 @@ public class PortaDrones {
 	public List<Dron> getDrones(){
 		return drones;
 	}
+	
+	
 
     // se llama una sola vez (fase colocación)
     public boolean colocar(Position p) {
@@ -88,6 +90,7 @@ public class PortaDrones {
         daoD.delete(idPartida);
         // Insertar nuevo
     	dao.insert(this);
+    	
     	for(Dron dron : getDrones()) {
     		dron.guardarDron(daoD);
     	}
