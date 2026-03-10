@@ -43,6 +43,10 @@ public class Position {
     	qz = 0;
     	qw = 1;
     }
+    
+    public void setTipo(String tip) {
+    	tipo = tip;
+    }
 
     @Override
     public String toString() {

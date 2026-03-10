@@ -80,13 +80,16 @@ public class PortaDrones {
     	return vida <= 0; 
     }
     
-    public void guardarPortadron(DAOPortadron dao, DAODron daoD) {
-        // Borrar estado anterior
-        dao.delete(idPartida, posicion.getTipo());
+    public void guardarPortadron(DAOPortadron dao, DAODron daoD, String tipo) {
+        // Forzar tipo correcto (evita que quede "PORTA")
+        if (posicion != null) posicion.setTipo(tipo);
+        
+        dao.delete(idPartida, tipo);
         daoD.delete(idPartida);
-        // Insertar nuevo
+        
         dao.insert(this);
         for (Dron dron : getDrones()) {
+            dron.setCodPort(idPartida); // ← propagar sala al dron
             dron.guardarDron(daoD);
         }
     }

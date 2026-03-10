@@ -331,15 +331,13 @@ public class GameController {
 	    Jugador join = sala.GetJoin();
 
 	    if (host != null && host.getPorta() != null) {
-	    	host.getPorta().setIdPartida(codigo);
-	        // tipo ya está en portaPos.tipo = "AEREO" porque vino del moveBatch
-	    	host.getPorta().guardarPortadron(daoPorta, daoDron);
+	        host.getPorta().setIdPartida(codigo);
+	        host.getPorta().guardarPortadron(daoPorta, daoDron, host.getTipo()); // ← pasar tipo
 	    }
 
 	    if (join != null && join.getPorta() != null) {
-	    	join.getPorta().setIdPartida(codigo);
-	        // tipo ya está en portaPos.tipo = "NAVAL"
-	        join.getPorta().guardarPortadron(daoPorta, daoDron);
+	        join.getPorta().setIdPartida(codigo);
+	        join.getPorta().guardarPortadron(daoPorta, daoDron, join.getTipo()); // ← pasar tipo
 	    }
 
 	    return "PARTIDA GUARDADA";

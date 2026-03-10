@@ -84,4 +84,8 @@ public class Dron {
     public List<Dron> levantarDrones(DAODron dao){
     	return dao.ListarDrones(codPort);
     }
+    
+    public void setCodPort(String cod) {
+        this.codPort = cod;
+    }
 }
