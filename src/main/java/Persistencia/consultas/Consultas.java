@@ -26,8 +26,8 @@ public class Consultas {
 	
 	//PRECONDICION: viene en orden del juego
 	public String insback() {
-	    return "INSERT INTO dron (cod_port, codigo, municion, x, y, z, vida) "
-	         + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+	    return "INSERT INTO dron (cod_port, codigo, municion, x, y, z, vida, obj_id_porta) " +
+	           "VALUES (?, ?, ?, ?, ?, ?, ?, 0)";
 	}
 	
 	public String Listar() {
