@@ -91,6 +91,8 @@ public class PortaDrones {
             daoD.delete(idPartida);
             dao.insert(this);
             for (Dron dron : getDrones()) {
+            	if (dron.getPosicion() == null) continue;
+            	if (dron.estaMuerto()) continue; 
                 dron.setCodPort(idPartida);
                 dron.guardarDron(daoD);
             }
