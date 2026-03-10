@@ -10,12 +10,12 @@ public class Consultas {
 	}
 	
 	public String member() {
-		String consulta = "select count(*) from porta_drones where codigo = ? AND tipo = ?";
+		String consulta = "select count(*) from porta_drones where id_partida = ? AND tipo = ?";
 		return consulta;
 	}
 	
 	public String find() {
-	    return "SELECT * FROM porta_drones WHERE codigo = ? AND tipo = ?";
+	    return "SELECT * FROM porta_drones WHERE id_partida = ? AND tipo = ?";
 	}
 	
 	public String delete() {
@@ -27,8 +27,8 @@ public class Consultas {
 	
 	//PRECONDICION: viene en orden del juego
 	public String insback() {
-	    return "INSERT INTO dron (cod_port, codigo, municion, x, y, z, vida, obj_id_porta) "
-	         + "VALUES (?, ?, ?, ?, ?, ?, ?)";  // 0 fijo, 7 ?
+	    return "INSERT INTO dron (cod_port, codigo, municion, x, y, z, vida) "
+	         + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 	}
 	
 	public String Listar() {
