@@ -85,16 +85,17 @@ public class PortaDrones {
     }
     
     public void guardarPortadron(DAOPortadron dao, DAODron daoD, String tipo) {
-        // Forzar tipo correcto (evita que quede "PORTA")
         if (posicion != null) posicion.setTipo(tipo);
-        
-        dao.delete(idPartida, tipo);
-        daoD.delete(idPartida);
-        
-        dao.insert(this);
-        for (Dron dron : getDrones()) {
-            dron.setCodPort(idPartida); // ← propagar sala al dron
-            dron.guardarDron(daoD);
+        try {
+            dao.delete(idPartida, tipo);
+            daoD.delete(idPartida);
+            dao.insert(this);
+            for (Dron dron : getDrones()) {
+                dron.setCodPort(idPartida);
+                dron.guardarDron(daoD);
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR guardando: " + e.getMessage());
         }
     }
 
