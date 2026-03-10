@@ -22,7 +22,7 @@ public class DAODron { //lista
 	public void insback(Dron dron) {
 		Consultas cons = new Consultas();
 		
-		jdbcTemplate.update(cons.insback(), dron.getCodPort(), dron.getObjIdPorta(), dron.codigo(), dron.getMunicion(), dron.getPosicion().posX(), dron.getPosicion().posY(), 
+		jdbcTemplate.update(cons.insback(), dron.getCodPort(), dron.codigo(), dron.getMunicion(), dron.getPosicion().posX(), dron.getPosicion().posY(), 
 				dron.getPosicion().posZ(), dron.getVida());
 		 
 	}

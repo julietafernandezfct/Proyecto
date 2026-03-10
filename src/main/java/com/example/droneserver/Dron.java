@@ -19,7 +19,6 @@ public class Dron {
     @ManyToOne
     @JoinColumn(name = "porta_id")
     private PortaDrones portaDrones;
-    private int objIdPorta; //codigo del portadron
 	
     private int codigo;   //pasa a int
     private String codPort; //codigo de la partida
@@ -42,9 +41,6 @@ public class Dron {
 		posicion = posi;
 		vida = vid;
 	}
-    
-    public void setObjIdPorta(int id) { this.objIdPorta = id; }
-    public int getObjIdPorta() { return objIdPorta; }
 
     public int codigo() { 
     	return codigo; 
@@ -86,6 +82,6 @@ public class Dron {
     }
     
     public List<Dron> levantarDrones(DAODron dao){
-    	return dao.ListarDrones(codPort, objIdPorta);
+    	return dao.ListarDrones(codPort);
     }
 }
