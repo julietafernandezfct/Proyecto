@@ -327,13 +327,18 @@ public class GameController {
 	//GUARDAR PARTIDA
 	@PostMapping("/save/{codigo}")
 	public String guardarPartida(@PathVariable String codigo) {
-
+		System.out.println("GUARDANDO PARTIDA: " + codigo);
 	    Sala sala = salas.get(codigo);
-	    if (sala == null)
+	    if (sala == null){
+	        System.out.println("SALA NO ENCONTRADA");
 	        return "Sala no existe.";
+	    }
 
 	    Jugador host = sala.GetHost();
 	    Jugador join = sala.GetJoin();
+	    
+	    System.out.println("host=" + host + " host.getPorta()=" + (host != null ? host.getPorta() : "null"));
+	    System.out.println("join=" + join + " join.getPorta()=" + (join != null ? join.getPorta() : "null"));
 
 	    if (host != null && host.getPorta() != null) {
 	        host.getPorta().setIdPartida(codigo);
