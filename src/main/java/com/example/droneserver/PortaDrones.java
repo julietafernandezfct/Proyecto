@@ -85,15 +85,13 @@ public class PortaDrones {
     }
     
     public void guardarPortadron(DAOPortadron dao, DAODron daoD) {
-    	// Borrar estado anterior
-        dao.delete(idPartida, posicion.getTipo());
-        daoD.delete(idPartida);
-        // Insertar nuevo
-    	dao.insert(this);
-    	
-    	for(Dron dron : getDrones()) {
-    		dron.guardarDron(daoD);
-    	}
+    	String tipo = posicion.getTipo(); // "AEREO" o "NAVAL"
+	    dao.delete(idPartida, tipo);
+	    daoD.delete(tipo);  // borra por "AEREO" o "NAVAL"
+	    dao.insert(this);
+	    for (Dron dron : getDrones()) {
+	        dron.guardarDron(daoD);
+	    }
     }
 
     public PortaDrones levantarPortadrones(DAOPortadron dao, String tipo) {

@@ -36,7 +36,7 @@ public class DAODron { //lista
 
 	}
 	
-	public List<Dron> ListarDrones(String cod, int objIdPorta) {
+	public List<Dron> ListarDrones(String cod) {
 	    Consultas cons = new Consultas();
 	    List<Dron> result = jdbcTemplate.query(cons.Listar(),
 	        (rs, rowNum) -> {
@@ -50,7 +50,7 @@ public class DAODron { //lista
 	            Position p = new Position(x, y, z);
 	            return new Dron(codigo, codPort, municion, p, vivo);
 	        },
-	        cod, objIdPorta
+	        cod
 	    );
 	    
 	    System.out.println("ListarDrones cod=" + cod + " resultado=" + result.size());
