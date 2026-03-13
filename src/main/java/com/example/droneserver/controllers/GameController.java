@@ -35,8 +35,7 @@ public class GameController {
 	    salas.put(sala.GetCodigo(), sala);
 	    
 	    Jugador host = sala.GetHost();
-	    host.getPorta().setVida(6);
-
+	    
 	    return new JoinResponse(
 	        sala.GetCodigo(),
 	        sessionId,
@@ -57,7 +56,7 @@ public class GameController {
 		sala.CrearJoin(sessionId);
 		System.out.println("SALAS ACTUALES: " + salas.keySet());
 		Jugador join = sala.GetJoin();
-		join.getPorta().setVida(3);
+		
 		
 		try {
 	        if (daoPorta.member(codigo, "NAVAL")) {

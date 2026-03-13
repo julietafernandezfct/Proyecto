@@ -16,6 +16,7 @@ public class JugadorAereo extends Jugador {
         this.tipo = "AEREO";
         this.objId = id;
 
+        this.portaVida = 6;
         int n = 12;
 
         dronesPos = new Position[n];

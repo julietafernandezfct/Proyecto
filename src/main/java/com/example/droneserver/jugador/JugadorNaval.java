@@ -15,6 +15,8 @@ public class JugadorNaval extends Jugador {
         this.slot = slot;
         this.tipo = "NAVAL";
         this.objId = id;
+        
+        this.portaVida = 3;
 
         int n = 6;
 
