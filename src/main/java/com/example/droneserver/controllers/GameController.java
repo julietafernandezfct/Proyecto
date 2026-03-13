@@ -35,6 +35,7 @@ public class GameController {
 	    salas.put(sala.GetCodigo(), sala);
 	    
 	    Jugador host = sala.GetHost();
+	    host.getPorta().setVida(6);
 
 	    return new JoinResponse(
 	        sala.GetCodigo(),
@@ -56,10 +57,12 @@ public class GameController {
 		sala.CrearJoin(sessionId);
 		System.out.println("SALAS ACTUALES: " + salas.keySet());
 		Jugador join = sala.GetJoin();
+		join.getPorta().setVida(3);
 		
 		try {
 	        if (daoPorta.member(codigo, "NAVAL")) {
 	            PortaDrones portaJoin = daoPorta.find(codigo, "NAVAL");
+	            
 	            join.setPorta(portaJoin);
 	            RestaurarEstadoJugador(join, portaJoin);
 	        }
@@ -96,11 +99,6 @@ public class GameController {
 		pos.sessionId = jugador.getSessionId();
 		pos.slot = jugador.getSlot();
 		pos.objId = portaEsperado;
-		if(pos.slot == 1) {
-			jugador.getPorta().setVida(6);
-		}else {
-			jugador.getPorta().setVida(3);
-		}
 		System.out.println("fijado el porta" );
 		
 		return jugador.colocarPorta(pos) ? "OK" : "NO";
