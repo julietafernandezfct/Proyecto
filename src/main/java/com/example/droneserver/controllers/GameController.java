@@ -247,7 +247,7 @@ public class GameController {
 			Position portaPos = enemigo.getPortaPosicion();
 			if (portaPos != null && enemigo.getPortaVida() > 0) {
 				float dist = distancia(p.x, p.y, p.z, portaPos.x, portaPos.y, portaPos.z);
-				if (dist <= 9.0f) {
+				if (dist <= 20.0f) {
 					enemigo.aplicarDanio(enemigo.getObjIdPorta(), p.danio);
 					p.activo = false;
 					continue;
