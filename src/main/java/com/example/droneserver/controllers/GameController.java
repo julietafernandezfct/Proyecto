@@ -96,7 +96,13 @@ public class GameController {
 		pos.sessionId = jugador.getSessionId();
 		pos.slot = jugador.getSlot();
 		pos.objId = portaEsperado;
+		if(pos.slot == 1) {
+			jugador.getPorta().setVida(6);
+		}else {
+			jugador.getPorta().setVida(3);
+		}
 		System.out.println("fijado el porta" );
+		
 		return jugador.colocarPorta(pos) ? "OK" : "NO";
 	}
 	
