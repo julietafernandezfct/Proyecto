@@ -49,6 +49,10 @@ public class PortaDrones {
     	return bloqueado; 
     }
     
+    public void setVida(int vida) {
+        this.vida = vida;
+    }
+    
     public String getIdPartida() {
 		return idPartida;
 	}

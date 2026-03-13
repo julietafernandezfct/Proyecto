@@ -345,11 +345,13 @@ public class GameController {
 	
 		    if (host != null && host.getPorta() != null) {
 		        host.getPorta().setIdPartida(codigo);
+		        host.getPorta().setVida(host.getPortaVida());
 		        host.getPorta().guardarPortadron(daoPorta, daoDron, host.getTipo());
 		    }
 	
 		    if (join != null && join.getPorta() != null) {
 		        join.getPorta().setIdPartida(codigo);
+		        join.getPorta().setVida(join.getPortaVida());
 		        join.getPorta().guardarPortadron(daoPorta, daoDron, join.getTipo());
 		    }
 	    } finally {

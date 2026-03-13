@@ -16,7 +16,7 @@ public abstract class Jugador {
     protected int municion;
 
     protected Position portaPos;
-    protected int portaVida = 10;
+    protected int portaVida;
     protected PortaDrones porta;
 
     protected abstract int baseDronId();
